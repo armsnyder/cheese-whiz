@@ -12,7 +12,7 @@
 import sys
 
 import app.app
-import app.GUI
+import app.gui
 
 __author__ = "Kristen Amaddio, Neal Kfoury, Michael Nowakowski, and Adam Snyder"
 __credits__ = ["Kristen Amaddio", "Neal Kfoury", "Michael Nowakowski", "Adam Snyder"]
@@ -21,4 +21,4 @@ __status__ = "Development"
 if len(sys.argv) > 1:
     app.app.main()
 else:
-    app.GUI.GUI()
+    app.gui.GUI()
