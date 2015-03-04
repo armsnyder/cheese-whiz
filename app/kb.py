@@ -4,6 +4,7 @@
 # TODO: We should decide definitively how to represent preparation_terms and preparation_descriptors
 
 from compiler.ast import flatten
+import re
 
 from enums import Nutrient
 from enums import FoodGroup
@@ -31,6 +32,7 @@ class KnowledgeBase:
         self.__load_cooking_wares()
         self.__load_measurements()
         self.__load_common_substitutions()
+        self.__load_style_tags()
         util.vprint('Finished loading:')
         util.vprint('\t%s foods' % str(len(self.foods)))
         util.vprint('\t%s preparation terms' % str(len(self.preparation_terms)))
@@ -113,6 +115,40 @@ class KnowledgeBase:
                 result[food_id][nut_id] = nut_data
         return result
 
+    def __load_style_tags(self):
+        raw_style_list = read_txt_lines_into_list('kb_data/style_tags.txt')
+        for raw_style in raw_style_list:
+            parsed_in_out = raw_style.split('=')
+            ingredient_name = parsed_in_out[0]
+            styles = parsed_in_out[1]
+            if len(parsed_in_out) != 2:
+                util.warning('Incorrect style string: ' + raw_style)
+                continue
+            style_list = styles.split(',')
+            positive_styles = []
+            negative_styles = []
+            for style in style_list:
+                style = style.strip()
+                if len(style):
+                    if style[0] == '+':
+                        positive_styles.append(style[1:])
+                        continue
+                    elif style[0] == '-':
+                        negative_styles.append(style[1:])
+                        continue
+                util.warning('Incorrect style string: ' + raw_style)
+            self.__add_style_tags(ingredient_name, positive_styles, negative_styles)
+
+    def __add_style_tags(self, ingredient_name, positive_styles, negative_styles):
+        matching_foods = self.lookup_ingredient(ingredient_name)
+        for matching_food in matching_foods:
+            matching_food.add_styles(positive_styles, negative_styles)
+
+    def lookup_ingredient(self, ingredient_name):
+        result = []
+        # TODO: Return a list of Food objects in the knowledge base that match the ingredient_name
+        return result
+
 
 class Food:
     def __init__(self, food_id=None, food_group=None, name=None, nutritional_data=None):
@@ -122,6 +158,10 @@ class Food:
         self.nutritional_data = nutritional_data
         self.positive_tags = []
         self.negative_tags = []
+
+    def add_styles(self, positive_styles, negative_styles):
+        # TODO: Write this function to add style tags if they haven't already been added
+        pass
 
 
 class CommonSubstitution:
