@@ -1,0 +1,9 @@
+# Line-delimited list of cooking wares
+
+# Example:
+
+frying pan
+spoon
+pasta pot
+
+# Now you go:

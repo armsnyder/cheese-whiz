@@ -1,0 +1,9 @@
+# Line-delimited list of preparation terms
+
+# Example:
+
+chopped
+minced
+shredded
+
+# Now you go:
