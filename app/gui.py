@@ -2,8 +2,6 @@
 # A GUI interface is created that interacts with the code, replacing the app.py file
 
 from Tkinter import *
-import os
-import platform
 
 import util
 
@@ -22,8 +20,8 @@ class GUI:
 
     def raise_and_focus(self):
         self.root.call('wm', 'attributes', '.', '-topmost', '1')
-        if platform.system() == 'Darwin':
-            os.system('''/usr/bin/osascript -e 'tell app "Finder" to set frontmost of process "Python" to true' ''')
+        # if platform.system() == 'Darwin':
+        #     os.system('''/usr/bin/osascript -e 'tell app "Finder" to set frontmost of process "Python" to true' ''')
 
     def center_on_screen(self):
         self.root.geometry("+%d+%d" % (
