@@ -1,0 +1,8 @@
+# Line-delimited list of measurements
+
+# Example:
+
+teaspoon = tsp.
+gallon = gal.
+
+# Now you go:
