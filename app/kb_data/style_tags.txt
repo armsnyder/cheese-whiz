@@ -1,0 +1,11 @@
+# Line-delimited list of style tags
+
+# Example:
+
+oregano = +mediterranean, +greek
+basil = +mediterranean, +thai
+dill = +scandinavian
+tortilla = +mexican, -scandinavian
+oaxaca cheese = +mexican
+
+# Now you go:
