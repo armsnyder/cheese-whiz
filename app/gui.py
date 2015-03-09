@@ -19,6 +19,7 @@ class GUI:
         pass
 
     def raise_and_focus(self):
+        # window.lift()
         self.root.call('wm', 'attributes', '.', '-topmost', '1')
         # if platform.system() == 'Darwin':
         #     os.system('''/usr/bin/osascript -e 'tell app "Finder" to set frontmost of process "Python" to true' ''')
