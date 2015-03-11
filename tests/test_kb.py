@@ -79,3 +79,35 @@ class TestParseUsdaLine(unittest.TestCase):
         self.assertEqual(
             kb.parse_usda_line('~01011~^~0100~^~Cheese, colby~^~CHEESE,COLBY~^~~^~~^~Y~^~~^0^~~^6.38^4.27^8.79^3.87\n'),
             ['01011', '0100', 'Cheese, colby', 'CHEESE,COLBY', '', '', 'Y', '', 0, '', 6.38, 4.27, 8.79, 3.87])
+
+
+class TestAddStyles(unittest.TestCase):
+
+    def test_empty_add(self):
+        food = kb.Food()
+        food.add_styles([], [])
+        self.assertEqual(food.positive_tags, [])
+        self.assertEqual(food.negative_tags, [])
+
+    def test_no_duplicates(self):
+        food = kb.Food()
+        food.add_styles(['a'], ['b'])
+        self.assertEqual(food.positive_tags, ['a'])
+        self.assertEqual(food.negative_tags, ['b'])
+
+    def test_duplicates_same_category(self):
+        food = kb.Food()
+        food.add_styles(['a', 'a', 'b'], ['c', 'c'])
+        self.assertEqual(food.positive_tags, ['a', 'b'])
+        self.assertEqual(food.negative_tags, ['c'])
+
+    def test_duplicates_different_category(self):
+        food = kb.Food()
+        self.assertRaises(RuntimeError, food.add_styles, ['a','b'], ['b', 'c'])
+
+    def test_duplicates_iterative_add(self):
+        food = kb.Food()
+        food.add_styles(['a'], [])
+        food.add_styles(['a'], [])
+        self.assertEqual(food.positive_tags, ['a'])
+        self.assertEqual(food.negative_tags, [])

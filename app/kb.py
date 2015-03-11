@@ -160,8 +160,19 @@ class Food:
         self.negative_tags = []
 
     def add_styles(self, positive_styles, negative_styles):
-        # TODO: Write this function to add style tags if they haven't already been added
-        pass
+        for style in positive_styles:
+            if style in self.positive_tags:
+                continue
+            else:
+                self.positive_tags.append(style)
+        for style in negative_styles:
+            if style in self.positive_tags:
+                self.positive_tags.remove(style)
+                raise RuntimeError("Food obj cannot have identical + and - tags")
+            if style in self.negative_tags:
+                continue
+            else:
+                self.negative_tags.append(style)
 
 
 class CommonSubstitution:
