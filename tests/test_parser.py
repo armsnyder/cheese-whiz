@@ -36,7 +36,7 @@ class TestAutograder(unittest.TestCase):
         :param dict_2: Second parsed recipe
         :return: boolean
         """
-        return self.parsed_recipe_similarity(dict_1, dict_2) > 0.9
+        self.assertTrue(self.parsed_recipe_similarity(dict_1, dict_2) > 0.9)
 
     def test_1(self):
         result_dict = self.url_to_dictionary('allrecipes.com/Recipe/Easier-Chicken-Marsala')
