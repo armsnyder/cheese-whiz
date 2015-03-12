@@ -71,15 +71,14 @@ class KnowledgeBase:
         raw_measurement_list = read_txt_lines_into_list('kb_data/measurements.txt')
         for raw_measurement in raw_measurement_list:
             parsed_in_out = raw_measurement.split('=')
-            full_name = parsed_in_out[0]
-            abbreviations = parsed_in_out[1]
-            if len(parsed_in_out) != 2:
-                util.warning('Incorrect substitution string: ' + raw_measurement)
-                continue
-            abbreviation_list = abbreviations.split(',')
-            if not len(abbreviation_list):
-                util.warning('Incorrect substitution string: ' + raw_measurement)
-                continue
+            full_name = parsed_in_out.pop(0)
+            if  parsed_in_out:
+                if not parsed_in_out[0]:
+                    parsed_in_out = []
+                else:
+                    parsed_in_out = parsed_in_out[0].split(',')
+                abbreviation_list = parsed_in_out
+            else: abbreviation_list = []
             self.measurements[full_name] = abbreviation_list
 
     def __load_common_substitutions(self):

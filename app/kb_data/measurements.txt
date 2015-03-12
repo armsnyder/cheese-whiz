@@ -2,7 +2,51 @@
 
 # Example:
 
-teaspoon = tsp.
-gallon = gal.
+# teaspoon = tsp.
+# gallon = gal.
 
 # Now you go:
+
+# US VOLUMES
+drop
+dash
+pinch
+tad
+teaspoon = tsp.
+tablespoon = tbsp.
+cup = c.
+fluid ounce = fl oz.
+pint
+quart
+gallon = gal.
+
+# METRIC VOLUMES
+milliliter
+liter
+
+# US WEIGHTS
+pound
+ounce
+
+# METRIC MASSES
+gram
+kilogram
+
+# MOSTLY FOR VEGETABLES
+head
+bunch
+slice
+piece
+clove
+strip
+
+# ODDITIES
+handful
+box
+package
+can
+jar
+bag
+pack
+package
+
