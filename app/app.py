@@ -1,6 +1,7 @@
 # The "main" file for Cheese Whiz
 
 import urllib2
+import util
 
 import kb
 
@@ -20,4 +21,8 @@ def get_html(url):
         formatted_url = 'http://' + url
     else:
         formatted_url = url
-    return urllib2.urlopen(formatted_url).read()
+    try:
+        return urllib2.urlopen(formatted_url).read()
+    except urllib2.URLError:
+        util.warning('Invalid URL request')
+        return None
