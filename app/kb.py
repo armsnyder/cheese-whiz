@@ -1,7 +1,6 @@
 # All code relating to the system's knowledge base goes here
 # The KnowledgeBase class contains the data itself
 # All other methods are just useful helper functions
-# TODO: We should decide definitively how to represent preparation_terms and preparation_descriptors
 
 from compiler.ast import flatten
 import nltk
@@ -33,8 +32,6 @@ class KnowledgeBase:
         self._load_style_tags()
         util.vprint('Finished loading:')
         util.vprint('\t%s foods' % str(len(self.foods)))
-        util.vprint('\t%s preparation terms' % str(len(self.preparation_terms)))
-        util.vprint('\t%s preparation descriptors' % str(len(self.preparation_descriptors)))
         util.vprint('\t%s cooking wares' % str(len(self.cooking_wares)))
         util.vprint('\t%s measurements' % str(len(self.measurements)))
         util.vprint('\t%s common substitutions' % str(len(self.common_substitutions)))
@@ -209,12 +206,6 @@ class CommonSubstitution:
     def __init__(self, food_in=None, food_out=None):
         self.food_in = food_in
         self.food_out = food_out
-
-
-class FoodQuantity:
-    def __init__(self, name=None, quantity=None):
-        self.name = name
-        self.quantity = quantity
 
 
 class Quantity:
