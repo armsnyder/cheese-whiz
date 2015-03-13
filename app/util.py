@@ -49,3 +49,13 @@ def relative_path(path):
     :return: full path name, relative to script location
     """
     return os.path.join(os.path.join(os.getcwd(), os.path.dirname(__file__)), path)
+
+
+def fraction_to_decimal(string):
+    """
+    Converts string to float
+    :param string: Fraction string of the form "a/b"
+    :return: Float
+    """
+    s = string.split("/")
+    return float(s[0])/float(s[1])
