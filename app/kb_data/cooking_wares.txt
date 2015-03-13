@@ -2,8 +2,87 @@
 
 # Example:
 
-frying pan
-spoon
-pasta pot
+# frying pan
+# spoon
+# pasta pot
 
 # Now you go:
+
+# Appliances
+microwave
+oven
+dutch oven
+stove
+grill
+pressure cooker
+slow cooker
+rotisserie
+refrigerator
+
+# Utensils
+fork
+knife
+beater
+mixer
+baster
+ladle
+tongs
+spatula
+spoon
+wooden spoon
+slotted spoon
+whisk
+garlic press
+grater
+peeler
+can opener
+bottle opener
+corkscrew
+thermometer
+measuring cups
+measuring spoons
+egg separator
+fish scaler
+flour sifter
+sifter
+strainer
+sieve
+funnel
+meat grinder
+meat tenderiser
+mortar and pestle
+pastry brush
+pizza cutter
+rolling pin
+zester
+
+# Pots and Pans
+pot
+pan
+colander
+saucepan
+wok
+tube pan
+cake pan
+loaf pan
+cookie sheet
+skillet
+frying pan
+griddle
+kettle
+bread pan
+roasting pan
+roaster
+baking dish
+baking sheet
+
+# Other
+cutting board
+mixing bowl
+bowl
+microwave safe bowl
+egg timer
+paper towels
+bag
+plastic bag
+casserole dish
