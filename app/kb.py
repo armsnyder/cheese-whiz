@@ -4,7 +4,7 @@
 # TODO: We should decide definitively how to represent preparation_terms and preparation_descriptors
 
 from compiler.ast import flatten
-import re
+import nltk
 
 from enums import Nutrient
 from enums import FoodGroup
@@ -146,7 +146,15 @@ class KnowledgeBase:
 
     def lookup_ingredient(self, ingredient_name):
         result = []
-        # TODO: Return a list of Food objects in the knowledge base that match the ingredient_name
+        ingredient_tokens = nltk.word_tokenize(ingredient_name)
+        for food in self.foods:
+            ok = True
+            for token in ingredient_tokens:
+                if token not in food.name:
+                    ok = False
+                    break
+            if ok:
+                result.append(food)
         return result
 
     def interpret_quantity(self, string):
