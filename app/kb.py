@@ -1,7 +1,6 @@
 # All code relating to the system's knowledge base goes here
 # The KnowledgeBase class contains the data itself
 # All other methods are just useful helper functions
-# TODO: We should decide definitively how to represent preparation_terms and preparation_descriptors
 
 from compiler.ast import flatten
 import nltk
@@ -14,8 +13,7 @@ import util
 class KnowledgeBase:
     def __init__(self):
         self.foods = []
-        self.preparation_terms = set()
-        self.preparation_descriptors = set()  # TODO: Is it ok that this is just a separate list?
+        self.cooking_terms = set()
         self.cooking_wares = set()
         self.measurements = {}
         self.common_substitutions = []
@@ -27,16 +25,13 @@ class KnowledgeBase:
         """
         self._load_foods()
         util.vprint('Loading cooking terminology')
-        self._load_preparation_terms()
-        self._load_preparation_descriptors()
+        self._load_cooking_terms()
         self._load_cooking_wares()
         self._load_measurements()
         self._load_common_substitutions()
         self._load_style_tags()
         util.vprint('Finished loading:')
         util.vprint('\t%s foods' % str(len(self.foods)))
-        util.vprint('\t%s preparation terms' % str(len(self.preparation_terms)))
-        util.vprint('\t%s preparation descriptors' % str(len(self.preparation_descriptors)))
         util.vprint('\t%s cooking wares' % str(len(self.cooking_wares)))
         util.vprint('\t%s measurements' % str(len(self.measurements)))
         util.vprint('\t%s common substitutions' % str(len(self.common_substitutions)))
@@ -58,11 +53,8 @@ class KnowledgeBase:
                     new_food.nutritional_data = nutritional_data[new_food.food_id]
                 self.foods.append(new_food)
 
-    def _load_preparation_terms(self):
-        self.preparation_terms = set(read_txt_lines_into_list('kb_data/preparation_terms.txt'))
-
-    def _load_preparation_descriptors(self):
-        self.preparation_descriptors = set(read_txt_lines_into_list('kb_data/preparation_descriptors.txt'))
+    def _load_cooking_terms(self):
+        self.cooking_terms = set(read_txt_lines_into_list('kb_data/cooking_terms.txt'))
 
     def _load_cooking_wares(self):
         self.cooking_wares = set(read_txt_lines_into_list('kb_data/cooking_wares.txt'))
@@ -214,12 +206,6 @@ class CommonSubstitution:
     def __init__(self, food_in=None, food_out=None):
         self.food_in = food_in
         self.food_out = food_out
-
-
-class FoodQuantity:
-    def __init__(self, name=None, quantity=None):
-        self.name = name
-        self.quantity = quantity
 
 
 class Quantity:
