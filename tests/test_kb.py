@@ -111,3 +111,20 @@ class TestAddStyles(unittest.TestCase):
         food.add_styles(['a'], [])
         self.assertEqual(food.positive_tags, ['a'])
         self.assertEqual(food.negative_tags, [])
+
+
+class TestQuantityInterpreter(unittest.TestCase):
+
+    def test_quantity_interpreter(self):
+        knowledge_base = kb.KnowledgeBase()
+        knowledge_base._load_measurements()
+
+        quantity = knowledge_base.interpret_quantity('1/4 cup')
+        self.assertEqual(quantity.amount, 0.25)
+        self.assertEqual(quantity.unit, 'cup')
+
+        quantity = knowledge_base.interpret_quantity('27 salamanders')
+        self.assertEqual(quantity.amount, '27')
+        self.assertEqual(quantity.unit, 'unit')
+
+

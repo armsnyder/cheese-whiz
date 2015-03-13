@@ -6,3 +6,5 @@ import kb
 def main():
     knowledge_base = kb.KnowledgeBase()
     knowledge_base.load()
+
+
