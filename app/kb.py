@@ -140,13 +140,18 @@ class KnowledgeBase:
             self._add_style_tags(ingredient_name, positive_styles, negative_styles)
 
     def _add_style_tags(self, ingredient_name, positive_styles, negative_styles):
-        matching_foods = self.lookup_ingredient(ingredient_name)
+        matching_foods = self.lookup_food(ingredient_name)
         for matching_food in matching_foods:
             matching_food.add_styles(positive_styles, negative_styles)
 
-    def lookup_ingredient(self, ingredient_name):
+    def lookup_food(self, food_name):
+        """
+        Gets a list of foods that match a search string
+        :param food_name: search string
+        :return: list of foods in knowledge base
+        """
         result = []
-        ingredient_tokens = [token.lower() for token in nltk.word_tokenize(ingredient_name)]
+        ingredient_tokens = [token.lower() for token in nltk.word_tokenize(food_name)]
         for food in self.foods:
             ok = True
             for token in ingredient_tokens:

@@ -103,7 +103,7 @@ class TestAddStyles(unittest.TestCase):
 
     def test_duplicates_different_category(self):
         food = kb.Food()
-        self.assertRaises(RuntimeError, food.add_styles, ['a','b'], ['b', 'c'])
+        self.assertRaises(RuntimeError, food.add_styles, ['a', 'b'], ['b', 'c'])
 
     def test_duplicates_iterative_add(self):
         food = kb.Food()
@@ -175,7 +175,7 @@ class TestIngredientLookup(unittest.TestCase):
                 'Cheese, cottage, lowfat, 1% milkfat'
 
             ]
-        test_cheese_list = [food.name for food in self.kb.lookup_ingredient('cheese')]
+        test_cheese_list = [food.name for food in self.kb.lookup_food('cheese')]
         self.assertEqual(test_cheese_list, correct_cheese_list)
 
     def test_lowfat_cheese(self):
@@ -184,5 +184,5 @@ class TestIngredientLookup(unittest.TestCase):
                 'Cheese, cottage, lowfat, 2% milkfat',
                 'Cheese, cottage, lowfat, 1% milkfat'
             ]
-        test_cheese_list = [food.name for food in self.kb.lookup_ingredient('lowfat cheese')]
+        test_cheese_list = [food.name for food in self.kb.lookup_food('lowfat cheese')]
         self.assertEqual(test_cheese_list, correct_cheese_list)
