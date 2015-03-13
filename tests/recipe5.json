@@ -1,0 +1,67 @@
+{
+    "url": "http://allrecipes.com/Recipe/Pesto-Grilled-Cheese-Sandwich/",
+    "ingredients": [{
+            "name": ["Italian bread", "bread"],
+            "quantity": [2],
+            "measurement": ["slices"],
+            "descriptor": ["Italian"],
+            "preparation": [],
+            "prep-description": [],
+            "max": 4
+        },
+        {
+            "name": ["butter"],
+            "quantity": [1],
+            "measurement": ["tablespoon"],
+            "descriptor": ["softened", "divided"],
+            "preparation": ["softened","divided"],
+            "prep-description": [],
+            "max": 5
+        },
+        {
+            "name": ["pesto sauce", "pesto", "sauce"],
+            "quantity": [1],
+            "measurement": ["tablespoon"],
+            "descriptor": ["prepared", "divided"],
+            "preparation": ["divided"],
+            "prep-description": [],
+            "max": 5
+        },
+        {
+            "name": ["cheese", "provolone cheese"],
+            "quantity": [1],
+            "measurement": ["slice"],
+            "descriptor": ["provolone"],
+            "preparation": [],
+            "prep-description": [],
+            "max": 4
+        },
+        {
+            "name": ["tomato"],
+            "quantity": [2],
+            "measurement": ["slices"],
+            "descriptor": [],
+            "preparation": [],
+            "prep-description": [],
+            "max": 3
+        },
+        {
+            "name": ["cheese", "American cheese"],
+            "quantity": [1],
+            "measurement": ["slice"],
+            "descriptor": ["American"],
+            "preparation": [],
+            "prep-description": [],
+            "max": 4
+        }
+    ],
+    "max": {
+        "ingredients": 25,
+        "primary cooking method": 1,
+        "cooking tools": 2,
+        "cooking methods": 4
+    },
+    "primary cooking method": "fry",
+    "cooking methods":["spread", "place", "butter", "flip", "flipping"],
+    "cooking tools": ["skillet", "nonstick skillet"]
+}

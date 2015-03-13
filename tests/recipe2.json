@@ -1,0 +1,85 @@
+{
+    "url": "http://allrecipes.com/Recipe/Baked-Lemon-Chicken-with-Mushroom-Sauce/",
+    "ingredients": [{
+            "name": ["olive oil"],
+            "quantity": [1],
+            "measurement": ["tablespoons", "tablespoon"],
+            "descriptor": [],
+            "preparation": [],
+            "prep-description": [],
+            "max": 3
+        },
+        {
+            "name": ["chicken","chicken breasts", "chicken breast halves", "boneless chicken breast halves","boneless chicken", "skinless chicken breasts", "skinless, boneless chicken breast halves"],
+            "quantity": [6],
+            "measurement": ["breast halves", "unit", "units","discrete"],
+            "descriptor": ["boneless", "skinless", "breast halves","skinless, boneless"],
+            "preparation": ["boneless","skinless"],
+            "prep-description": [],
+            "max": 5
+        },
+        {
+            "name": ["lemon"],
+            "quantity": [1],
+            "measurement": ["unit", "units","discrete"],
+            "descriptor": [],
+            "preparation": [],
+            "prep-description": [],
+            "max": 4
+        },
+        {
+            "name": ["butter"],
+            "quantity": [0.25],
+            "measurement": ["cup"],
+            "descriptor": [],
+            "preparation": [],
+            "prep-description": [],
+            "max": 3
+        },
+        {
+            "name": ["mushrooms"],
+            "quantity": [3],
+            "measurement": ["cup"],
+            "descriptor": ["fresh", "sliced", "fresh sliced"],
+            "preparation": ["sliced"],
+            "prep-description": [],
+            "max": 5
+        },
+        {
+            "name": ["flour", "all-purpose flour"],
+            "quantity": [2],
+            "measurement": ["tablespoon", "tablespoons"],
+            "descriptor": ["all-purpose"],
+            "preparation": [],
+            "prep-description": [],
+            "max": 4
+        },
+        {
+            "name": ["chicken broth", "broth"],
+            "quantity": [1],
+            "measurement": ["cup"],
+            "descriptor": ["chicken"],
+            "preparation": [],
+            "prep-description": [],
+            "max": 4
+        },
+        {
+            "name": ["parsley", "fresh parsley"],
+            "quantity": [1],
+            "measurement": ["tablespoon", "tablespoons"],
+            "descriptor": ["fresh","chopped"],
+            "preparation": ["chopped"],
+            "prep-description": [],
+            "max": 5
+        }
+    ],
+    "max": {
+        "ingredients": 33,
+        "primary cooking method": 1,
+        "cooking tools": 6,
+        "cooking methods": 11
+    },
+    "primary cooking method": "bake",
+    "cooking methods":["preheat", "pour","place","coat","coating","squeeze","slice","melt","add","stir","cook","sprinkle","coated","stirring","reduce","adjusting","spoon"],
+    "cooking tools": ["oven","baking dish", "knife", "thermometer", "skillet", "spoon"]
+}
