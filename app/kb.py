@@ -27,8 +27,7 @@ class KnowledgeBase:
         """
         self._load_foods()
         util.vprint('Loading cooking terminology')
-        self._load_preparation_terms()
-        self._load_preparation_descriptors()
+        self._load_cooking_terms()
         self._load_cooking_wares()
         self._load_measurements()
         self._load_common_substitutions()
@@ -58,11 +57,8 @@ class KnowledgeBase:
                     new_food.nutritional_data = nutritional_data[new_food.food_id]
                 self.foods.append(new_food)
 
-    def _load_preparation_terms(self):
-        self.preparation_terms = set(read_txt_lines_into_list('kb_data/preparation_terms.txt'))
-
-    def _load_preparation_descriptors(self):
-        self.preparation_descriptors = set(read_txt_lines_into_list('kb_data/preparation_descriptors.txt'))
+    def _load_cooking_terms(self):
+        self.cooking_terms = set(read_txt_lines_into_list('kb_data/cooking_terms.txt'))
 
     def _load_cooking_wares(self):
         self.cooking_wares = set(read_txt_lines_into_list('kb_data/cooking_wares.txt'))
