@@ -146,11 +146,11 @@ class KnowledgeBase:
 
     def lookup_ingredient(self, ingredient_name):
         result = []
-        ingredient_tokens = nltk.word_tokenize(ingredient_name)
+        ingredient_tokens = [token.lower() for token in nltk.word_tokenize(ingredient_name)]
         for food in self.foods:
             ok = True
             for token in ingredient_tokens:
-                if token not in food.name:
+                if token not in food.name.lower():
                     ok = False
                     break
             if ok:
