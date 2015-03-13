@@ -71,7 +71,7 @@ class KnowledgeBase:
         raw_measurement_list = read_txt_lines_into_list('kb_data/measurements.txt')
         for raw_measurement in raw_measurement_list:
             parsed_in_out = raw_measurement.split('=')
-            full_name = parsed_in_out.pop(0)
+            full_name = parsed_in_out.pop(0).strip()
             if parsed_in_out:
                 if not parsed_in_out[0]:
                     parsed_in_out = []
@@ -156,6 +156,28 @@ class KnowledgeBase:
             if ok:
                 result.append(food)
         return result
+
+    def interpret_quantity(self, string):
+        """
+        Generates a new Quantity object with amount and unit fields filled in from the input string
+        :param string: Of the form "x y" where x represents a quantity and y can be found in the measurements dict
+        :return: Quantity
+        """
+        q = Quantity()
+        s = string.split()
+        if len(s) != 2:
+            raise RuntimeError('Invalid quantity string: Must contain 1 amount/unit pair')
+        s = [t.strip() for t in s]
+        if "/" in s[0]:
+            q.amount = util.fraction_to_decimal(s[0])
+        else:
+            q.amount = s[0]
+        if s[1] in self.measurements:
+            q.unit = s[1]
+        if not q.unit:
+            print 'Could not identify unit of measurement; assuming \'unit(s)\''
+            q.unit = 'unit'
+        return q
 
 
 class Food:
