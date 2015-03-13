@@ -14,8 +14,7 @@ import util
 class KnowledgeBase:
     def __init__(self):
         self.foods = []
-        self.preparation_terms = set()
-        self.preparation_descriptors = set()  # TODO: Is it ok that this is just a separate list?
+        self.cooking_terms = set()
         self.cooking_wares = set()
         self.measurements = {}
         self.common_substitutions = []
