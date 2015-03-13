@@ -103,7 +103,7 @@ class TestAddStyles(unittest.TestCase):
 
     def test_duplicates_different_category(self):
         food = kb.Food()
-        self.assertRaises(RuntimeError, food.add_styles, ['a','b'], ['b', 'c'])
+        self.assertRaises(RuntimeError, food.add_styles, ['a', 'b'], ['b', 'c'])
 
     def test_duplicates_iterative_add(self):
         food = kb.Food()
@@ -128,3 +128,61 @@ class TestQuantityInterpreter(unittest.TestCase):
         self.assertEqual(quantity.unit, 'unit')
 
 
+class TestIngredientLookup(unittest.TestCase):
+
+    def setUp(self):
+        food_names = \
+            [
+                'Butter, salted',
+                'Butter, whipped, with salt',
+                'Butter oil, anhydrous',
+                'Cheese, blue',
+                'Cheese, brick',
+                'Cheese, brie',
+                'Cheese, camembert'
+                'Cheese, cottage, creamed, large or small curd',
+                'Cheese, cottage, creamed, with fruit',
+                'Cheese, cottage, nonfat, uncreamed, dry, large or small curd',
+                'Cheese, cottage, lowfat, 2% milkfat',
+                'Cheese, cottage, lowfat, 1% milkfat',
+                'Basil, fresh',
+                'Spices, basil, dried',
+                "CAMPBELL'S Homestyle Harvest Tomato with Basil Soup",
+                'PREGO Pasta, Organic Tomato and Basil Italian Sauce, ready-to-serve',
+                'PREGO Pasta, Tomato, Basil and Garlic Italian Sauce, ready-to-serve',
+                'MORNINGSTAR FARMS Tomato & Basil Pizza Burger, frozen, unprepared',
+                'GARDENBURGER Sun-Dried Tomato Basil Burger, frozen, unprepared'
+            ]
+        self.kb = kb.KnowledgeBase()
+        self.kb.foods = [kb.Food(None, None, name) for name in food_names]
+
+    def test_basil(self):
+        self.kb._add_style_tags('basil', ['italian'], [])
+        affected_items = [food for food in self.kb.foods if food.positive_tags == ['italian']]
+        self.assertEqual(len(affected_items), 7)
+
+    def test_cheese(self):
+        correct_cheese_list = \
+            [
+                'Cheese, blue',
+                'Cheese, brick',
+                'Cheese, brie',
+                'Cheese, camembert'
+                'Cheese, cottage, creamed, large or small curd',
+                'Cheese, cottage, creamed, with fruit',
+                'Cheese, cottage, nonfat, uncreamed, dry, large or small curd',
+                'Cheese, cottage, lowfat, 2% milkfat',
+                'Cheese, cottage, lowfat, 1% milkfat'
+
+            ]
+        test_cheese_list = [food.name for food in self.kb.lookup_food('cheese')]
+        self.assertEqual(test_cheese_list, correct_cheese_list)
+
+    def test_lowfat_cheese(self):
+        correct_cheese_list = \
+            [
+                'Cheese, cottage, lowfat, 2% milkfat',
+                'Cheese, cottage, lowfat, 1% milkfat'
+            ]
+        test_cheese_list = [food.name for food in self.kb.lookup_food('lowfat cheese')]
+        self.assertEqual(test_cheese_list, correct_cheese_list)
