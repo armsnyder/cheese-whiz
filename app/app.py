@@ -3,6 +3,13 @@
 import kb
 
 
+def main():
+    """
+    Placeholder main method for calling script with command line parameters
+    """
+    pass
+
+
 def load_knowledge_base():
     """
     Loads and returns knowledge base
