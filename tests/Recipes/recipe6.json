@@ -1,0 +1,94 @@
+{
+    "url": "http://allrecipes.com/Recipe/Pizza-Casserole/",
+    "ingredients": [{
+            "name": ["noodles", "egg noodles"],
+            "quantity": [2],
+            "measurement": ["cups"],
+            "descriptor": ["egg", "uncooked"],
+            "preparation": ["uncooked"],
+            "prep-description": [],
+            "max": 5
+        },
+        {
+            "name": ["beef", "ground beef"],
+            "quantity": [0.5],
+            "measurement": ["pound"],
+            "descriptor": ["lean", "ground"],
+            "preparation": ["ground"],
+            "prep-description": [],
+            "max": 5
+        },
+        {
+            "name": ["onion"],
+            "quantity": [1],
+            "measurement": ["unit", "units", "discrete"],
+            "descriptor": [],
+            "preparation": ["chopped"],
+            "prep-description": [],
+            "max": 4
+        },
+        {
+            "name": ["garlic"],
+            "quantity": [2],
+            "measurement": ["cloves"],
+            "descriptor": [],
+            "preparation": ["minced"],
+            "prep-description": [],
+            "max": 4
+        },
+        {
+            "name": ["green bell pepper","bell pepper", "pepper"],
+            "quantity": [1],
+            "measurement": ["unit", "unit", "discrete"],
+            "descriptor": [],
+            "preparation": ["chopped"],
+            "prep-description": [],
+            "max": 4
+        },
+        {
+            "name": ["pepperoni sausage", "sausage"],
+            "quantity": [1],
+            "measurement": ["cup"],
+            "descriptor": ["pepperoni"],
+            "preparation": ["sliced"],
+            "prep-description": [],
+            "max": 4
+        },
+        {
+            "name": ["pizza sauce", "sauce"],
+            "quantity": [16],
+            "measurement": ["ounces"],
+            "descriptor": ["pizza"],
+            "preparation": [],
+            "prep-description": [],
+            "max": 3
+        },
+        {
+            "name": ["milk"],
+            "quantity": [4],
+            "measurement": ["tablespoons"],
+            "descriptor": [],
+            "preparation": [],
+            "prep-description": [],
+            "max": 3
+        },
+        {
+            "name": ["cheese", "mozzarella cheese"],
+            "quantity": [1],
+            "measurement": ["cup"],
+            "descriptor": ["mozzarella", "shredded"],
+            "preparation": ["shredded"],
+            "prep-description": [],
+            "max": 5
+        }
+    ],
+    "max": {
+        "ingredients": 37,
+        "primary cooking method": 1,
+        "cooking tools": 4,
+        "cooking methods": 7
+    },
+    "primary cooking method": "bake",
+    "cooking methods":["cook", "brown", "drain", "stir", "mix", "pour", "top"],
+    "cooking tools": ["oven", "skillet", "medium skillet", "casserole dish"]
+}

@@ -1,0 +1,121 @@
+{
+    "url": "http://allrecipes.com/Recipe/Meatball-Nirvana/",
+    "ingredients": [{
+            "name": ["beef", "ground beef"],
+            "quantity": [1],
+            "measurement": ["pound"],
+            "descriptor": ["extra lean", "ground"],
+            "preparation": ["ground"],
+            "prep-description": [],
+            "max": 5
+        },
+        {
+            "name": ["sea salt", "salt"],
+            "quantity": [0.5],
+            "measurement": ["tablespoons","tablespoon"],
+            "descriptor": ["sea"],
+            "preparation": [],
+            "prep-description": [],
+            "max": 4
+        },
+        {
+            "name": ["onion"],
+            "quantity": [1],
+            "measurement": ["unit", "units", "discrete"],
+            "descriptor": ["small"],
+            "preparation": ["diced"],
+            "prep-description": [],
+            "max": 5
+        },
+        {
+            "name": ["garlic salt", "salt"],
+            "quantity": [0.5],
+            "measurement": ["teaspoon"],
+            "descriptor": ["garlic"],
+            "preparation": [],
+            "prep-description": [],
+            "max": 4
+        },
+        {
+            "name": ["seasoning", "Italian seasoning"],
+            "quantity": [1.5],
+            "measurement": ["teaspoon", "teaspoons"],
+            "descriptor": ["Italian"],
+            "preparation": [],
+            "prep-description": [],
+            "max": 4
+        },
+        {
+            "name": ["oregano", "dried oregano"],
+            "quantity": [0.75],
+            "measurement": ["teaspoon","teaspoons"],
+            "descriptor": ["dried"],
+            "preparation": ["dried"],
+            "prep-description": [],
+            "max": 4
+        },
+        {
+            "name": ["flakes", "red pepper flakes"],
+            "quantity": [0.75],
+            "measurement": ["teaspoon", "teaspoons"],
+            "descriptor": ["red pepper","crushed"],
+            "preparation": ["crushed"],
+            "prep-description": [],
+            "max": 4
+        },
+        {
+            "name": ["hot pepper sauce", "pepper sauce", "sauce"],
+            "quantity": [1],
+            "measurement": ["dash"],
+            "descriptor": ["hot pepper","pepper", "hot"],
+            "preparation": [],
+            "prep-description": [],
+            "max": 4
+        },
+        {
+            "name": ["Worchestershire sauce", "sauce"],
+            "quantity": [1.5],
+            "measurement": ["tablespoon", "tablespoons"],
+            "descriptor": ["Worchestershire"],
+            "preparation": [],
+            "prep-description": [],
+            "max": 4
+        },
+        {
+            "name": ["milk", "skim milk"],
+            "quantity": [0.333],
+            "measurement": ["cup"],
+            "descriptor": ["skim"],
+            "preparation": [],
+            "prep-description": [],
+            "max": 4
+        },
+        {
+            "name": ["Parmesan cheese", "cheese"],
+            "quantity": [0.25],
+            "measurement": ["cup"],
+            "descriptor": ["Parmesan", "grated"],
+            "preparation": ["grated"],
+            "prep-description": [],
+            "max": 5
+        },
+        {
+            "name": ["bread crumbs"],
+            "quantity": [0.5],
+            "measurement": ["cup"],
+            "descriptor": ["seasoned"],
+            "preparation": [],
+            "prep-description": [],
+            "max": 4
+        }
+    ],
+    "max": {
+        "ingredients": 46,
+        "primary cooking method": 1,
+        "cooking tools": 3,
+        "cooking methods": 7
+    },
+    "primary cooking method": "bake",
+    "cooking methods":["place", "season", "mix", "add", "blended", "form", "preheat", "preheated"],
+    "cooking tools": ["oven","mixing bowl", "baking sheet"]
+}

@@ -1,0 +1,121 @@
+{
+    "url": "http://allrecipes.com/Recipe/Spaghetti-Carbonara-II/",
+    "ingredients": [{
+            "name": ["spaghetti"],
+            "quantity": [1],
+            "measurement": ["pound"],
+            "descriptor": [],
+            "preparation": [],
+            "prep-description": [],
+            "max": 3
+        },
+        {
+            "name": ["olive oil", "oil"],
+            "quantity": [1],
+            "measurement": ["tablespoon"],
+            "descriptor": ["olive"],
+            "preparation": [],
+            "prep-description": [],
+            "max": 3
+        },
+        {
+            "name": ["bacon"],
+            "quantity": [8],
+            "measurement": ["slices"],
+            "descriptor": [],
+            "preparation": ["diced"],
+            "prep-description": [],
+            "max": 4
+        },
+        {
+            "name": ["olive oil", "oil"],
+            "quantity": [1],
+            "measurement": ["tablespoon"],
+            "descriptor": ["olive"],
+            "preparation": [],
+            "prep-description": [],
+            "max": 3
+        },
+        {
+            "name": ["onion"],
+            "quantity": [1],
+            "measurement": ["unit", "unit", "discrete"],
+            "descriptor": [],
+            "preparation": ["chopped"],
+            "prep-description": [],
+            "max": 4
+        },
+        {
+            "name": ["garlic"],
+            "quantity": [1],
+            "measurement": ["clove"],
+            "descriptor": [],
+            "preparation": ["minced"],
+            "prep-description": [],
+            "max": 4
+        },
+        {
+            "name": ["white wine", "wine"],
+            "quantity": [0.25],
+            "measurement": ["cup"],
+            "descriptor": ["white", "dry"],
+            "preparation": [],
+            "prep-description": [],
+            "max": 4
+        },
+        {
+            "name": ["eggs"],
+            "quantity": [4],
+            "measurement": ["unit", "units", "discrete"],
+            "descriptor": [],
+            "preparation": [],
+            "prep-description": [],
+            "max": 3
+        },
+        {
+            "name": ["cheese", "Parmesan cheese"],
+            "quantity": [0.5],
+            "measurement": ["cup"],
+            "descriptor": ["Parmesan"],
+            "preparation": ["grated"],
+            "prep-description": [],
+            "max": 5
+        },
+        {
+            "name": ["salt and black pepper"],
+            "quantity": [1],
+            "measurement": ["pinch"],
+            "descriptor": ["to taste"],
+            "preparation": [],
+            "prep-description": [],
+            "max": 4
+        },
+        {
+            "name": ["parsley"],
+            "quantity": [2],
+            "measurement": ["tablespoons"],
+            "descriptor": ["fresh"],
+            "preparation": ["chopped"],
+            "prep-description": [],
+            "max": 5
+        },
+        {
+            "name": ["cheese", "Parmesan"],
+            "quantity": [2],
+            "measurement": ["tablespoons"],
+            "descriptor": ["Parmesan"],
+            "preparation": ["grated"],
+            "prep-description": [],
+            "max": 5
+        }
+    ],
+    "max": {
+        "ingredients": 47,
+        "primary cooking method": 1,
+        "cooking tools": 6,
+        "cooking methods": 11
+    },
+    "primary cooking method": "cook",
+    "cooking methods":["boiling", "drain", "toss", "set aside", "set", "crisp", "remove", "reserve", "add", "return", "heat", "sprinkled"],
+    "cooking tools": ["pot", "large pot", "skillet", "large skillet", "paper towels", "pan", "fork", "tongs" "large fork"]
+}

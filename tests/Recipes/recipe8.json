@@ -1,0 +1,85 @@
+{
+    "url": "http://allrecipes.com/Recipe/Grilled-Salmon-I/",
+    "ingredients": [{
+            "name": ["salmon", "salmon fillets"],
+            "quantity": [1.5],
+            "measurement": ["pounds"],
+            "descriptor": [],
+            "preparation": [],
+            "prep-description": [],
+            "max": 3
+        },
+        {
+            "name": ["lemon pepper", "pepper"],
+            "quantity": [0, 1, "none"],
+            "measurement": ["to taste"],
+            "descriptor": ["lemon"],
+            "preparation": [],
+            "prep-description": [],
+            "max": 3
+        },
+        {
+            "name": ["garlic powder"],
+            "quantity": [0, 1, "none"],
+            "measurement": ["to taste"],
+            "descriptor": [],
+            "preparation": [],
+            "prep-description": [],
+            "max": 3
+        },
+        {
+            "name": ["salt"],
+            "quantity": [0, 1, "none"],
+            "measurement": ["to taste"],
+            "descriptor": [],
+            "preparation": [],
+            "prep-description": [],
+            "max": 3
+        },
+        {
+            "name": ["soy sauce", "sauce"],
+            "quantity": [0.333],
+            "measurement": ["cup"],
+            "descriptor": ["soy"],
+            "preparation": [],
+            "prep-description": [],
+            "max": 4
+        },
+        {
+            "name": ["brown sugar"],
+            "quantity": [0.333],
+            "measurement": ["cup"],
+            "descriptor": [],
+            "preparation": [],
+            "prep-description": [],
+            "max": 3
+        },
+        {
+            "name": ["water"],
+            "quantity": [0.333],
+            "measurement": ["cup"],
+            "descriptor": [],
+            "preparation": [],
+            "prep-description": [],
+            "max": 3
+        },
+        {
+            "name": ["vegetable oil"],
+            "quantity": [0.25],
+            "measurement": ["cup"],
+            "descriptor": [],
+            "preparation": [],
+            "prep-description": [],
+            "max": 3
+        }
+    ],
+    "max": {
+        "ingredients": 25,
+        "primary cooking method": 1,
+        "cooking tools": 8,
+        "cooking methods": 10
+    },
+    "primary cooking method": "grill",
+    "cooking methods":["season", "stir", "place", "turn", "coat", "refrigerate", "preheat", "oil", "lightly oil", "discard", "cook"],
+    "cooking tools": ["grill", "bowl", "small bowl", "resealable plastic bag", "plastic bag", "bag", "fork", "refrigerator"]
+}

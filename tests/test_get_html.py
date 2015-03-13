@@ -1,5 +1,5 @@
 import unittest
-from app.app import get_html
+from app.parser import get_html
 
 
 class TestGetHtml(unittest.TestCase):

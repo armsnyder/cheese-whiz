@@ -1,0 +1,94 @@
+{
+    "url": "http://allrecipes.com/recipe/easy-meatloaf/",
+    "ingredients": [{
+            "name": ["beef", "ground beef"],
+            "quantity": [1.5],
+            "measurement": ["pounds"],
+            "descriptor": ["ground"],
+            "preparation": ["ground"],
+            "prep-description": [],
+            "max": 4
+        },
+        {
+            "name": ["egg"],
+            "quantity": [1],
+            "measurement": ["unit","units", "discrete"],
+            "descriptor": [],
+            "preparation": [],
+            "prep-description": [],
+            "max": 3
+        },
+        {
+            "name": ["onion"],
+            "quantity": [1],
+            "measurement": ["unit", "units", "discrete"],
+            "descriptor": [],
+            "preparation": ["chopped"],
+            "prep-description": [],
+            "max": 4
+        },
+        {
+            "name": ["milk"],
+            "quantity": [1],
+            "measurement": ["cup"],
+            "descriptor": [],
+            "preparation": [],
+            "prep-description": [],
+            "max": 3
+        },
+        {
+            "name": ["bread crumbs"],
+            "quantity": [1],
+            "measurement": ["cup"],
+            "descriptor": ["dried"],
+            "preparation": ["dried"],
+            "prep-description": [],
+            "max": 3
+        },
+        {
+            "name": ["salt and pepper", "salt", "pepper"],
+            "quantity": [0,1,"none"],
+            "measurement": ["to taste"],
+            "descriptor": [],
+            "preparation": [],
+            "prep-description": [],
+            "max": 3
+        },
+        {
+            "name": ["brown sugar"],
+            "quantity": [2],
+            "measurement": ["tablespoon", "tablespoons"],
+            "descriptor": [],
+            "preparation": [],
+            "prep-description": [],
+            "max": 3
+        },
+        {
+            "name": ["mustard"],
+            "quantity": [2],
+            "measurement": ["tablespoon", "tablespoons"],
+            "descriptor": ["prepared"],
+            "preparation": ["prepared"],
+            "prep-description": [],
+            "max": 4
+        },
+        {
+            "name": ["ketchup"],
+            "quantity": [0.333],
+            "measurement": ["cup"],
+            "descriptor": [],
+            "preparation": [],
+            "prep-description": [],
+            "max": 3
+        }
+    ],
+    "max": {
+        "ingredients": 30,
+        "primary cooking method": 1,
+        "cooking tools": 4,
+        "cooking methods": 6
+    },
+    "primary cooking method": "bake",
+    "cooking methods":["preheat", "combine", "season", "place", "form", "mix"],
+    "cooking tools": ["oven","loaf pan", "baking dish", "bowl"]
+}

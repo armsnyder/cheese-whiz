@@ -1,0 +1,112 @@
+{
+    "url": "http://allrecipes.com/Recipe/Ratatouille/",
+    "ingredients": [{
+            "name": ["olive oil", "oil"],
+            "quantity": [2],
+            "measurement": ["tablespoons"],
+            "descriptor": ["olive"],
+            "preparation": [],
+            "prep-description": [],
+            "max": 4
+        },
+        {
+            "name": ["garlic"],
+            "quantity": [3],
+            "measurement": ["cloves"],
+            "descriptor": [],
+            "preparation": ["minced"],
+            "prep-description": [],
+            "max": 4
+        },
+        {
+            "name": ["parsley"],
+            "quantity": [2],
+            "measurement": ["teaspoons"],
+            "descriptor": ["dried"],
+            "preparation": ["dried"],
+            "prep-description": [],
+            "max": 4
+        },
+        {
+            "name": ["eggplant"],
+            "quantity": [1],
+            "measurement": ["unit", "unit", "discrete"],
+            "descriptor": [],
+            "preparation": ["cut into 1/2 inch cubes"],
+            "prep-description": [],
+            "max": 4
+        },
+        {
+            "name": ["salt"],
+            "quantity": [0,1, "none"],
+            "measurement": ["to taste"],
+            "descriptor": [],
+            "preparation": [],
+            "prep-description": [],
+            "max": 3
+        },
+        {
+            "name": ["Parmesan cheese", "cheese"],
+            "quantity": [1],
+            "measurement": ["cup"],
+            "descriptor": ["Parmesan", "grated"],
+            "preparation": ["grated"],
+            "prep-description": [],
+            "max": 5
+        },
+        {
+            "name": ["zucchini"],
+            "quantity": [2],
+            "measurement": ["unit", "units", "discrete"],
+            "descriptor": [],
+            "preparation": ["sliced"],
+            "prep-description": [],
+            "max": 4
+        },
+        {
+            "name": ["onion"],
+            "quantity": [1],
+            "measurement": ["unit", "unit", "discrete"],
+            "descriptor": ["large"],
+            "preparation": ["sliced", "sliced into rings"],
+            "prep-description": [],
+            "max": 5
+        },
+        {
+            "name": ["mushrooms"],
+            "quantity": [2],
+            "measurement": ["cups"],
+            "descriptor": ["fresh", "sliced"],
+            "preparation": ["sliced"],
+            "prep-description": [],
+            "max": 5
+        },
+        {
+            "name": ["green bell pepper", "bell pepper", "pepper"],
+            "quantity": [1],
+            "measurement": ["unit", "units", "discrete"],
+            "descriptor": ["green bell", "bell"],
+            "preparation": ["sliced"],
+            "prep-description": [],
+            "max": 5
+        },
+        {
+            "name": ["tomatoes"],
+            "quantity": [2],
+            "measurement": ["unit", "units", "discrete"],
+            "descriptor": ["large"],
+            "preparation": ["chopped"],
+            "prep-description": [],
+            "max": 5
+        }
+    ],
+    "max": {
+        "ingredients": 48,
+        "primary cooking method": 1,
+        "cooking tools": 3,
+        "cooking methods": 12
+    },
+    "primary cooking method": "bake",
+    "cooking methods":["preheat", "coat", "heat", "stir", "mix", "season", "spread", "sprinkle", "salt", "lightly salt", "layer", "layering", "cover", "covering", "browned", "lightly browned"],
+    "cooking tools": ["oven", "casserole dish", "skillet", "medium skillet"]
+}
