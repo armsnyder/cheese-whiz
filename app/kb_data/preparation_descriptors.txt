@@ -1,9 +1,0 @@
-# Line-delimited list of preparation descriptors
-
-# Example:
-
-finely
-vigorously
-
-
-# Now you go:

@@ -1,0 +1,9 @@
+# Line-delimited list of cooking wares
+
+# Example:
+
+fry
+bake
+broil
+
+# Now you go:
