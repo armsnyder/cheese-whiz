@@ -17,10 +17,9 @@ class Recipe:
 
 class Ingredient:
 
-    def __init__(self, name='', quantity=0, measurement='', descriptor='', preparation='', prep_description='', available=True, food_type=None):
+    def __init__(self, name='', quantity=None, descriptor='', preparation='', prep_description='', available=True, food_type=None):
         self.name = name
-        self.quantity = quantity
-        self.measurement = measurement
+        self.quantity = quantity  # kb.Quantity object
         self.descriptor = descriptor
         self.preparation = preparation
         self.prep_description = prep_description
