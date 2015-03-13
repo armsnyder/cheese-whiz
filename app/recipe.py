@@ -27,8 +27,9 @@ class Ingredient:
         self.available = available
         self.food_type = food_type
 
-    def match_to_food(self):
+    def match_to_food(self, knowledge_base):
         """
         Set the food_type field based on information in the other fields
+        @:param knowledge_base: knowledge_base object to search in
         """
         self.food_type = None
