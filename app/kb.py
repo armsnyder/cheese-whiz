@@ -25,14 +25,14 @@ class KnowledgeBase:
         Loads parsed knowledge base data from modifiable data text files into global fields
         Typically called right after object initialization
         """
-        self.__load_foods()
+        self._load_foods()
         util.vprint('Loading cooking terminology')
-        self.__load_preparation_terms()
-        self.__load_preparation_descriptors()
-        self.__load_cooking_wares()
-        self.__load_measurements()
-        self.__load_common_substitutions()
-        self.__load_style_tags()
+        self._load_preparation_terms()
+        self._load_preparation_descriptors()
+        self._load_cooking_wares()
+        self._load_measurements()
+        self._load_common_substitutions()
+        self._load_style_tags()
         util.vprint('Finished loading:')
         util.vprint('\t%s foods' % str(len(self.foods)))
         util.vprint('\t%s preparation terms' % str(len(self.preparation_terms)))
@@ -41,9 +41,9 @@ class KnowledgeBase:
         util.vprint('\t%s measurements' % str(len(self.measurements)))
         util.vprint('\t%s common substitutions' % str(len(self.common_substitutions)))
 
-    def __load_foods(self):
+    def _load_foods(self):
         util.vprint('Loading nutrient data')
-        nutritional_data = self.__load_nutritional_data()
+        nutritional_data = self._load_nutritional_data()
         util.vprint('Loading food data')
         with open(util.relative_path('kb_data/sr27asc/FOOD_DES.txt')) as food_des_txt:
             food_des_lines = food_des_txt.readlines()
@@ -58,47 +58,48 @@ class KnowledgeBase:
                     new_food.nutritional_data = nutritional_data[new_food.food_id]
                 self.foods.append(new_food)
 
-    def __load_preparation_terms(self):
+    def _load_preparation_terms(self):
         self.preparation_terms = set(read_txt_lines_into_list('kb_data/preparation_terms.txt'))
 
-    def __load_preparation_descriptors(self):
+    def _load_preparation_descriptors(self):
         self.preparation_descriptors = set(read_txt_lines_into_list('kb_data/preparation_descriptors.txt'))
 
-    def __load_cooking_wares(self):
+    def _load_cooking_wares(self):
         self.cooking_wares = set(read_txt_lines_into_list('kb_data/cooking_wares.txt'))
 
-    def __load_measurements(self):
+    def _load_measurements(self):
         raw_measurement_list = read_txt_lines_into_list('kb_data/measurements.txt')
         for raw_measurement in raw_measurement_list:
             parsed_in_out = raw_measurement.split('=')
-            full_name = parsed_in_out.pop(0)
-            if  parsed_in_out:
+            full_name = parsed_in_out.pop(0).strip()
+            if parsed_in_out:
                 if not parsed_in_out[0]:
                     parsed_in_out = []
                 else:
                     parsed_in_out = parsed_in_out[0].split(',')
                 abbreviation_list = parsed_in_out
-            else: abbreviation_list = []
+            else:
+                abbreviation_list = []
             self.measurements[full_name] = abbreviation_list
 
-    def __load_common_substitutions(self):
+    def _load_common_substitutions(self):
         raw_sub_list = read_txt_lines_into_list('kb_data/common_substitutions.txt')
         for raw_sub in raw_sub_list:
             parsed_in_out = raw_sub.split('=')
             if len(parsed_in_out) != 2:
                 util.warning('Incorrect substitution string: ' + raw_sub)
                 continue
-            self.common_substitutions.append(self.__format_raw_sub(parsed_in_out[0], parsed_in_out[1]))
+            self.common_substitutions.append(self._format_raw_sub(parsed_in_out[0], parsed_in_out[1]))
 
     @staticmethod
-    def __format_raw_sub(raw_food_in, raw_food_out):
+    def _format_raw_sub(raw_food_in, raw_food_out):
         # TODO: Write this function. It should output a complete CommonSubstitution object.
         food_in = raw_food_in
         food_out = raw_food_out
         return CommonSubstitution(food_in, food_out)
 
     @staticmethod
-    def __load_nutritional_data():
+    def _load_nutritional_data():
         result = {}
         with open(util.relative_path('kb_data/sr27asc/NUT_DATA.txt')) as nut_data_txt:
             nut_data_lines = nut_data_txt.readlines()
@@ -114,7 +115,7 @@ class KnowledgeBase:
                 result[food_id][nut_id] = nut_data
         return result
 
-    def __load_style_tags(self):
+    def _load_style_tags(self):
         raw_style_list = read_txt_lines_into_list('kb_data/style_tags.txt')
         for raw_style in raw_style_list:
             parsed_in_out = raw_style.split('=')
@@ -136,9 +137,9 @@ class KnowledgeBase:
                         negative_styles.append(style[1:])
                         continue
                 util.warning('Incorrect style string: ' + raw_style)
-            self.__add_style_tags(ingredient_name, positive_styles, negative_styles)
+            self._add_style_tags(ingredient_name, positive_styles, negative_styles)
 
-    def __add_style_tags(self, ingredient_name, positive_styles, negative_styles):
+    def _add_style_tags(self, ingredient_name, positive_styles, negative_styles):
         matching_foods = self.lookup_ingredient(ingredient_name)
         for matching_food in matching_foods:
             matching_food.add_styles(positive_styles, negative_styles)
@@ -147,6 +148,28 @@ class KnowledgeBase:
         result = []
         # TODO: Return a list of Food objects in the knowledge base that match the ingredient_name
         return result
+
+    def interpret_quantity(self, string):
+        """
+        Generates a new Quantity object with amount and unit fields filled in from the input string
+        :param string: Of the form "x y" where x represents a quantity and y can be found in the measurements dict
+        :return: Quantity
+        """
+        q = Quantity()
+        s = string.split()
+        if len(s) != 2:
+            raise RuntimeError('Invalid quantity string: Must contain 1 amount/unit pair')
+        s = [t.strip() for t in s]
+        if "/" in s[0]:
+            q.amount = util.fraction_to_decimal(s[0])
+        else:
+            q.amount = s[0]
+        if s[1] in self.measurements:
+            q.unit = s[1]
+        if not q.unit:
+            print 'Could not identify unit of measurement; assuming \'unit(s)\''
+            q.unit = 'unit'
+        return q
 
 
 class Food:
