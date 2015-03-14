@@ -196,7 +196,7 @@ class TestFractionToDecimal(unittest.TestCase):
         self.assertEqual(util.fraction_to_decimal('1.5'), 1.5)
         self.assertEqual(util.fraction_to_decimal('1/2'), 0.5)
         self.assertEqual(util.fraction_to_decimal('a'), 1)
-        self.assertEqual(util.fraction_to_decimal('3 cups'), 1)        self.assertEqual(test_cheese_list, correct_cheese_list)
+        self.assertEqual(util.fraction_to_decimal('3 cups'), 1)
 
 
 class TestSubstitutionParser(unittest.TestCase):
@@ -205,9 +205,9 @@ class TestSubstitutionParser(unittest.TestCase):
         knowledge_base = kb.KnowledgeBase()
         knowledge_base._load_measurements()
         a = kb.KnowledgeBase._format_raw_sub(knowledge_base, '1 cup  Beer', '1 cup nonalcoholic beer OR 1 cup chicken broth')
-        i1 = recipe.Ingredient('beer', quantity=kb.Quantity('1', 'cup'))
-        i2 = recipe.Ingredient('nonalcoholic beer', quantity=kb.Quantity('1', 'cup'))
-        i3 = recipe.Ingredient('chicken broth', quantity=kb.Quantity('1', 'cup'))
+        i1 = recipe.Ingredient('beer', quantity=kb.Quantity(1, 'cup'))
+        i2 = recipe.Ingredient('nonalcoholic beer', quantity=kb.Quantity(1, 'cup'))
+        i3 = recipe.Ingredient('chicken broth', quantity=kb.Quantity(1, 'cup'))
         b = kb.CommonSubstitution(i1, [i2, i3])
         self.assertSameSubObj(a, b)
 
