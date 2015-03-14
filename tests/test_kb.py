@@ -223,7 +223,6 @@ class TestSubstitutionParser(unittest.TestCase):
                 self.assertEqual(so1.food_out[i].quantity.amount, so2.food_out[i].quantity.amount)
                 self.assertEqual(so1.food_out[i].quantity.unit, so2.food_out[i].quantity.unit)
                 self.assertEqual(so1.food_out[i].preparation, so2.food_out[i].preparation)
-        self.assertEqual(test_cheese_list, correct_cheese_list)
 
 
 class TestFractionToDecimal(unittest.TestCase):
