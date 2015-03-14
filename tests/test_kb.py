@@ -125,7 +125,7 @@ class TestQuantityInterpreter(unittest.TestCase):
         self.assertEqual(quantity.unit, 'cup')
 
         quantity = knowledge_base.interpret_quantity('27 salamanders')
-        self.assertEqual(quantity.amount, '27')
+        self.assertEqual(quantity.amount, 27)
         self.assertEqual(quantity.unit, 'unit')
 
 
@@ -187,6 +187,16 @@ class TestIngredientLookup(unittest.TestCase):
             ]
         test_cheese_list = [food.name for food in self.kb.lookup_food('lowfat cheese')]
         self.assertEqual(test_cheese_list, correct_cheese_list)
+
+
+class TestFractionToDecimal(unittest.TestCase):
+
+    def test_basic(self):
+        self.assertEqual(util.fraction_to_decimal('1'), 1)
+        self.assertEqual(util.fraction_to_decimal('1.5'), 1.5)
+        self.assertEqual(util.fraction_to_decimal('1/2'), 0.5)
+        self.assertEqual(util.fraction_to_decimal('a'), 1)
+        self.assertEqual(util.fraction_to_decimal('3 cups'), 1)        self.assertEqual(test_cheese_list, correct_cheese_list)
 
 
 class TestSubstitutionParser(unittest.TestCase):
