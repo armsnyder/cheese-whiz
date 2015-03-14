@@ -57,5 +57,14 @@ def fraction_to_decimal(string):
     :param string: Fraction string of the form "a/b"
     :return: Float
     """
-    s = string.split("/")
-    return float(s[0])/float(s[1])
+    try:
+        if '/' in string:
+            num_dom = string.split("/")
+            return float(num_dom[0])/float(num_dom[1])
+        elif '.' in string:
+            return float(string)
+        else:
+            return int(string)
+    except ValueError:
+        warning('Could not convert quantity to decimal: '+string+', assuming 1')
+        return 1
