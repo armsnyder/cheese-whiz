@@ -117,5 +117,5 @@
     },
     "primary cooking method": "cook",
     "cooking methods":["boiling", "drain", "toss", "set aside", "set", "crisp", "remove", "reserve", "add", "return", "heat", "sprinkled"],
-    "cooking tools": ["pot", "large pot", "skillet", "large skillet", "paper towels", "pan", "fork", "tongs" "large fork"]
+    "cooking tools": ["pot", "large pot", "skillet", "large skillet", "paper towels", "pan", "fork", "tongs", "large fork"]
 }
