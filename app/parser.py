@@ -88,3 +88,12 @@ def get_html(url):
     except urllib2.URLError:
         util.warning('Invalid URL request')
         return None
+
+
+def format_for_autograder(url):
+    """
+    Formats our recipe representation as a dictionary to be read by autograder
+    :param url: Recipe url
+    :return: JSON for autograder
+    """
+    pass

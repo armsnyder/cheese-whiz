@@ -3,6 +3,7 @@ import os
 
 import app.kb as kb
 import app.util as util
+import app.recipe as recipe
 
 __author__ = 'flame'
 
@@ -124,7 +125,7 @@ class TestQuantityInterpreter(unittest.TestCase):
         self.assertEqual(quantity.unit, 'cup')
 
         quantity = knowledge_base.interpret_quantity('27 salamanders')
-        self.assertEqual(quantity.amount, '27')
+        self.assertEqual(quantity.amount, 27)
         self.assertEqual(quantity.unit, 'unit')
 
 
@@ -186,3 +187,39 @@ class TestIngredientLookup(unittest.TestCase):
             ]
         test_cheese_list = [food.name for food in self.kb.lookup_food('lowfat cheese')]
         self.assertEqual(test_cheese_list, correct_cheese_list)
+
+
+class TestFractionToDecimal(unittest.TestCase):
+
+    def test_basic(self):
+        self.assertEqual(util.fraction_to_decimal('1'), 1)
+        self.assertEqual(util.fraction_to_decimal('1.5'), 1.5)
+        self.assertEqual(util.fraction_to_decimal('1/2'), 0.5)
+        self.assertEqual(util.fraction_to_decimal('a'), 1)
+        self.assertEqual(util.fraction_to_decimal('3 cups'), 1)
+
+
+class TestSubstitutionParser(unittest.TestCase):
+
+    def test_substitutions(self):
+        knowledge_base = kb.KnowledgeBase()
+        knowledge_base._load_measurements()
+        a = kb.KnowledgeBase._format_raw_sub(knowledge_base, '1 cup  Beer', '1 cup nonalcoholic beer OR 1 cup chicken broth')
+        i1 = recipe.Ingredient('beer', quantity=kb.Quantity(1, 'cup'))
+        i2 = recipe.Ingredient('nonalcoholic beer', quantity=kb.Quantity(1, 'cup'))
+        i3 = recipe.Ingredient('chicken broth', quantity=kb.Quantity(1, 'cup'))
+        b = kb.CommonSubstitution(i1, [i2, i3])
+        self.assertSameSubObj(a, b)
+
+    def assertSameSubObj(self, so1, so2):
+        self.assertEqual(so1.food_in.name, so2.food_in.name)
+        self.assertEqual(so1.food_in.quantity.amount, so2.food_in.quantity.amount)
+        self.assertEqual(so1.food_in.quantity.unit, so2.food_in.quantity.unit)
+        self.assertEqual(so1.food_in.preparation, so2.food_in.preparation)
+
+        if len(so1.food_out) == len(so2.food_out):
+            for i in range(len(so1.food_out)):
+                self.assertEqual(so1.food_out[i].name, so2.food_out[i].name)
+                self.assertEqual(so1.food_out[i].quantity.amount, so2.food_out[i].quantity.amount)
+                self.assertEqual(so1.food_out[i].quantity.unit, so2.food_out[i].quantity.unit)
+                self.assertEqual(so1.food_out[i].preparation, so2.food_out[i].preparation)
