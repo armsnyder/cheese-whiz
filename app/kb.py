@@ -165,10 +165,7 @@ class KnowledgeBase:
         if len(s) != 2:
             raise RuntimeError('Invalid quantity string: Must contain 1 amount/unit pair')
         s = [t.strip() for t in s]
-        if "/" in s[0]:
-            q.amount = util.fraction_to_decimal(s[0])
-        else:
-            q.amount = s[0]
+        q.amount = util.fraction_to_decimal(s[0])
         if s[1] in self.measurements:
             q.unit = s[1]
         if not q.unit:

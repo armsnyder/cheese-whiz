@@ -1,9 +1,82 @@
-# Line-delimited list of cooking wares
+# Line-delimited list of cooking terms
 
-# Example:
 
+braise
+stew
+blanch
+simmer
+smother
+infuse
+coddle
+rotisserie
+sear
+smoke
+poach
+saute
+microwave
+steep
+broil
+marinate
+boil
+barbeque
+grill
+steam
+pressure cook
+baste
+basting
 fry
 bake
-broil
-
-# Now you go:
+roast
+batter
+beat
+bind
+blacken
+blend
+brown
+brush
+butterfly
+chiffonade
+chop
+coat
+combine
+core
+crimp
+cure
+deep-fry
+deglaze
+dice
+dot
+dredge
+drizzle
+dust
+fillet
+fold
+garnish
+glaze
+grate
+grease
+grind
+knead
+mash
+mince
+mix
+moisten
+panfry
+puree
+reduce
+sautee
+scald
+score
+season
+set
+shred
+sift
+skim
+stewing
+stir-fry
+thin
+toss
+water bath
+whip
+whisk
+zest
