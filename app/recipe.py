@@ -31,4 +31,15 @@ class Ingredient:
         Set the food_type field based on information in the other fields
         @:param knowledge_base: knowledge_base object to search in
         """
+
+        # TODO: Make more robust. This probably isn't going to work. Might only work for name and descriptor.
         self.food_type = None
+        food_options = knowledge_base.lookup_food(self.name)
+        for food in food_options:
+            # if the food name contains the given name, descriptor, prep, and prep_description
+            # set it as the food_type
+            if self.name in food.name.lower():
+                if self.descriptor in food.name.lower():
+                    if self.preparation in food.name.lower():
+                        if self.prep_description in food.name.lower():
+                            self.food_type = food
