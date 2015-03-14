@@ -182,10 +182,14 @@ class KnowledgeBase:
         :param string: Of the form "x y" where x represents a quantity and y can be found in the measurements dict
         :return: Quantity
         """
+        #TODO: use regex instead of split (#54)
         q = Quantity()
         s = string.split()
         if len(s) != 2:
             util.warning('Invalid quantity string: Must contain 1 amount/unit pair')
+            q.amount = '1'
+            q.unit = 'unit'
+            return q
         s = [t.strip() for t in s]
         q.amount = util.fraction_to_decimal(s[0])
         if s[1] in self.measurements:
