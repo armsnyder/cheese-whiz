@@ -92,12 +92,15 @@ class KnowledgeBase:
         :param raw_food_out: Arbitrary-length "OR"-delimited string of the same form
         :return: CommonSubstitution object holding appropriate ingredient objects
         """
+        # TODO: parse food name with function #26
         result = []
         buff = [raw_food_in] + raw_food_out.split('OR')
         buff = [r.strip() for r in buff]
-        print buff
         for food in buff:
             parse = regex.qi.match(food)
+            if not parse:
+                util.warning('Substitution formatter did not match proper ingredient format')
+                continue
             q = self.interpret_quantity(parse.group(1))
             p = ''
             toks = nltk.word_tokenize(parse.group(2))
@@ -106,7 +109,6 @@ class KnowledgeBase:
                     p = tok
                     toks.remove(tok)
             n = ' '.join(toks)
-            print 'foo:', parse.group(2), 'bar:', n
             result.append(recipe.Ingredient(name=n.lower(), quantity=q, preparation=p))
         return CommonSubstitution(result.pop(0), result)
 
@@ -180,10 +182,14 @@ class KnowledgeBase:
         :param string: Of the form "x y" where x represents a quantity and y can be found in the measurements dict
         :return: Quantity
         """
+        #TODO: use regex instead of split (#54)
         q = Quantity()
         s = string.split()
         if len(s) != 2:
-            raise RuntimeError('Invalid quantity string: Must contain 1 amount/unit pair')
+            util.warning('Invalid quantity string: Must contain 1 amount/unit pair')
+            q.amount = '1'
+            q.unit = 'unit'
+            return q
         s = [t.strip() for t in s]
         q.amount = util.fraction_to_decimal(s[0])
         if s[1] in self.measurements:
