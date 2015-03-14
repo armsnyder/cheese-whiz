@@ -21,4 +21,4 @@ __status__ = "Development"
 if len(sys.argv) > 1:
     app.app.main()
 else:
-    app.gui.GUI()
+    app.gui.main()
