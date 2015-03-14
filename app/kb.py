@@ -223,7 +223,6 @@ class CommonSubstitution:
     def __init__(self, food_in=None, food_out=None):
         self.food_in = food_in
         self.food_out = food_out
-        self
 
 
 class Quantity:
