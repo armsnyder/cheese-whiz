@@ -8,6 +8,8 @@ import nltk
 from enums import Nutrient
 from enums import FoodGroup
 import util
+import regex
+import recipe
 
 
 class KnowledgeBase:
@@ -83,12 +85,30 @@ class KnowledgeBase:
                 continue
             self.common_substitutions.append(self._format_raw_sub(parsed_in_out[0], parsed_in_out[1]))
 
-    @staticmethod
-    def _format_raw_sub(raw_food_in, raw_food_out):
-        # TODO: Write this function. It should output a complete CommonSubstitution object.
-        food_in = raw_food_in
-        food_out = raw_food_out
-        return CommonSubstitution(food_in, food_out)
+    def _format_raw_sub(self, raw_food_in, raw_food_out):
+        """
+        Creates CommonSubstitution object from substitutable ingredient strings
+        :param raw_food_in: String of the form "quantity measurement food"
+        :param raw_food_out: Arbitrary-length "OR"-delimited string of the same form
+        :return: CommonSubstitution object holding appropriate ingredient objects
+        """
+        result = []
+        buff = [raw_food_in] + raw_food_out.split('OR')
+        buff = [r.strip() for r in buff]
+        print buff
+        for food in buff:
+            parse = regex.qi.match(food)
+            q = self.interpret_quantity(parse.group(1))
+            p = ''
+            toks = nltk.word_tokenize(parse.group(2))
+            for tok in toks:
+                if regex.preparation.match(tok):
+                    p = tok
+                    toks.remove(tok)
+            n = ' '.join(toks)
+            print 'foo:', parse.group(2), 'bar:', n
+            result.append(recipe.Ingredient(name=n.lower(), quantity=q, preparation=p))
+        return CommonSubstitution(result.pop(0), result)
 
     @staticmethod
     def _load_nutritional_data():
