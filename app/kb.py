@@ -95,12 +95,12 @@ class KnowledgeBase:
                 util.warning('Incorrect substitution string: ' + raw_sub)
                 continue
             if parsed_in_out[0][-1] == '*':
-                self.common_substitutions.append(self._format_raw_sub(parsed_in_out[0][:-1], parsed_in_out[1]))
-                self.common_substitutions.append(self._format_raw_sub(parsed_in_out[1], parsed_in_out[0][:-1]))
+                self.common_substitutions.append(self._format_raw_sub(parsed_in_out[0][:-1], parsed_in_out[1], 'common'))
+                self.common_substitutions.append(self._format_raw_sub(parsed_in_out[1], parsed_in_out[0][:-1], 'common'))
             else:
-                self.common_substitutions.append(self._format_raw_sub(parsed_in_out[0], parsed_in_out[1]))
+                self.common_substitutions.append(self._format_raw_sub(parsed_in_out[0], parsed_in_out[1], 'common'))
 
-    def _format_raw_sub(self, raw_food_in, raw_food_out):
+    def _format_raw_sub(self, raw_food_in, raw_food_out, reason):
         """
         Creates CommonSubstitution object from substitutable ingredient strings
         :param raw_food_in: String of the form "quantity measurement food"
@@ -113,21 +113,24 @@ class KnowledgeBase:
         buff = [r.strip() for r in buff]
         for food in buff:
             parse = regex.qi.match(food)
-            if not parse:
-                util.warning('Substitution formatter did not match proper ingredient format')
-                # TODO: Assume 1
-                continue
-            q = self.interpret_quantity(parse.group(1))
-            p = ''
-            toks = nltk.word_tokenize(parse.group(2))
-            for tok in toks:
-                if regex.preparation.match(tok):
-                    p = tok
-                    toks.remove(tok)
+            if parse:
+                q = self.interpret_quantity(parse.group(1))
+                p = ''
+                toks = nltk.word_tokenize(parse.group(2))
+            else:
+                toks = nltk.word_tokenize(food)
+                for tok in toks:
+                    if regex.preparation.match(tok):
+                        p = tok
+                        toks.remove(tok)
+                    else:
+                        p = ''
+                q = Quantity(1, 'unit')
             n = ' '.join(toks)
+            #TODO: Zinger: solve tests
             result.append(recipe.Ingredient(name=n.lower(), quantity=q, preparation=p))
         if len(result) > 1:
-            return CommonSubstitution(result.pop(0), result)
+            return CommonSubstitution(result.pop(0), result, reason)
         else:
             return CommonSubstitution()
 
@@ -251,7 +254,7 @@ class KnowledgeBase:
         s = string.split()
         if len(s) != 2:
             util.warning('Invalid quantity string: Must contain 1 amount/unit pair')
-            q.amount = '1'
+            q.amount = 1
             q.unit = 'unit'
             return q
         s = [t.strip() for t in s]
@@ -290,9 +293,10 @@ class Food:
 
 
 class CommonSubstitution:
-    def __init__(self, food_in=None, food_out=None):
+    def __init__(self, food_in=None, food_out=None, reason=None):
         self.food_in = food_in
         self.food_out = food_out
+        self.reason = reason
 
 
 class Quantity:
