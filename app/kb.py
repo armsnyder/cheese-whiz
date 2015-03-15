@@ -46,6 +46,8 @@ class KnowledgeBase:
         util.vprint('\t%s Italian substitutions' % str(len(self.italian_style)))
         util.vprint('\t%s Mexican substitutions' % str(len(self.mexican_style)))
         util.vprint('\t%s South Asian substitutions' % str(len(self.south_asian_style)))
+        util.vprint('\t%s vegan substitutions' % str(len(self.vegan_substitutions)))
+        util.vprint('\t%s vegetarian substitutions' % str(len(self.vegetarian_substitutions)))
 
     def _load_foods(self):
         util.vprint('Loading nutrient data')
@@ -176,9 +178,15 @@ class KnowledgeBase:
             matching_food.add_styles(positive_styles, negative_styles)
 
     def _load_style_substitutions(self):
+        """
+        Loads Italian, Mexican, South Asian, vegan, AND vegetarian text files into fields
+        """
+        # TODO: I feel really bad about the use of copied code, so a helper function could be good to write sometime.
         italian_sub_list = read_txt_lines_into_list('kb_data/italian_style.txt')
         mexican_sub_list = read_txt_lines_into_list('kb_data/mexican_style.txt')
         south_asian_sub_list = read_txt_lines_into_list('kb_data/south_asian_style.txt')
+        vegan_sub_list = read_txt_lines_into_list('kb_data/mexican_style.txt')
+        vegetarian_sub_list = read_txt_lines_into_list('kb_data/mexican_style.txt')
         for raw_sub in italian_sub_list:
             parsed_in_out = [thing.strip() for thing in raw_sub.split('=')]
             if len(parsed_in_out) != 2:
@@ -197,6 +205,18 @@ class KnowledgeBase:
                 util.warning('Incorrect substitution string: ' + raw_sub)
                 continue
             self.south_asian_style.append(self._format_raw_sub(parsed_in_out[0], parsed_in_out[1]))
+        for raw_sub in vegan_sub_list:
+            parsed_in_out = [thing.strip() for thing in raw_sub.split('=')]
+            if len(parsed_in_out) != 2:
+                util.warning('Incorrect substitution string: ' + raw_sub)
+                continue
+            self.vegan_substitutions.append(self._format_raw_sub(parsed_in_out[0], parsed_in_out[1]))
+        for raw_sub in vegetarian_sub_list:
+            parsed_in_out = [thing.strip() for thing in raw_sub.split('=')]
+            if len(parsed_in_out) != 2:
+                util.warning('Incorrect substitution string: ' + raw_sub)
+                continue
+            self.vegetarian_substitutions.append(self._format_raw_sub(parsed_in_out[0], parsed_in_out[1]))
 
     def lookup_food(self, food_name):
         """
@@ -222,7 +242,7 @@ class KnowledgeBase:
         :param string: Of the form "x y" where x represents a quantity and y can be found in the measurements dict
         :return: Quantity
         """
-        #TODO: use regex instead of split (#54)
+        # TODO: use regex instead of split (#54)
         q = Quantity()
         s = string.split()
         if len(s) != 2:
