@@ -7,6 +7,7 @@ import platform
 import subprocess
 import threading
 import Queue
+import time
 
 import util
 import app
@@ -27,13 +28,12 @@ class GUI(ttk.Frame):
         self.pack(fill=Tkinter.BOTH, expand=True)
 
         # Loading initial widgets
-        self.url_state()
+        self.splash_state()
 
         # Formatting window
         self.style = ttk.Style()
         self.style.theme_use("default")
         self.raise_and_focus()
-        self.center_on_screen()
 
         # Knowledge base loading
         self.queue = Queue.Queue()
@@ -41,6 +41,7 @@ class GUI(ttk.Frame):
         self.recipe_url = None
         self.status_bar.set('Loading knowledge base in background...')
         threading.Thread(target=self.load_kb_for_gui).start()
+        threading.Thread(target=self.start_splash_timer, args=[3]).start()
         self.periodic_dequeue()
 
     def periodic_dequeue(self):
@@ -50,8 +51,10 @@ class GUI(ttk.Frame):
         while self.queue.qsize():
             try:
                 function = self.queue.get(0)
-                if self.current_window == 'load_kb':
-                    function()
+                if function == 1:
+                    self.url_state()
+                elif function == 2 and self.current_window == 'load_kb':
+                    self.display_recipe_state()
             except Queue.Empty:
                 pass
         self.parent.after(100, self.periodic_dequeue)
@@ -70,12 +73,32 @@ class GUI(ttk.Frame):
         """
         self.knowledge_base = app.load_knowledge_base()
         self.status_bar.set('Finished loading knowledge base')
-        self.queue.put(self.display_recipe_state)
+        self.queue.put(2)
+
+    def start_splash_timer(self, seconds):
+        """
+        Waits for a specified number of seconds. Meant to be run asynchronously.
+        """
+        time.sleep(seconds)
+        self.queue.put(1)
+
+    def splash_state(self):
+        """
+        Loads splash image
+        """
+        self.current_window = 'splash'
+        self.init_main_window()
+        splash_image_file = Tkinter.PhotoImage(file=util.relative_path('img/cheese_wiz_splash.gif'))
+        splash_image_widget = Tkinter.Label(self.main_window, image=splash_image_file)
+        splash_image_widget.photo = splash_image_file
+        splash_image_widget.pack()
+        self.center_on_screen()
 
     def url_state(self):
         """
         Loads the widgets for the "Enter URL" interface
         """
+        # self.parent.withdraw()
         self.current_window = 'url'
         self.init_main_window()
         self.main_window.columnconfigure(0, weight=1)
@@ -92,6 +115,10 @@ class GUI(ttk.Frame):
         ok_button.grid(row=1, column=2)
 
         url_text_box.focus()
+        self.parent.geometry('604x100')
+        # self.center_on_screen()
+        # self.parent.deiconify()
+        self.update_idletasks()
 
     def load_kb_state(self, url):
         """
