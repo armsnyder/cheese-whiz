@@ -37,11 +37,17 @@ class KnowledgeBase:
         self._load_measurements()
         self._load_common_substitutions()
         self._load_style_tags()
+        self._load_style_substitutions()
         util.vprint('Finished loading:')
         util.vprint('\t%s foods' % str(len(self.foods)))
         util.vprint('\t%s cooking wares' % str(len(self.cooking_wares)))
         util.vprint('\t%s measurements' % str(len(self.measurements)))
         util.vprint('\t%s common substitutions' % str(len(self.common_substitutions)))
+        util.vprint('\t%s Italian substitutions' % str(len(self.italian_style)))
+        util.vprint('\t%s Mexican substitutions' % str(len(self.mexican_style)))
+        util.vprint('\t%s South Asian substitutions' % str(len(self.south_asian_style)))
+        util.vprint('\t%s vegan substitutions' % str(len(self.vegan_substitutions)))
+        util.vprint('\t%s vegetarian substitutions' % str(len(self.vegetarian_substitutions)))
 
     def _load_foods(self):
         util.vprint('Loading nutrient data')
@@ -88,9 +94,13 @@ class KnowledgeBase:
             if len(parsed_in_out) != 2:
                 util.warning('Incorrect substitution string: ' + raw_sub)
                 continue
-            self.common_substitutions.append(self._format_raw_sub(parsed_in_out[0], parsed_in_out[1]))
+            if parsed_in_out[0][-1] == '*':
+                self.common_substitutions.append(self._format_raw_sub(parsed_in_out[0][:-1], parsed_in_out[1], 'common'))
+                self.common_substitutions.append(self._format_raw_sub(parsed_in_out[1], parsed_in_out[0][:-1], 'common'))
+            else:
+                self.common_substitutions.append(self._format_raw_sub(parsed_in_out[0], parsed_in_out[1], 'common'))
 
-    def _format_raw_sub(self, raw_food_in, raw_food_out):
+    def _format_raw_sub(self, raw_food_in, raw_food_out, reason):
         """
         Creates CommonSubstitution object from substitutable ingredient strings
         :param raw_food_in: String of the form "quantity measurement food"
@@ -103,19 +113,24 @@ class KnowledgeBase:
         buff = [r.strip() for r in buff]
         for food in buff:
             parse = regex.qi.match(food)
-            if not parse:
-                util.warning('Substitution formatter did not match proper ingredient format')
-                continue
-            q = self.interpret_quantity(parse.group(1))
             p = ''
-            toks = nltk.word_tokenize(parse.group(2))
-            for tok in toks:
-                if regex.preparation.match(tok):
-                    p = tok
-                    toks.remove(tok)
+            if parse:
+                q = self.interpret_quantity(parse.group(1))
+                toks = nltk.word_tokenize(parse.group(2))
+            else:
+                toks = nltk.word_tokenize(food)
+                for tok in toks:
+                    if regex.preparation.match(tok):
+                        p = tok
+                        toks.remove(tok)
+                q = Quantity(1, 'unit')
             n = ' '.join(toks)
+            # TODO: Zinger: solve tests
             result.append(recipe.Ingredient(name=n.lower(), quantity=q, preparation=p))
-        return CommonSubstitution(result.pop(0), result)
+        if len(result) > 1:
+            return CommonSubstitution(result.pop(0), result, reason)
+        else:
+            return CommonSubstitution()
 
     @staticmethod
     def _load_nutritional_data():
@@ -135,6 +150,10 @@ class KnowledgeBase:
         return result
 
     def _load_style_tags(self):
+        """
+        This method is outdated, as we are no longer using style tags in this way.
+        But...maybe it'll be useful someday.
+        """
         raw_style_list = read_txt_lines_into_list('kb_data/style_tags.txt')
         for raw_style in raw_style_list:
             parsed_in_out = raw_style.split('=')
@@ -163,6 +182,47 @@ class KnowledgeBase:
         for matching_food in matching_foods:
             matching_food.add_styles(positive_styles, negative_styles)
 
+    def _load_style_substitutions(self):
+        """
+        Loads Italian, Mexican, South Asian, vegan, AND vegetarian text files into fields
+        """
+        # TODO: I feel really bad about the use of copied code, so a helper function could be good to write sometime.
+        italian_sub_list = read_txt_lines_into_list('kb_data/italian_style.txt')
+        mexican_sub_list = read_txt_lines_into_list('kb_data/mexican_style.txt')
+        south_asian_sub_list = read_txt_lines_into_list('kb_data/south_asian_style.txt')
+        vegan_sub_list = read_txt_lines_into_list('kb_data/vegan_substitutions.txt')
+        vegetarian_sub_list = read_txt_lines_into_list('kb_data/vegetarian_substitutions.txt')
+        for raw_sub in italian_sub_list:
+            parsed_in_out = [thing.strip() for thing in raw_sub.split('=')]
+            if len(parsed_in_out) != 2:
+                util.warning('Incorrect substitution string: ' + raw_sub)
+                continue
+            self.italian_style.append(self._format_raw_sub(parsed_in_out[0], parsed_in_out[1], 'italian'))
+        for raw_sub in mexican_sub_list:
+            parsed_in_out = [thing.strip() for thing in raw_sub.split('=')]
+            if len(parsed_in_out) != 2:
+                util.warning('Incorrect substitution string: ' + raw_sub)
+                continue
+            self.mexican_style.append(self._format_raw_sub(parsed_in_out[0], parsed_in_out[1], 'mexican'))
+        for raw_sub in south_asian_sub_list:
+            parsed_in_out = [thing.strip() for thing in raw_sub.split('=')]
+            if len(parsed_in_out) != 2:
+                util.warning('Incorrect substitution string: ' + raw_sub)
+                continue
+            self.south_asian_style.append(self._format_raw_sub(parsed_in_out[0], parsed_in_out[1], 'south_asian'))
+        for raw_sub in vegan_sub_list:
+            parsed_in_out = [thing.strip() for thing in raw_sub.split('=')]
+            if len(parsed_in_out) != 2:
+                util.warning('Incorrect substitution string: ' + raw_sub)
+                continue
+            self.vegan_substitutions.append(self._format_raw_sub(parsed_in_out[0], parsed_in_out[1], 'vegan'))
+        for raw_sub in vegetarian_sub_list:
+            parsed_in_out = [thing.strip() for thing in raw_sub.split('=')]
+            if len(parsed_in_out) != 2:
+                util.warning('Incorrect substitution string: ' + raw_sub)
+                continue
+            self.vegetarian_substitutions.append(self._format_raw_sub(parsed_in_out[0], parsed_in_out[1], 'vegetarian'))
+
     def lookup_food(self, food_name):
         """
         Gets a list of foods that match a search string
@@ -187,12 +247,12 @@ class KnowledgeBase:
         :param string: Of the form "x y" where x represents a quantity and y can be found in the measurements dict
         :return: Quantity
         """
-        #TODO: use regex instead of split (#54)
+        # TODO: use regex instead of split (#54)
         q = Quantity()
         s = string.split()
         if len(s) != 2:
             util.warning('Invalid quantity string: Must contain 1 amount/unit pair')
-            q.amount = '1'
+            q.amount = 1
             q.unit = 'unit'
             return q
         s = [t.strip() for t in s]
@@ -231,9 +291,10 @@ class Food:
 
 
 class CommonSubstitution:
-    def __init__(self, food_in=None, food_out=None):
+    def __init__(self, food_in=None, food_out=None, reason=None):
         self.food_in = food_in
         self.food_out = food_out
+        self.reason = reason
 
 
 class Quantity:
