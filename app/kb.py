@@ -113,9 +113,9 @@ class KnowledgeBase:
         buff = [r.strip() for r in buff]
         for food in buff:
             parse = regex.qi.match(food)
+            p = ''
             if parse:
                 q = self.interpret_quantity(parse.group(1))
-                p = ''
                 toks = nltk.word_tokenize(parse.group(2))
             else:
                 toks = nltk.word_tokenize(food)
@@ -123,8 +123,6 @@ class KnowledgeBase:
                     if regex.preparation.match(tok):
                         p = tok
                         toks.remove(tok)
-                    else:
-                        p = ''
                 q = Quantity(1, 'unit')
             n = ' '.join(toks)
             #TODO: Zinger: solve tests
@@ -199,31 +197,31 @@ class KnowledgeBase:
             if len(parsed_in_out) != 2:
                 util.warning('Incorrect substitution string: ' + raw_sub)
                 continue
-            self.italian_style.append(self._format_raw_sub(parsed_in_out[0], parsed_in_out[1]))
+            self.italian_style.append(self._format_raw_sub(parsed_in_out[0], parsed_in_out[1], 'italian'))
         for raw_sub in mexican_sub_list:
             parsed_in_out = [thing.strip() for thing in raw_sub.split('=')]
             if len(parsed_in_out) != 2:
                 util.warning('Incorrect substitution string: ' + raw_sub)
                 continue
-            self.mexican_style.append(self._format_raw_sub(parsed_in_out[0], parsed_in_out[1]))
+            self.mexican_style.append(self._format_raw_sub(parsed_in_out[0], parsed_in_out[1], 'mexican'))
         for raw_sub in south_asian_sub_list:
             parsed_in_out = [thing.strip() for thing in raw_sub.split('=')]
             if len(parsed_in_out) != 2:
                 util.warning('Incorrect substitution string: ' + raw_sub)
                 continue
-            self.south_asian_style.append(self._format_raw_sub(parsed_in_out[0], parsed_in_out[1]))
+            self.south_asian_style.append(self._format_raw_sub(parsed_in_out[0], parsed_in_out[1], 'south_asian'))
         for raw_sub in vegan_sub_list:
             parsed_in_out = [thing.strip() for thing in raw_sub.split('=')]
             if len(parsed_in_out) != 2:
                 util.warning('Incorrect substitution string: ' + raw_sub)
                 continue
-            self.vegan_substitutions.append(self._format_raw_sub(parsed_in_out[0], parsed_in_out[1]))
+            self.vegan_substitutions.append(self._format_raw_sub(parsed_in_out[0], parsed_in_out[1], 'vegan'))
         for raw_sub in vegetarian_sub_list:
             parsed_in_out = [thing.strip() for thing in raw_sub.split('=')]
             if len(parsed_in_out) != 2:
                 util.warning('Incorrect substitution string: ' + raw_sub)
                 continue
-            self.vegetarian_substitutions.append(self._format_raw_sub(parsed_in_out[0], parsed_in_out[1]))
+            self.vegetarian_substitutions.append(self._format_raw_sub(parsed_in_out[0], parsed_in_out[1], 'vegetarian'))
 
     def lookup_food(self, food_name):
         """
