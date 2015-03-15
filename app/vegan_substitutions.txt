@@ -1,0 +1,21 @@
+# Meat - Use vegetarian_substitutions.txt
+
+# Dairy
+
+milk = soy milk OR rice milk OR oat milk OR nut milk OR almond milk
+
+buttermilk =
+
+cheese
+
+yogurt
+
+butter
+
+# Eggs
+
+scrambled eggs = tofu scramble
+
+mayonnaise = hummus
+
+# Honey

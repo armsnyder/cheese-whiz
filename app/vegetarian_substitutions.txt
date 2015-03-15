@@ -1,0 +1,32 @@
+# Substitutions for meats. Use in to_vegan substitutions as well.
+# Add flavoring information? Other nutrients? (e.g. fish oils)
+
+#Chicken
+chicken = tofu OR seitan
+
+#Turkey
+
+#Pork
+pork = tofu OR textured soy protein OR tempeh OR beans
+
+#Fish
+fish = tofu OR mashed chickpeas
+tuna = chickpeas
+
+#Beef
+
+#Steak
+
+#Ground Meat
+
+#Meat Patties = veggie patties
+
+#Sausage
+
+#Bacon
+
+#Stocks
+beef stock = vegetable stock OR vegetable broth
+chicken stock = vegetable stock OR vegetable broth
+
+#Gelatin
