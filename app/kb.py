@@ -125,7 +125,7 @@ class KnowledgeBase:
                         toks.remove(tok)
                 q = Quantity(1, 'unit')
             n = ' '.join(toks)
-            #TODO: Zinger: solve tests
+            # TODO: Zinger: solve tests
             result.append(recipe.Ingredient(name=n.lower(), quantity=q, preparation=p))
         if len(result) > 1:
             return CommonSubstitution(result.pop(0), result, reason)
@@ -190,8 +190,8 @@ class KnowledgeBase:
         italian_sub_list = read_txt_lines_into_list('kb_data/italian_style.txt')
         mexican_sub_list = read_txt_lines_into_list('kb_data/mexican_style.txt')
         south_asian_sub_list = read_txt_lines_into_list('kb_data/south_asian_style.txt')
-        vegan_sub_list = read_txt_lines_into_list('kb_data/mexican_style.txt')
-        vegetarian_sub_list = read_txt_lines_into_list('kb_data/mexican_style.txt')
+        vegan_sub_list = read_txt_lines_into_list('kb_data/vegan_substitutions.txt')
+        vegetarian_sub_list = read_txt_lines_into_list('kb_data/vegetarian_substitutions.txt')
         for raw_sub in italian_sub_list:
             parsed_in_out = [thing.strip() for thing in raw_sub.split('=')]
             if len(parsed_in_out) != 2:
