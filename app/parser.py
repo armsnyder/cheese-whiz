@@ -1,8 +1,10 @@
 from bs4 import BeautifulSoup
 import urllib2
+import nltk
 
 import util
-import nltk
+import recipe
+
 
 
 def parse_html(html):
@@ -88,6 +90,19 @@ def get_html(url):
     except urllib2.URLError:
         util.warning('Invalid URL request')
         return None
+
+
+def make_recipe(title, ingredients, steps):
+    """
+    STUB DESCRIPTION:
+    Write the make_recipe function in app.parser that will take as input the output of parse_html, and output a
+    Recipe object. Use the various ingredient matching functions in kb.py to achieve this.
+    :param title: title of recipe
+    :param ingredients: list of ingredients (strings)
+    :param steps: list of steps (strings)
+    :return: Recipe
+    """
+    return recipe.Recipe()  # Stub
 
 
 def format_for_autograder(url):
