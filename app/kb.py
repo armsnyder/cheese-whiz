@@ -115,6 +115,7 @@ class KnowledgeBase:
             parse = regex.qi.match(food)
             if not parse:
                 util.warning('Substitution formatter did not match proper ingredient format')
+                # TODO: Assume 1
                 continue
             q = self.interpret_quantity(parse.group(1))
             p = ''
@@ -125,7 +126,10 @@ class KnowledgeBase:
                     toks.remove(tok)
             n = ' '.join(toks)
             result.append(recipe.Ingredient(name=n.lower(), quantity=q, preparation=p))
-        return CommonSubstitution(result.pop(0), result)
+        if len(result) > 1:
+            return CommonSubstitution(result.pop(0), result)
+        else:
+            return CommonSubstitution()
 
     @staticmethod
     def _load_nutritional_data():
