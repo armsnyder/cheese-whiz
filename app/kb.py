@@ -37,11 +37,15 @@ class KnowledgeBase:
         self._load_measurements()
         self._load_common_substitutions()
         self._load_style_tags()
+        self._load_style_substitutions()
         util.vprint('Finished loading:')
         util.vprint('\t%s foods' % str(len(self.foods)))
         util.vprint('\t%s cooking wares' % str(len(self.cooking_wares)))
         util.vprint('\t%s measurements' % str(len(self.measurements)))
         util.vprint('\t%s common substitutions' % str(len(self.common_substitutions)))
+        util.vprint('\t%s Italian substitutions' % str(len(self.italian_style)))
+        util.vprint('\t%s Mexican substitutions' % str(len(self.mexican_style)))
+        util.vprint('\t%s South Asian substitutions' % str(len(self.south_asian_style)))
 
     def _load_foods(self):
         util.vprint('Loading nutrient data')
@@ -139,6 +143,10 @@ class KnowledgeBase:
         return result
 
     def _load_style_tags(self):
+        """
+        This method is outdated, as we are no longer using style tags in this way.
+        But...maybe it'll be useful someday.
+        """
         raw_style_list = read_txt_lines_into_list('kb_data/style_tags.txt')
         for raw_style in raw_style_list:
             parsed_in_out = raw_style.split('=')
@@ -166,6 +174,29 @@ class KnowledgeBase:
         matching_foods = self.lookup_food(ingredient_name)
         for matching_food in matching_foods:
             matching_food.add_styles(positive_styles, negative_styles)
+
+    def _load_style_substitutions(self):
+        italian_sub_list = read_txt_lines_into_list('kb_data/italian_style.txt')
+        mexican_sub_list = read_txt_lines_into_list('kb_data/mexican_style.txt')
+        south_asian_sub_list = read_txt_lines_into_list('kb_data/south_asian_style.txt')
+        for raw_sub in italian_sub_list:
+            parsed_in_out = [thing.strip() for thing in raw_sub.split('=')]
+            if len(parsed_in_out) != 2:
+                util.warning('Incorrect substitution string: ' + raw_sub)
+                continue
+            self.italian_style.append(self._format_raw_sub(parsed_in_out[0], parsed_in_out[1]))
+        for raw_sub in mexican_sub_list:
+            parsed_in_out = [thing.strip() for thing in raw_sub.split('=')]
+            if len(parsed_in_out) != 2:
+                util.warning('Incorrect substitution string: ' + raw_sub)
+                continue
+            self.mexican_style.append(self._format_raw_sub(parsed_in_out[0], parsed_in_out[1]))
+        for raw_sub in south_asian_sub_list:
+            parsed_in_out = [thing.strip() for thing in raw_sub.split('=')]
+            if len(parsed_in_out) != 2:
+                util.warning('Incorrect substitution string: ' + raw_sub)
+                continue
+            self.south_asian_style.append(self._format_raw_sub(parsed_in_out[0], parsed_in_out[1]))
 
     def lookup_food(self, food_name):
         """
