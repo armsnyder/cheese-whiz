@@ -88,7 +88,11 @@ class KnowledgeBase:
             if len(parsed_in_out) != 2:
                 util.warning('Incorrect substitution string: ' + raw_sub)
                 continue
-            self.common_substitutions.append(self._format_raw_sub(parsed_in_out[0], parsed_in_out[1]))
+            if parsed_in_out[0][-1] == '*':
+                self.common_substitutions.append(self._format_raw_sub(parsed_in_out[0][:-1], parsed_in_out[1]))
+                self.common_substitutions.append(self._format_raw_sub(parsed_in_out[1], parsed_in_out[0][:-1]))
+            else:
+                self.common_substitutions.append(self._format_raw_sub(parsed_in_out[0], parsed_in_out[1]))
 
     def _format_raw_sub(self, raw_food_in, raw_food_out):
         """
