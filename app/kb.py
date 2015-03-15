@@ -19,6 +19,11 @@ class KnowledgeBase:
         self.cooking_wares = set()
         self.measurements = {}
         self.common_substitutions = []
+        self.italian_style = []
+        self.mexican_style = []
+        self.south_asian_style = []
+        self.vegetarian_substitutions = []
+        self.vegan_substitutions = []
 
     def load(self):
         """

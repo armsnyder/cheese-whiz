@@ -231,5 +231,7 @@ class TestFractionToDecimal(unittest.TestCase):
         self.assertEqual(util.fraction_to_decimal('1'), 1)
         self.assertEqual(util.fraction_to_decimal('1.5'), 1.5)
         self.assertEqual(util.fraction_to_decimal('1/2'), 0.5)
+        self.assertEqual(util.fraction_to_decimal('1 1/2'), 1.5)
         self.assertEqual(util.fraction_to_decimal('a'), 1)
-        self.assertEqual(util.fraction_to_decimal('3 cups'), 1)
+        self.assertEqual(util.fraction_to_decimal('3 cups'), 3)
+        self.assertEqual(util.fraction_to_decimal('3 3.4 3/4 cups'), 7.15)
