@@ -78,7 +78,9 @@
 1 tablespoon Orange juice = 1 tablespoon other citrus juice
 1 tablespoon Orange zest = 1/2 teaspoon orange extract OR 1 teaspoon lemon juice
 1/2 cup, grated Parmesan cheese  = 1/2 cup grated Asiago cheese OR 1/2 cup grated Romano cheese
-1 tablespoon chopped fresh Parsley *= 1 tablespoon chopped fresh chervil OR 1 teaspoon dried parsley
+1 tablespoon chopped fresh Parsley *= 1 tablespoon chopped fresh chervil
+1 tablespoon chopped fresh Parsley *= 1 teaspoon dried parsley
+1 tablespoon chopped fresh chervil *= 1 teaspoon dried parsley
 1 ounces pasta *= 2 ounces egg noodles
 1 ounce Pepperoni *= 1 ounce salami
 1 ounce prosciutto = 1 ounce bacon OR 1 ounce pancetta
