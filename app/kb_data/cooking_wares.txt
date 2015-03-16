@@ -10,8 +10,8 @@
 
 # Appliances
 microwave
-oven
 dutch oven
+oven
 stove
 grill
 pressure cooker
@@ -57,12 +57,17 @@ rolling pin
 zester
 
 # Pots and Pans
+large pot
+medium pot
+small pot
 pot
 pan
 colander
 saucepan
 wok
 tube pan
+13x9 pan
+9x13 pan
 cake pan
 loaf pan
 cookie sheet
@@ -73,6 +78,7 @@ kettle
 bread pan
 roasting pan
 roaster
+9x13 inch baking dish
 baking dish
 baking sheet
 
@@ -86,3 +92,4 @@ paper towels
 bag
 plastic bag
 casserole dish
+
