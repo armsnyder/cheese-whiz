@@ -2,20 +2,27 @@
 
 # Dairy
 
-milk = soy milk OR rice milk OR oat milk OR nut milk OR almond milk
+milk = soy milk OR rice milk OR oat milk OR almond milk OR nut milk
 
-buttermilk =
+cream = coconut milk
 
-cheese
+1 cup buttermilk = 1 cup soy milk and 2 teaspoon lemon juice
 
-yogurt
+cheese = vegan cheese OR crumbled tofu
 
-butter
+yogurt = soy yogurt OR cultured soy OR coconut yogurt
+
+butter = vegan margarine OR vegetable oil OR canola oil OR flax oil OR nut butter
 
 # Eggs
+# for baking
+1 egg = 1.5 teaspoons vegan egg substitute and 2 tablespoons warm water OR 1 tablespoon ground flax seeds and three tablespoons of water OR 1/3 cup applesauce
+# for binding
+1 egg = 1/4 cup blended tofu OR 1/2 cup mashed potatoes OR 1/2 cup blended bread crumbs
 
 scrambled eggs = tofu scramble
 
 mayonnaise = hummus
 
 # Honey
+honey = maple syrup OR agave syrup
