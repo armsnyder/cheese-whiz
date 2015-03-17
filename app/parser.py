@@ -18,7 +18,10 @@ def parse_html(html):
     ingredients = soup.find_all('p', {'itemprop': 'ingredients'})
     tupes = []
     for i in ingredients:
-        a = i.find('span', {'class': 'ingredient-amount'}).get_text()
+        if i.find('span', {'class': 'ingredient-amount'}):
+            a = i.find('span', {'class': 'ingredient-amount'}).get_text()
+        else:
+            a = 'NO_UNIT'
         n = i.find('span', {'class': 'ingredient-name'}).get_text()
         tupes.append((n, a))
 
@@ -29,10 +32,10 @@ def parse_html(html):
     return title, tupes, steps
 
 
-def parse_ingredient(tupes):
+def parse_ingredient(ingredient):
     """
     Takes ingredient-name string from parse_html, separates ingredient into name, descriptor, preparation, and prep descriptor
-    :param tupes: the ingredient-name part of tupes
+    :param ingredients: list of string tuples ("ingredient-name", "ingredient-amount")
     :return: ingredient name, list of descriptors, list of preparations, list of prep descriptors
     """
     # TODO: consider words with 2 POS tags (remove from consideration after being added?)
@@ -41,14 +44,12 @@ def parse_ingredient(tupes):
     # TODO: Change from lists to a single string object
     # Look for commas, ands, other syntax patterns
 
-    ingredients = tupes
-
     name = []
     descriptor = []
     preparation = []
     prep_description = []
 
-    for i in ingredients:
+    for i in ingredient:
         tokens = nltk.word_tokenize(i[0])
         pos_tagged_tokens = nltk.pos_tag(tokens)
         for word, tag in pos_tagged_tokens:
