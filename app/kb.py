@@ -4,10 +4,12 @@
 
 from compiler.ast import flatten
 import nltk
+import re
 
 from enums import Nutrient
 from enums import FoodGroup
 import util
+import parser
 import regex
 import recipe
 
@@ -21,7 +23,7 @@ class KnowledgeBase:
         self.common_substitutions = []
         self.italian_style = []
         self.mexican_style = []
-        self.south_asian_style = []
+        self.east_asian_style = []
         self.vegetarian_substitutions = []
         self.vegan_substitutions = []
 
@@ -45,7 +47,7 @@ class KnowledgeBase:
         util.vprint('\t%s common substitutions' % str(len(self.common_substitutions)))
         util.vprint('\t%s Italian substitutions' % str(len(self.italian_style)))
         util.vprint('\t%s Mexican substitutions' % str(len(self.mexican_style)))
-        util.vprint('\t%s South Asian substitutions' % str(len(self.south_asian_style)))
+        util.vprint('\t%s East Asian substitutions' % str(len(self.east_asian_style)))
         util.vprint('\t%s vegan substitutions' % str(len(self.vegan_substitutions)))
         util.vprint('\t%s vegetarian substitutions' % str(len(self.vegetarian_substitutions)))
 
@@ -57,7 +59,7 @@ class KnowledgeBase:
             food_des_lines = food_des_txt.readlines()
             for food_des_line in food_des_lines:
                 parsed_line = parse_usda_line(food_des_line)
-                new_food = Food(parsed_line[0], parsed_line[1], parsed_line[2])
+                new_food = Food(parsed_line[0], parsed_line[1], parsed_line[2], common_name=parsed_line[4])
                 if new_food.food_group in food_group_blacklist:
                     continue
                 if new_food.food_id in food_id_blacklist:
@@ -115,26 +117,49 @@ class KnowledgeBase:
         :param raw_food_out: Arbitrary-length "OR"-delimited string of the same form
         :return: CommonSubstitution object holding appropriate ingredient objects
         """
-        # TODO: parse food name with function #26
         result = []
         buff = [raw_food_in] + raw_food_out.split('OR')
         buff = [r.strip() for r in buff]
         for food in buff:
-            parse = regex.qi.match(food)
-            p = ''
-            if parse:
-                q = self.interpret_quantity(parse.group(1))
-                toks = nltk.word_tokenize(parse.group(2))
-            else:
-                toks = nltk.word_tokenize(food)
-                for tok in toks:
-                    if regex.preparation.match(tok):
-                        p = tok
-                        toks.remove(tok)
-                q = Quantity(1, 'unit')
-            n = ' '.join(toks)
-            # TODO: Zinger: solve tests
-            result.append(recipe.Ingredient(name=n.lower(), quantity=q, preparation=p))
+            ff = food.split()
+            quantity_string = 'unknown'
+            food_string = 'unknown'
+            for i in range(len(ff)):
+                if ff[i] in self.measurements:
+                    if i == 0:
+                        quantity_string = '1 '+' '.join(ff[:i+1])
+                    else:
+                        quantity_string = ' '.join(ff[:i+1])
+                    food_string = ' '.join(ff[i+1:])
+                    break
+            if quantity_string == 'unknown':
+                for i in range(len(ff)-1, -1, -1):
+                    if regex.lolnum.match(ff[i]):
+                        quantity_string = ' '.join(ff[:i+1]) + ' units'
+                        food_string = ' '.join(ff[i+1:])
+                        break
+            if quantity_string == 'unknown':
+                quantity_string = '1 units'
+                food_string = ' '.join(ff)
+            q = self.interpret_quantity(quantity_string)
+            n, d, p, pd = parser.parse_ingredient(food_string, self)
+            result.append(recipe.Ingredient(name=n.lower(), quantity=q, preparation=p, prep_description=pd, descriptor=d))
+
+            # parse = regex.qi.match(food)
+            # p = ''
+            # if parse:
+            #     q = self.interpret_quantity(parse.group(1))
+            #     toks = nltk.word_tokenize(parse.group(2))
+            # else:
+            #     toks = nltk.word_tokenize(food)
+            #     for tok in toks:
+            #         if regex.preparation.match(tok):
+            #             p = tok
+            #             toks.remove(tok)
+            #     q = Quantity(1, 'unit')
+            # n = ' '.join(toks)
+            # # TODO: Zinger: solve tests
+            # result.append(recipe.Ingredient(name=n.lower(), quantity=q, preparation=p))
         if len(result) > 1:
             return CommonSubstitution(result.pop(0), result, reason)
         else:
@@ -197,7 +222,7 @@ class KnowledgeBase:
         # TODO: I feel really bad about the use of copied code, so a helper function could be good to write sometime.
         italian_sub_list = read_txt_lines_into_list('kb_data/italian_style.txt')
         mexican_sub_list = read_txt_lines_into_list('kb_data/mexican_style.txt')
-        south_asian_sub_list = read_txt_lines_into_list('kb_data/south_asian_style.txt')
+        south_asian_sub_list = read_txt_lines_into_list('kb_data/east_asian_style.txt')
         vegan_sub_list = read_txt_lines_into_list('kb_data/vegan_substitutions.txt')
         vegetarian_sub_list = read_txt_lines_into_list('kb_data/vegetarian_substitutions.txt')
         for raw_sub in italian_sub_list:
@@ -217,7 +242,7 @@ class KnowledgeBase:
             if len(parsed_in_out) != 2:
                 util.warning('Incorrect substitution string: ' + raw_sub)
                 continue
-            self.south_asian_style.append(self._format_raw_sub(parsed_in_out[0], parsed_in_out[1], 'south_asian'))
+            self.east_asian_style.append(self._format_raw_sub(parsed_in_out[0], parsed_in_out[1], 'east_asian'))
         for raw_sub in vegan_sub_list:
             parsed_in_out = [thing.strip() for thing in raw_sub.split('=')]
             if len(parsed_in_out) != 2:
@@ -242,7 +267,10 @@ class KnowledgeBase:
         for food in self.foods:
             ok = True
             for token in ingredient_tokens:
-                if token not in food.name.lower():
+                db_food_name = food.name
+                if food.common_name:
+                    db_food_name = "%s %s" % (db_food_name, food.common_name)
+                if token not in db_food_name.lower():
                     ok = False
                     break
             if ok:
@@ -257,44 +285,53 @@ class KnowledgeBase:
         """
         # TODO: use regex instead of split (#54)
         q = Quantity()
-        s = string.split()
-        if len(s) != 2:
-            util.warning('Invalid quantity string: Must contain 1 amount/unit pair')
-            q.amount = 1
-            q.unit = 'unit'
-            return q
-        s = [t.strip() for t in s]
-        q.amount = util.fraction_to_decimal(s[0])
-        if s[1] in self.measurements:
-            q.unit = s[1]
-        if not q.unit:
-            print 'Could not identify unit of measurement; assuming \'unit(s)\''
-            q.unit = 'unit'
+        q.unit = 'units'
+        q.amount = 1
+        parse = regex.numletter.match(string)
+        if parse:
+            q.amount = util.fraction_to_decimal(parse.group(1))
+            if parse.group(2) in self.measurements:
+                q.unit = parse.group(2)
+
+        # s = string.split()
+        # if len(s) != 2:
+        #     if len(s) == 1:
+        #         q.amount = s[0]
+        #     else:
+        #         q.amount = 1
+        #     return q
+        # s = [t.strip() for t in s]
+        # q.amount = util.fraction_to_decimal(s[0])
+        # if s[1] in self.measurements:
+        #     q.unit = s[1]
+        # if not q.unit:
+        #     print 'Could not identify unit of measurement; assuming \'units\''
         return q
 
 
 class Food:
-    def __init__(self, food_id=None, food_group=None, name=None, nutritional_data=None):
+    def __init__(self, food_id=None, food_group=None, name=None, nutritional_data=None, common_name=None):
         self.food_id = food_id
         self.food_group = food_group
         self.name = name
+        self.common_name = common_name
         self.nutritional_data = nutritional_data
         self.positive_tags = []
         self.negative_tags = []
 
     def add_styles(self, positive_styles, negative_styles):
         for style in positive_styles:
-            if style in self.positive_tags:
+            if style in self.negative_tags:
+                util.warning("Food" + self.name + "cannot have identical + and - tags")
                 continue
-            else:
+            elif style not in self.positive_tags:
                 self.positive_tags.append(style)
+
         for style in negative_styles:
             if style in self.positive_tags:
-                self.positive_tags.remove(style)
-                raise RuntimeError("Food obj cannot have identical + and - tags")
-            if style in self.negative_tags:
+                util.warning("Food " + str(self.name) + " cannot have identical + and - tags")
                 continue
-            else:
+            elif style not in self.negative_tags:
                 self.negative_tags.append(style)
 
 
