@@ -17,7 +17,8 @@ class Recipe:
 
 class Ingredient:
 
-    def __init__(self, name='', quantity=None, descriptor='', preparation='', prep_description='', available=True, food_type=None):
+    def __init__(self, name='', quantity=None, descriptor='', preparation='', prep_description='', available=True,
+                 food_type=None):
         self.name = name
         self.quantity = quantity  # kb.Quantity object
         self.descriptor = descriptor
@@ -31,15 +32,47 @@ class Ingredient:
         Set the food_type field based on information in the other fields
         @:param knowledge_base: knowledge_base object to search in
         """
-
-        # TODO: Make more robust. This probably isn't going to work. Might only work for name and descriptor.
         self.food_type = None
-        food_options = knowledge_base.lookup_food(self.name)
-        for food in food_options:
-            # if the food name contains the given name, descriptor, prep, and prep_description
-            # set it as the food_type
-            if self.name in food.name.lower():
-                if self.descriptor in food.name.lower():
-                    if self.preparation in food.name.lower():
-                        if self.prep_description in food.name.lower():
-                            self.food_type = food
+        attempts = [
+            lambda: self._match_attempt_1(knowledge_base),
+            lambda: self._match_attempt_2(knowledge_base),
+            lambda: self._match_attempt_3(knowledge_base),
+            lambda: self._match_attempt_4(knowledge_base),
+            ]
+        for attempt in attempts:
+            attempt()
+            if self.food_type:
+                break
+        return self
+
+    def _match_attempt_1(self, knowledge_base):
+        query_string = ' '.join([self.name, self.descriptor, self.preparation, self.prep_description])
+        self._match_attempt_base(knowledge_base, query_string)
+
+    def _match_attempt_2(self, knowledge_base):
+        query_string = ' '.join([self.name, self.descriptor, self.preparation])
+        self._match_attempt_base(knowledge_base, query_string)
+
+    def _match_attempt_3(self, knowledge_base):
+        query_string = ' '.join([self.name, self.descriptor])
+        self._match_attempt_base(knowledge_base, query_string)
+
+    def _match_attempt_4(self, knowledge_base):
+        self._match_attempt_base(knowledge_base, self.name)
+
+    def _match_attempt_base(self, knowledge_base, query_string):
+        food_options = knowledge_base.lookup_food(query_string)
+        old_food_options = []
+        if len(food_options) > 1:
+            old_food_options.extend(food_options)
+            food_options = knowledge_base.lookup_food(query_string + ' raw')
+        if not len(food_options):
+            food_options = []
+            food_options.extend(old_food_options)
+        if len(food_options) > 1:
+            for food_option in food_options:
+                if not self.food_type or len(food_option.name) < len(self.food_type.name):
+                    self.food_type = food_option
+            return
+        if len(food_options) == 1:
+            self.food_type = food_options[0]
