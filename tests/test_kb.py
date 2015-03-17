@@ -206,7 +206,7 @@ class TestFractionToDecimal(unittest.TestCase):
 #     def setUpClass(cls):
 #         cls.knowledge_base = kb.KnowledgeBase()
 #         cls.knowledge_base.load()
-# 
+#
 #     def test_substitutions(self):
 #         a = self.knowledge_base._format_raw_sub('1 cup  Beer',
 #                                                 '1 cup nonalcoholic beer OR 1 cup chicken broth', 'common')
