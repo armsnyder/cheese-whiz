@@ -11,6 +11,8 @@ from app.style_fusions import classify_recipe
 from app.style_fusions import spice_classify
 from app.style_fusions import testing_recipe
 from app.parser import parse_ingredient
+from app.recipe import Recipe, Ingredient
+from app.transformations import to_vegetarian
 
 
 class TestOnLoadedKB(unittest.TestCase):
@@ -105,3 +107,18 @@ class TestOnLoadedKB(unittest.TestCase):
     #     self.assertEqual(prep, 'washed dried')
     #     self.assertEqual(prep_descriptors, 'none')
     #     self.assertEqual(name, 'chicken')
+        
+    def test_veg(self):
+        input_recipe = Recipe()
+        i1 = Ingredient('beef', 1, 'raw', 'ground', 'finely', True, None)
+        i2 = Ingredient('lettuce', 1, 'raw', '', '', True, None)
+        i3 = Ingredient('milk', 1, 'warm', '', '', True, None)
+
+        i1.match_to_food(self.kb)
+        i2.match_to_food(self.kb)
+        i3.match_to_food(self.kb)
+
+        input_recipe.add_ingredients([i1, i2, i3])
+
+        to_vegetarian(self.kb, input_recipe)
+
