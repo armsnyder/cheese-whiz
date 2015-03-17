@@ -13,6 +13,22 @@ def to_vegan(from_recipe):
     :param from_recipe: old recipe
     :return: new recipe
     """
+
+    veg_recipe = to_vegetarian(from_recipe)
+
+    vegan_substitutions = kb.read_txt_lines_into_list(util.relativepath("kb_data/vegan_substitutions.txt"))
+
+    for ingredient in veg_recipe.ingredients:
+        if ingredient.food_type.food_group == '0100':
+            # Look for substitution in kb.vegan_substitutes
+            if ingredient.name in vegan_substitutions:
+                vegan_ingredient = None
+            else:
+                vegan_ingredient = 'textured vegetable protein'
+            recipe.ingredients.append(vegan_ingredient)
+        else:
+            recipe.ingredients.append(ingredient)
+
     return recipe.Recipe()  # Stub
 
 
@@ -31,7 +47,7 @@ def to_vegetarian(from_recipe):
     for ingredient in from_recipe.ingredients:
         if ingredient.food_type.food_group in ('0500', '0700', '1000', '1300', '1500', '1700'):
             # Look for substitution in kb.vegetarian_substitutes
-            if ingredient.food_type.name in veg_substitutions:
+            if ingredient.name in veg_substitutions:
                 veg_ingredient = None
             else:
                 veg_ingredient = 'textured vegetable protein'
