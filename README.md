@@ -56,8 +56,8 @@ A list of ingredient equality statements, completely raw and unparsed, that defi
 **mexican_style.txt**  
 A list of ingredient equality statements, completely raw and unparsed, that define exchanges one might make to make a recipe *more* Mexican.
 
-**south_asian_style.txt**  
-A list of ingredient equality statements, completely raw and unparsed, that define exchanges one might make to make a recipe *more* South Asian.
+**east_asian_style.txt**  
+A list of ingredient equality statements, completely raw and unparsed, that define exchanges one might make to make a recipe *more* East Asian.
 
 ### Running the Program
 To run the program with a graphical interface, simply run the program with no command line arguments:  
