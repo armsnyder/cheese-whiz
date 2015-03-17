@@ -4,7 +4,7 @@ __author__ = 'pantsworth'
 import unittest
 from app.parser import parse_html
 from app.parser import get_html
-from app.cooking_tools import find_cooking_tools, find_cooking_methods
+from app.parser import find_cooking_tools, find_cooking_methods
 
 
 

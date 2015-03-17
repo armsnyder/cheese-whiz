@@ -125,7 +125,10 @@ class KnowledgeBase:
             food_string = 'unknown'
             for i in range(len(ff)):
                 if ff[i] in self.measurements:
-                    quantity_string = ' '.join(ff[:i+1])
+                    if i == 0:
+                        quantity_string = '1 '+' '.join(ff[:i+1])
+                    else:
+                        quantity_string = ' '.join(ff[:i+1])
                     food_string = ' '.join(ff[i+1:])
                     break
             if quantity_string == 'unknown':
@@ -134,6 +137,9 @@ class KnowledgeBase:
                         quantity_string = ' '.join(ff[:i+1]) + ' units'
                         food_string = ' '.join(ff[i+1:])
                         break
+            if quantity_string == 'unknown':
+                quantity_string = '1 units'
+                food_string = ' '.join(ff)
             q = self.interpret_quantity(quantity_string)
             n, d, p, pd = parser.parse_ingredient(food_string, self)
             result.append(recipe.Ingredient(name=n.lower(), quantity=q, preparation=p, prep_description=pd, descriptor=d))
@@ -275,20 +281,27 @@ class KnowledgeBase:
         """
         # TODO: use regex instead of split (#54)
         q = Quantity()
-        q.unit = 'unit'
-        s = string.split()
-        if len(s) != 2:
-            if len(s) == 1:
-                q.amount = s[0]
-            else:
-                q.amount = 1
-            return q
-        s = [t.strip() for t in s]
-        q.amount = util.fraction_to_decimal(s[0])
-        if s[1] in self.measurements:
-            q.unit = s[1]
-        if not q.unit:
-            print 'Could not identify unit of measurement; assuming \'unit\''
+        q.unit = 'units'
+        q.amount = 1
+        parse = regex.numletter.match(string)
+        if parse:
+            q.amount = util.fraction_to_decimal(parse.group(1))
+            if parse.group(2) in self.measurements:
+                q.unit = parse.group(2)
+
+        # s = string.split()
+        # if len(s) != 2:
+        #     if len(s) == 1:
+        #         q.amount = s[0]
+        #     else:
+        #         q.amount = 1
+        #     return q
+        # s = [t.strip() for t in s]
+        # q.amount = util.fraction_to_decimal(s[0])
+        # if s[1] in self.measurements:
+        #     q.unit = s[1]
+        # if not q.unit:
+        #     print 'Could not identify unit of measurement; assuming \'units\''
         return q
 
 

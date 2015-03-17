@@ -19,10 +19,24 @@ fluid ounce = fl oz.
 pint
 quart
 gallon = gal.
+drops
+dashes
+pinches
+tads
+teaspoons
+tablespoons
+cups = c.
+fluid ounces
+pints
+quarts
+gallons
 
 # METRIC VOLUMES
 milliliter
 liter
+milliliters
+liters
+
 
 # US WEIGHTS
 pound
@@ -31,6 +45,8 @@ ounce, oz, ounces
 # METRIC MASSES
 gram
 kilogram
+grams
+kilograms
 
 # MOSTLY FOR VEGETABLES
 head
@@ -39,6 +55,12 @@ slice
 piece
 clove
 strip
+heads
+bunches
+slices
+pieces
+cloves
+strips
 
 # ODDITIES
 handful
@@ -50,4 +72,13 @@ bag
 pack
 package
 stick
+handfuls
+boxes
+packages
+cans
+jars
+bags
+packs
+packages
+sticks
 
