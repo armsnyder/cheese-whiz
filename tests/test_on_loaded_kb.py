@@ -7,9 +7,10 @@ from app.kb import KnowledgeBase
 
 class TestOnLoadedKB(unittest.TestCase):
 
-    def setUp(self):
-        self.kb = KnowledgeBase()
-        self.kb.load()
+    @classmethod
+    def setUpClass(cls):
+        cls.kb = KnowledgeBase()
+        cls.kb.load()
 
     def test_match_food_name_and_description(self):
         self.assertEqual(Ingredient('olive oil').match_to_food(self.kb).food_type.food_id, '04053')
