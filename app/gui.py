@@ -42,7 +42,7 @@ class GUI(ttk.Frame):
         self.recipe_url = None
         self.status_bar.set('Loading knowledge base in background...')
         threading.Thread(target=self.load_kb_for_gui).start()
-        threading.Thread(target=self.start_splash_timer, args=[3]).start()
+        threading.Thread(target=self.start_timer, args=[3, 1]).start()
         self.periodic_dequeue()
 
     def periodic_dequeue(self):
@@ -76,12 +76,12 @@ class GUI(ttk.Frame):
         self.status_bar.set('Finished loading knowledge base')
         self.queue.put(2)
 
-    def start_splash_timer(self, seconds):
+    def start_timer(self, seconds, code):
         """
         Waits for a specified number of seconds. Meant to be run asynchronously.
         """
         time.sleep(seconds)
-        self.queue.put(1)
+        self.queue.put(code)
 
     def splash_state(self):
         """
@@ -146,13 +146,37 @@ class GUI(ttk.Frame):
 
         self.current_window = 'recipe'
         self.init_main_window()
-        self.parent.geometry('500x800')
-        message = ttk.Label(self.main_window, text="(Recipe displays here)")
-        message.pack()
+        self.parent.geometry('800x800')
+        recipe = parser.url_to_recipe(self.recipe_url, self.knowledge_base)
+        title = ttk.Label(self.main_window, text=recipe.title)
+        title.pack()
+        recipe_frame = ttk.Frame(self.main_window)
+        for ingredient in recipe.ingredients:
+            IngredientWidget(recipe_frame, ingredient).pack()
 
-        recipe = parser.url_to_dictionary(self.recipe_url)
+        for step in reversed(recipe.steps):
+            StepWidget(recipe_frame, step).pack(side=Tkinter.BOTTOM)
+
+        recipe_frame.pack(side=Tkinter.LEFT)
+
+        button_frame = ttk.Frame(self.main_window)
+
+        more_healthy_button = ttk.Button(button_frame, text="More Healthy").pack()
+        less_healthy_button = ttk.Button(button_frame, text="Less Healthy").pack()
+        vegetarian_button = ttk.Button(button_frame, text="Vegetarian").pack()
+        vegan_button = ttk.Button(button_frame, text="Vegan").pack()
+        more_mexican_button = ttk.Button(button_frame, text="More Mexican").pack()
+        more_asian_button = ttk.Button(button_frame, text="More Asian").pack()
+        more_italian = ttk.Button(button_frame, text="More Italian").pack()
+        next_recipe_button = ttk.Button(button_frame, text="Next Recipe", command=self.next_recipe).pack(pady=50)
+
+        button_frame.pack(side=Tkinter.RIGHT)
 
         self.center_on_screen()
+
+    def next_recipe(self):
+        self.url_state()
+        pass
 
     def raise_and_focus(self):
         # window.lift()
@@ -192,6 +216,49 @@ class StatusBar(ttk.Frame):
     def clear(self):
         self.label.config(text='')
         self.label.update_idletasks()
+
+
+class IngredientWidget(ttk.Frame):
+    def __init__(self, parent, ingredient):
+        ttk.Frame.__init__(self, parent)
+        self.ingredient = ingredient
+        self.init_widgets()
+
+    def init_widgets(self):
+        quantity = ttk.Label(self, text=self.ingredient.quantity.amount)
+        unit = ttk.Label(self, text=self.ingredient.quantity.unit)
+        name = ttk.Label(self, text=self.ingredient.name)
+        descriptor = ttk.Label(self, text=self.ingredient.descriptor)
+        preparation = ttk.Label(self, text=self.ingredient.preparation)
+        prep_description = ttk.Label(self, text=self.ingredient.prep_description)
+        if self.ingredient.food_type:
+            matching_food = ttk.Label(self, text='('+self.ingredient.food_type.name+')')
+        else:
+            matching_food = ttk.Label(self, text='( )')
+        unavailable_button = ttk.Button(self, text="X", command=self.do_not_have)
+
+        quantity.pack(side=Tkinter.LEFT, padx=3)
+        unit.pack(side=Tkinter.LEFT, padx=3)
+        prep_description.pack(side=Tkinter.LEFT, padx=3)
+        preparation.pack(side=Tkinter.LEFT, padx=3)
+        descriptor.pack(side=Tkinter.LEFT, padx=3)
+        name.pack(side=Tkinter.LEFT, padx=3)
+        matching_food.pack(side=Tkinter.LEFT, padx=3)
+        unavailable_button.pack(side=Tkinter.LEFT, padx=3)
+
+    def do_not_have(self):
+        pass
+
+
+class StepWidget(ttk.Frame):
+    def __init__(self, parent, step):
+        ttk.Frame.__init__(self, parent)
+        self.step = step
+        self.init_widgets()
+
+    def init_widgets(self):
+        step = ttk.Label(self, text=self.step, wraplength=400)
+        step.pack()
 
 
 def main():
