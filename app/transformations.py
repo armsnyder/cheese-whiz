@@ -22,7 +22,7 @@ def to_vegan(knowledge_base, from_recipe):
                 if name == ingredient.name:
                     vegan_ingredient = substitution
                     found = True
-            if found is False:
+            if not found:
                 vegan_ingredient = 'textured vegetable protein'
             recipe.ingredients.append(vegan_ingredient)
         else:
@@ -51,7 +51,7 @@ def to_vegetarian(knowledge_base, from_recipe):
                 if name == ingredient.name:
                     veg_ingredient = substitution
                     found = True
-            if found is False:
+            if not found:
                 veg_ingredient = 'textured vegetable protein'
             recipe.ingredients.append(veg_ingredient)
         else:

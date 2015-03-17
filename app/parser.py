@@ -4,7 +4,6 @@ import nltk
 
 import util
 import recipe
-import kb
 
 
 def parse_ingredient(ingredient, knowledge_base):
