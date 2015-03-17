@@ -1,31 +1,63 @@
 import recipe
+from enums import FoodGroup
 
 
-def to_vegan(from_recipe):
+def to_vegan(knowledge_base, from_recipe):
     """
-    STUB DESCRIPTION:
-    Write to_vegan function to take Recipe input and output vegan Recipe.
+    Takes a Recipe input and output vegan Recipe.
     First, fun the to_vegetarian function.
     Loop through ingredients, checking food group (look in enums.py) for no-no groups. If the ingredient is of
     a no-no-group, check for a substitution in kb.vegan_substitutions (not yet written). If no suitable substitution
     can be found, replace with a quantity of TVP of equal weight.
-    :param from_recipe: old recipe
+    :param from_recipe: knowledge_base, old recipe
     :return: new recipe
     """
-    return recipe.Recipe()  # Stub
+    veg_recipe = to_vegetarian(knowledge_base, from_recipe)
+
+    for ingredient in veg_recipe.ingredients:
+        if ingredient.food_type.food_group == FoodGroup.DAIRY_AND_EGG_PRODUCTS:
+            found = False
+            # Look for substitution in kb.vegan_substitutes
+            for name, substitution in knowledge_base.vegan_substitutions:
+                if name == ingredient.name:
+                    vegan_ingredient = substitution
+                    found = True
+            if found is False:
+                vegan_ingredient = 'textured vegetable protein'
+            recipe.ingredients.append(vegan_ingredient)
+        else:
+            recipe.ingredients.append(ingredient)
+
+    return recipe.Recipe()
 
 
-def to_vegetarian(from_recipe):
+def to_vegetarian(knowledge_base, from_recipe):
     """
-    STUB DESCRIPTION:
-    Write to_vegetarian function to take Recipe input and output vegetarian Recipe.
+    Takes a Recipe input and output vegetarian Recipe.
     Loop through ingredients, checking food group (look in enums.py) for no-no groups. If the ingredient is of a
     no-no-group, check for a substitution in kb.vegetarian_substitutions (not yet written). If no suitable substitution
     can be found, replace with a quantity of TVP of equal weight.
-    :param from_recipe: old recipe
+    :param from_recipe: knowledge_base, old recipe
     :return: new recipe
     """
-    return recipe.Recipe()  # Stub
+    for ingredient in from_recipe.ingredients:
+        if ingredient.food_type.food_group in (FoodGroup.POULTRY_PRODUCTS, FoodGroup.SAUSAGES_AND_LUNCHEON_MEATS,
+                                               FoodGroup.PORK_PRODUCTS, FoodGroup.BEEF_PRODUCTS,
+                                               FoodGroup.FINFISH_AND_SHELLFISH_PRODUCTS,
+                                               FoodGroup.LAMB_VEAL_AND_GAME_PRODUCTS):
+            # Look for substitution in kb.vegetarian_substitutes
+            for name, substitution in knowledge_base.vegetarian_substitutions:
+                found = False
+                if name == ingredient.name:
+                    veg_ingredient = substitution
+                    found = True
+            if found is False:
+                veg_ingredient = 'textured vegetable protein'
+            recipe.ingredients.append(veg_ingredient)
+        else:
+            recipe.ingredients.append(ingredient)
+
+    return recipe.Recipe()
 
 
 def make_healthy(from_recipe):
