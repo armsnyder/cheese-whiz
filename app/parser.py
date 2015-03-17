@@ -15,6 +15,10 @@ def parse_html(html):
     """
     soup = BeautifulSoup(html)
     title = soup.find('span', {'itemprop': 'name'}).get_text()
+    if soup.find('span', {'itemprop': 'name'}):
+        title = soup.find('span', {'itemprop': 'name'}).get_text()
+    elif soup.find('h1', {'itemprop': 'name'}):
+        title = soup.find('h1', {'itemprop': 'name'}).get_text()
     ingredients = soup.find_all('p', {'itemprop': 'ingredients'})
     ingredient_quantity_string_tuples = []
     for i in ingredients:
