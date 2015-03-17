@@ -68,6 +68,12 @@ class Ingredient:
 
     @staticmethod
     def _rank_food(food_option, query_string):
+        """
+        Sorting function used to rank search results
+        :param food_option: Food object candidate
+        :param query_string: desired food name string
+        :return: rank (int)
+        """
 
         rank = 0
         tokenizer = nltk.tokenize.RegexpTokenizer(r'[\w\d]+')
@@ -83,12 +89,16 @@ class Ingredient:
 
         option_count = len(food_option_tokens)
         common_count = len(food_common_tokens)
+
+        # Favor shorter food names
         rank -= (option_count + common_count) / 2
 
+        # Favor foods containing full query terms
         for token in query_tokens:
             if token in food_option_tokens or token in food_common_tokens:
                 rank += 1
 
+        # Favor foods with query terms appearing closer to the beginning of the food name
         for i in range(max(option_count, common_count)):
             if len(food_option_tokens) > i and food_option_tokens[i] in query_tokens:
                 rank += int((option_count-i)*3/option_count)
@@ -97,10 +107,12 @@ class Ingredient:
                 rank += int((common_count-i)*3/common_count)
                 break
 
+        # Favor foods with query terms appearing in-order
         for query_bigram in query_bigrams:
             if query_bigram in food_option_bigrams or query_bigram in food_common_bigrams:
                 rank += 2
 
+        # Favor raw foods
         if 'raw' in food_option_tokens:
             rank += 4
         if 'whole' in food_option_tokens:
