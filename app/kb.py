@@ -62,6 +62,14 @@ class KnowledgeBase:
                     continue
                 if new_food.food_id in food_id_blacklist:
                     continue
+                bad_food_name = False
+                for keyword_group in food_keyword_blacklist:
+                    for keyword in keyword_group:
+                        if keyword in new_food.name:
+                            bad_food_name = True
+                if bad_food_name:
+                    util.vprint("Skipping " + new_food.name)
+                    continue
                 if new_food.food_id in nutritional_data:
                     new_food.nutritional_data = nutritional_data[new_food.food_id]
                 self.foods.append(new_food)
@@ -383,5 +391,10 @@ food_id_blacklist = \
     [
 
     ]
+
+food_keyword_blacklist = \
+    [
+        ['frozen']
+    ]  # Format each element as a list of keywords
 
 food_id_blacklist = flatten(food_id_blacklist)
