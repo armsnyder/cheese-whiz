@@ -89,6 +89,7 @@ We used a number of built-in Python libraries. Without going into detail, here t
 * urllib2
 * sys
 * os
+* pickle
 
 #### External Packages
 In addition to the standard Python libraries, several packages modules were used to improve performance.
