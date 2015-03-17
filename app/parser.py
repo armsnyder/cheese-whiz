@@ -4,6 +4,7 @@ import nltk
 
 import util
 import recipe
+import kb
 
 
 def parse_html(html):
@@ -91,7 +92,7 @@ def get_html(url):
         return None
 
 
-def make_recipe(title, ingredients, steps):
+def make_recipe(title, ingredients, steps, knowledge_base):
     """
     STUB DESCRIPTION:
     Write the make_recipe function in app.parser that will take as input the output of parse_html, and output a
@@ -101,7 +102,13 @@ def make_recipe(title, ingredients, steps):
     :param steps: list of steps (strings)
     :return: Recipe
     """
-    return recipe.Recipe()  # Stub
+    ingredient_object_list = []
+    for quantity_string, ingredient_string in ingredients:
+        quantity = knowledge_base.interpret_quantity(quantity_string)
+        i_name, i_descriptor, i_prep, i_prep_descriptor = parse_ingredient(ingredient_string)
+        ingredient_object_list.append(
+            recipe.Ingredient(i_name, quantity, i_descriptor, i_prep, i_prep_descriptor).match_to_food(knowledge_base))
+    return recipe.Recipe(title, ingredient_object_list, steps)
 
 
 def format_for_autograder(url):
