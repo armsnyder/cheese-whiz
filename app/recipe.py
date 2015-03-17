@@ -82,7 +82,10 @@ class Ingredient:
         food_option_tokens = tokenizer.tokenize(food_option.name.lower())
         food_option_bigrams = nltk.bigrams(food_option_tokens)
 
-        food_common_tokens = tokenizer.tokenize(food_option.common_name.lower())
+        if food_option.common_name:
+            food_common_tokens = tokenizer.tokenize(food_option.common_name.lower())
+        else:
+            food_common_tokens = tokenizer.tokenize('')
         food_common_bigrams = nltk.bigrams(food_common_tokens)
 
         query_tokens = tokenizer.tokenize(query_string.lower())
