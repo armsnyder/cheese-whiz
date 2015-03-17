@@ -77,7 +77,7 @@ def lookup_alternative_recipe(from_recipe, unavailable_ingredient_list):
     return 'url'  # Stub
 
 
-def transform_availability(old_recipe, old_ingredient):
+def transform_availability(old_recipe, old_ingredient, kb):
     """
     STUB DESCRIPTION:
     Write transform_availability function to take an Ingredient argument and return a list of Ingredient objects
@@ -89,7 +89,14 @@ def transform_availability(old_recipe, old_ingredient):
     :param old_ingredient: ingredient to transform
     :return: list of possible substitution Ingredient objects
     """
+    pass
+    subs = kb.substitutions
     possible_substitutions = []
+    for sub in subs:
+        if sub.food_in.name == old_ingredient.food.name:
+            possible_substitutions.append(sub.food_out)
+    if not possible_substitutions:
+        pass
     return possible_substitutions
 
 
