@@ -47,7 +47,7 @@ A list of ingredient equalities, completely raw and unparsed, which support mult
 **vegan_substitutions.txt**  
 A list of ingredient equalities, completely raw and unparsed, which support multiple substitution options. This is used as a basic starting point reference for the vegan substitution function.
 
-**vegatarian_substitutions.txt**  
+**vegetarian_substitutions.txt**  
 A list of ingredient equalities, completely raw and unparsed, which support multiple substitution options. This is used as a basic starting point reference for the vegetarian substitution function.
 
 **italian_style.txt**  
@@ -94,7 +94,7 @@ We used a number of built-in Python libraries. Without going into detail, here t
 In addition to the standard Python libraries, several packages modules were used to improve performance.
 
 **nltk**  
-Natural Language Toolkit used for tokenizing natural lanuage and labeling parts of speech
+Natural Language Toolkit used for tokenizing natural language and labeling parts of speech
 
 **beautifulsoup4**  
 A web scraper used for pulling html content out of tags
