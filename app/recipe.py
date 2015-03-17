@@ -1,3 +1,7 @@
+import nltk
+import re
+
+
 class Recipe:
 
     def __init__(self, ingredients=None, steps=None):
@@ -34,10 +38,12 @@ class Ingredient:
         """
         self.food_type = None
         attempts = [
-            lambda: self._match_attempt_1(knowledge_base),
-            lambda: self._match_attempt_2(knowledge_base),
-            lambda: self._match_attempt_3(knowledge_base),
-            lambda: self._match_attempt_4(knowledge_base),
+            lambda: self._match_special_cases(knowledge_base),
+            lambda: self._match_attempt(knowledge_base, ' '.join(
+                [self.prep_description, self.preparation, self.descriptor, self.name])),
+            lambda: self._match_attempt(knowledge_base, ' '.join([self.preparation, self.descriptor, self.name])),
+            lambda: self._match_attempt(knowledge_base, ' '.join([self.descriptor, self.name])),
+            lambda: self._match_attempt(knowledge_base, self.name),
             ]
         for attempt in attempts:
             attempt()
@@ -45,34 +51,70 @@ class Ingredient:
                 break
         return self
 
-    def _match_attempt_1(self, knowledge_base):
-        query_string = ' '.join([self.name, self.descriptor, self.preparation, self.prep_description])
-        self._match_attempt_base(knowledge_base, query_string)
-
-    def _match_attempt_2(self, knowledge_base):
-        query_string = ' '.join([self.name, self.descriptor, self.preparation])
-        self._match_attempt_base(knowledge_base, query_string)
-
-    def _match_attempt_3(self, knowledge_base):
-        query_string = ' '.join([self.name, self.descriptor])
-        self._match_attempt_base(knowledge_base, query_string)
-
-    def _match_attempt_4(self, knowledge_base):
-        self._match_attempt_base(knowledge_base, self.name)
-
-    def _match_attempt_base(self, knowledge_base, query_string):
-        food_options = knowledge_base.lookup_food(query_string)
-        old_food_options = []
-        if len(food_options) > 1:
-            old_food_options.extend(food_options)
-            food_options = knowledge_base.lookup_food(query_string + ' raw')
-        if not len(food_options):
-            food_options = []
-            food_options.extend(old_food_options)
-        if len(food_options) > 1:
-            for food_option in food_options:
-                if not self.food_type or len(food_option.name) < len(self.food_type.name):
-                    self.food_type = food_option
-            return
-        if len(food_options) == 1:
+    def _match_attempt(self, knowledge_base, query_string):
+        food_options = sorted(knowledge_base.lookup_food(query_string),
+                              key=lambda x: self._rank_food(x, query_string), reverse=True)
+        if len(food_options):
             self.food_type = food_options[0]
+
+    def _match_special_cases(self, knowledge_base):
+        full_name = ' '.join([self.prep_description, self.preparation, self.descriptor, self.name])
+        if 'ground' in full_name and 'beef' in full_name and '%' not in full_name:
+            self._match_attempt(knowledge_base, 'Beef, ground, 85% lean meat')
+        if self.name == 'flour' and not self.descriptor:
+            self._match_attempt(knowledge_base, 'wheat flour all-purpose')
+        if self.name == 'water':
+            self._match_attempt(knowledge_base, 'tap water')
+
+    @staticmethod
+    def _rank_food(food_option, query_string):
+        """
+        Sorting function used to rank search results
+        :param food_option: Food object candidate
+        :param query_string: desired food name string
+        :return: rank (int)
+        """
+
+        rank = 0
+        tokenizer = nltk.tokenize.RegexpTokenizer(r'[\w\d]+')
+
+        food_option_tokens = tokenizer.tokenize(food_option.name.lower())
+        food_option_bigrams = nltk.bigrams(food_option_tokens)
+
+        food_common_tokens = tokenizer.tokenize(food_option.common_name.lower())
+        food_common_bigrams = nltk.bigrams(food_common_tokens)
+
+        query_tokens = tokenizer.tokenize(query_string.lower())
+        query_bigrams = nltk.bigrams(query_tokens)
+
+        option_count = len(food_option_tokens)
+        common_count = len(food_common_tokens)
+
+        # Favor shorter food names
+        rank -= (option_count + common_count) / 2
+
+        # Favor foods containing full query terms
+        for token in query_tokens:
+            if token in food_option_tokens or token in food_common_tokens:
+                rank += 1
+
+        # Favor foods with query terms appearing closer to the beginning of the food name
+        for i in range(max(option_count, common_count)):
+            if len(food_option_tokens) > i and food_option_tokens[i] in query_tokens:
+                rank += int((option_count-i)*3/option_count)
+                break
+            if len(food_common_tokens) > i and food_common_tokens[i] in query_tokens:
+                rank += int((common_count-i)*3/common_count)
+                break
+
+        # Favor foods with query terms appearing in-order
+        for query_bigram in query_bigrams:
+            if query_bigram in food_option_bigrams or query_bigram in food_common_bigrams:
+                rank += 2
+
+        # Favor raw foods
+        if 'raw' in food_option_tokens:
+            rank += 4
+        if 'whole' in food_option_tokens:
+            rank += 1
+        return rank
