@@ -11,7 +11,6 @@ def main():
     """
     Placeholder main method for calling script with command line parameters
     """
-
     knowledge_base = load_knowledge_base()
     pass
 
