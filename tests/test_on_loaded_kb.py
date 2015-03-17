@@ -9,10 +9,10 @@ from app.parser import url_to_recipe
 from app.cooking_tools import find_cooking_tools, find_cooking_methods
 from app.style_fusions import classify_recipe
 from app.style_fusions import spice_classify
-from app.style_fusions import testing_recipe
+# from app.style_fusions import testing_recipe
 from app.parser import parse_ingredient
 from app.recipe import Recipe, Ingredient
-from app.transformations import to_vegetarian
+from app.transformations import to_vegan
 
 
 class TestOnLoadedKB(unittest.TestCase):
@@ -74,14 +74,14 @@ class TestOnLoadedKB(unittest.TestCase):
     #     self.assertEqual(Ingredient('lime zest').match_to_food(self.kb).food_type, None)
 
 
-    def test_fusion(self):
-        made_recipe = url_to_recipe('http://allrecipes.com/recipe/chicken-fettuccini-alfredo/', self.kb)
-        # testhtml = get_html('http://allrecipes.com/Recipe/Chicken-Enchiladas-II/')
-        testing_recipe(made_recipe)
-        # testparse = parse_html(testhtml)
-        # spice_classify(testparse, self.kb)
-        # print "italian to asian"
-        # print self.kb.italian_to_asian_list
+    # def test_fusion(self):
+    #     made_recipe = url_to_recipe('http://allrecipes.com/recipe/chicken-fettuccini-alfredo/', self.kb)
+    #     # testhtml = get_html('http://allrecipes.com/Recipe/Chicken-Enchiladas-II/')
+    #     testing_recipe(made_recipe)
+    #     # testparse = parse_html(testhtml)
+    #     # spice_classify(testparse, self.kb)
+    #     # print "italian to asian"
+    #     # print self.kb.italian_to_asian_list
 
     # def test_match_food_none(self):
     #     self.assertEqual(Ingredient('asdfgph').match_to_food(self.kb).food_type, None)
@@ -120,5 +120,5 @@ class TestOnLoadedKB(unittest.TestCase):
 
         input_recipe.add_ingredients([i1, i2, i3])
 
-        to_vegetarian(self.kb, input_recipe)
+        to_vegan(self.kb, input_recipe)
 
