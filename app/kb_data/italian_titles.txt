@@ -1,0 +1,178 @@
+#titles of italian dishes
+#list of pasta
+Agnolotti
+Bavette
+bigoli
+bucatini
+Cannelloni
+crespelle
+Cappellini
+cappelletti
+Conchiglie
+Ditalini
+Eliche
+Farfalle
+festoni
+fettuccine
+filatieddi
+fusilli
+Garganelli
+gemelli
+Gnocchi
+Gnocchi di semolino
+Lasagna
+linguine
+macaroni
+Offelle
+orecchiette
+Orzo
+penne
+penne rigati
+perciatelli
+pici
+rotelle
+Ravioli
+rigatoni
+rotini
+Spaghetti
+spaghettini
+Stelline
+Tacconi
+tortellini
+Vermicelli
+Ziti
+
+
+#meats
+prosciutto
+pancetta
+pepperoni
+salami
+speck
+
+mozzarella
+pecorino romano
+parmesan
+gorgonzola
+fontina
+ricotta
+
+Bruschetta
+Bresaola
+Crostini
+Capicollo
+Culatello
+Curried braised rabbit stew
+Insalata caprese
+Insalata russa
+Mozzarelline fritte
+Nervetti
+Peperoni imbottiti
+Prosciutto e melone
+Pizzette e salatini
+Salami
+Strolghino
+Tortano
+Verdure in pinzimonio
+Vezione verro
+Breadsticks
+
+
+Acquacotta
+Agghiotta di lumache (Sicilian snail soup)
+Agliata
+Agrodolce
+Boreto
+Fonduta (fondue)
+Garmugia
+Ginestrata
+Grine Sauce
+Maccu
+Sugo al Pomodoro
+Minestra di ceci
+Minestra di fagioli
+Minestra di pasta con pesce
+Minestrone
+Pasta e fagioli
+Pesto
+ragu
+Risi e bisi
+Sciusceddu
+Stracciatella
+
+
+#pasta dishes
+Ciceri e Tria
+all'Amatriciana
+Cannelloni al ragu
+cannelloni ai carciofi
+Carbonara
+Fettucine Alfredo
+Fettucini Alfredo
+alfredo
+Linguini with Clam sauce
+Penne all'arrabbiata
+bolognese
+Rigatoni con la Pajata
+Rigatoni al forno con salsa aurora
+Spaghetti alla Carrettiera
+Spaghetti al nero di seppia
+Spaghetti alla Puttanesca
+Spaghetti con la bottarga
+Spaghetti all' aglio
+olio e peperoncino
+spaghetti indiavolati
+Spaghetti Siracusani
+spaghetti alla carbonara
+Tortelloni alla zucca
+Trofie al pesto, trofie al sugo di noci
+Tortellini, Cjarsons
+Tortelloni ricotta and spinach
+Lasagne
+Ziti
+ziti al forno
+Ravioli, Klotznnudl
+pasta al pesto
+
+chicken parmigiana
+chicken parmesan
+parmesan-crusted chicken breast
+Abbacchio brodettato
+Abbacchio alla Cacciatora
+Bistecca Fiorentina (steak florentine)
+Braciole
+Bresaola
+Brodo
+Cacciatore
+Capicollo
+Carne al piatto
+Carne Pizzaiola
+Cevapcici
+Ciabusco Ciabusco
+Coda alla vaccinara
+Cotechino Modena
+Cotoletta alla milanese
+Cotoletta alla petroniana
+Culatello
+Goulash or Gulash
+Guanciale
+Lonza
+Mortadella
+Osso buco
+Pancetta (bacon)
+Pezzetti di cavallo
+Porcaloca
+Prosciutto di Parma
+Prosciutto di San Daniele
+Prosciutto cotto (cooked ham)
+Prosciutto affumicato ( smoked ham)
+Prosciutto crudo
+Saltimbocca alla Romana
+Salame
+Soppressata
+Speck Alto Adige PGI
+Speck friulano di Sauris
+Stigghiola
+Trippa alla Romana
+Violino Valtell
+Vitello (veal)
