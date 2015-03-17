@@ -9,6 +9,7 @@ import re
 from enums import Nutrient
 from enums import FoodGroup
 import util
+import parser
 import regex
 import recipe
 
@@ -116,26 +117,49 @@ class KnowledgeBase:
         :param raw_food_out: Arbitrary-length "OR"-delimited string of the same form
         :return: CommonSubstitution object holding appropriate ingredient objects
         """
-        # TODO: parse food name with function #26
         result = []
         buff = [raw_food_in] + raw_food_out.split('OR')
         buff = [r.strip() for r in buff]
         for food in buff:
-            parse = regex.qi.match(food)
-            p = ''
-            if parse:
-                q = self.interpret_quantity(parse.group(1))
-                toks = nltk.word_tokenize(parse.group(2))
-            else:
-                toks = nltk.word_tokenize(food)
-                for tok in toks:
-                    if regex.preparation.match(tok):
-                        p = tok
-                        toks.remove(tok)
-                q = Quantity(1, 'unit')
-            n = ' '.join(toks)
-            # TODO: Zinger: solve tests
-            result.append(recipe.Ingredient(name=n.lower(), quantity=q, preparation=p))
+            ff = food.split()
+            quantity_string = 'unknown'
+            food_string = 'unknown'
+            for i in range(len(ff)):
+                if ff[i] in self.measurements:
+                    if i == 0:
+                        quantity_string = '1 '+' '.join(ff[:i+1])
+                    else:
+                        quantity_string = ' '.join(ff[:i+1])
+                    food_string = ' '.join(ff[i+1:])
+                    break
+            if quantity_string == 'unknown':
+                for i in range(len(ff)-1, -1, -1):
+                    if regex.lolnum.match(ff[i]):
+                        quantity_string = ' '.join(ff[:i+1]) + ' units'
+                        food_string = ' '.join(ff[i+1:])
+                        break
+            if quantity_string == 'unknown':
+                quantity_string = '1 units'
+                food_string = ' '.join(ff)
+            q = self.interpret_quantity(quantity_string)
+            n, d, p, pd = parser.parse_ingredient(food_string, self)
+            result.append(recipe.Ingredient(name=n.lower(), quantity=q, preparation=p, prep_description=pd, descriptor=d))
+
+            # parse = regex.qi.match(food)
+            # p = ''
+            # if parse:
+            #     q = self.interpret_quantity(parse.group(1))
+            #     toks = nltk.word_tokenize(parse.group(2))
+            # else:
+            #     toks = nltk.word_tokenize(food)
+            #     for tok in toks:
+            #         if regex.preparation.match(tok):
+            #             p = tok
+            #             toks.remove(tok)
+            #     q = Quantity(1, 'unit')
+            # n = ' '.join(toks)
+            # # TODO: Zinger: solve tests
+            # result.append(recipe.Ingredient(name=n.lower(), quantity=q, preparation=p))
         if len(result) > 1:
             return CommonSubstitution(result.pop(0), result, reason)
         else:
@@ -261,19 +285,27 @@ class KnowledgeBase:
         """
         # TODO: use regex instead of split (#54)
         q = Quantity()
-        s = string.split()
-        if len(s) != 2:
-            util.warning('Invalid quantity string: Must contain 1 amount/unit pair')
-            q.amount = 1
-            q.unit = 'unit'
-            return q
-        s = [t.strip() for t in s]
-        q.amount = util.fraction_to_decimal(s[0])
-        if s[1] in self.measurements:
-            q.unit = s[1]
-        if not q.unit:
-            print 'Could not identify unit of measurement; assuming \'unit(s)\''
-            q.unit = 'unit'
+        q.unit = 'units'
+        q.amount = 1
+        parse = regex.numletter.match(string)
+        if parse:
+            q.amount = util.fraction_to_decimal(parse.group(1))
+            if parse.group(2) in self.measurements:
+                q.unit = parse.group(2)
+
+        # s = string.split()
+        # if len(s) != 2:
+        #     if len(s) == 1:
+        #         q.amount = s[0]
+        #     else:
+        #         q.amount = 1
+        #     return q
+        # s = [t.strip() for t in s]
+        # q.amount = util.fraction_to_decimal(s[0])
+        # if s[1] in self.measurements:
+        #     q.unit = s[1]
+        # if not q.unit:
+        #     print 'Could not identify unit of measurement; assuming \'units\''
         return q
 
 
