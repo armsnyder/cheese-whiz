@@ -3,15 +3,14 @@
 import unittest
 from app.recipe import Ingredient
 from app.kb import KnowledgeBase
-from app.parser import parse_ingredient
 
 
 class TestOnLoadedKB(unittest.TestCase):
 
     @classmethod
-    def setUpClass(self):
-        self.kb = KnowledgeBase()
-        self.kb.load()
+    def setUpClass(cls):
+        cls.kb = KnowledgeBase()
+        cls.kb.load()
 
     def test_match_food_name_and_description(self):
         self.assertEqual(Ingredient('olive oil').match_to_food(self.kb).food_type.food_id, '04053')

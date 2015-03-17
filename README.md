@@ -62,17 +62,17 @@ A list of ingredient equality statements, completely raw and unparsed, that defi
 ### Running the Program
 To run the program with a graphical interface, simply run the program with no command line arguments:  
 ```
-python cheese-whiz.py
+>> python cheese-whiz.py
 ```
 To run the program in the command line, run it with a URL argument:
 ```
-python cheese-whiz.py http://allrecipes.com/Recipe/Baked-Flan
+>> python cheese-whiz.py http://allrecipes.com/Recipe/Baked-Flan
 ```
 
 ### Packages
 For convenience, we have included a requirements.txt file in the root directory to install external libraries. To install these dependencies, run this command:
 ```
-pip install -r requirements.txt
+>> pip install -r requirements.txt
 ```
 
 #### Standard Libraries

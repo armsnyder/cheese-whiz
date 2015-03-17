@@ -4,7 +4,6 @@ import nltk
 
 import util
 import recipe
-import kb
 
 
 def parse_ingredient(ingredient, knowledge_base):
@@ -78,7 +77,6 @@ def parse_html(html):
     :return: Title string, list of ingredient/quantity tuples, and list of step strings
     """
     soup = BeautifulSoup(html)
-    title = soup.find('span', {'itemprop': 'name'}).get_text()
     if soup.find('span', {'itemprop': 'name'}):
         title = soup.find('span', {'itemprop': 'name'}).get_text()
     elif soup.find('h1', {'itemprop': 'name'}):
@@ -171,10 +169,6 @@ def parse_html(html):
 #     else:
 #         pd = ' '.join(prep_description)
 #     return name, d, p, pd
-
-
-
-
 
 
 def url_to_dictionary(url):
