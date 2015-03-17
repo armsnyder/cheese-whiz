@@ -1,0 +1,77 @@
+#list of pasta
+Agnolotti
+Bavette
+bigoli
+bucatini
+Cannelloni
+crespelle
+Cappellini
+cappelletti
+Conchiglie
+Ditalini
+Eliche
+Farfalle
+festoni
+fettuccine
+filatieddi
+fusilli
+Garganelli
+gemelli
+Gnocchi
+Gnocchi di semolino
+Lasagna
+linguine
+macaroni
+Offelle
+orecchiette
+Orzo
+penne
+penne rigati
+perciatelli
+pici
+rotelle
+Ravioli
+rigatoni
+rotini
+Spaghetti
+spaghettini
+Stelline
+Tacconi
+tortellini
+Vermicelli
+Ziti
+
+
+#meats
+prosciutto
+pancetta
+pepperoni
+salami
+speck
+guanciale
+
+
+#for sure italian spices
+oregano
+basil
+garlic
+bay leaves
+rosemary
+red pepper flakes
+sage
+nutmeg
+
+
+#cheeses
+mozzarella
+pecorino romano
+parmesan
+gorgonzola
+fontina
+ricotta
+
+#tomatoes
+crushed tomato
+diced tomato
+tomato paste
+tomato sauce

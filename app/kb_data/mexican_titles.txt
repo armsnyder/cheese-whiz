@@ -1,0 +1,152 @@
+Ancas de Rana al Mojo de Ajo
+Alambres
+Arroz con camarones
+Arroz con pollo
+Barbacoa
+Birria
+Bistec picado
+Burrito
+Cabrito
+Calabacitas a la mexicana
+caldo
+carne en su jugo, meat and beans in a meat broth
+Camarones al Mojo de Ajo
+Carne asada
+Carnitas
+Cemita with milanesa
+Cecina
+Cemitas sandwiches
+Chalupa
+Chapulines
+Charales
+Chilaquiles
+Chile relleno
+Chiltomate
+Chilorio
+Chilpachole de jaiba
+Chimichangas
+Choriqueso
+Chorizo
+Churipo
+Coachala
+
+
+Cochinita pibil
+Cocido
+Codzito
+Cola de res con frijoles
+Corunda
+Huaunzontles
+Empanadas
+Empanada Mexicana
+Entomatadas
+Enchilada
+Enfrijoladas
+Filete de pescado al mojo de ajo
+Filete de pescado empanizado
+
+Flautas
+Fritadas de camaron
+Gorditas
+Glorias
+Gringas
+Huaraches
+Huevos divorciados
+Huevos motulenos
+Huevos rancheros
+Huachinango a la Veracruzana
+Lengua
+Longaniza
+Machaca
+Mancha manteles
+Memela
+
+Menudo
+
+Molotes
+Menudo
+Mixiotes
+Mole
+Molletes
+Molotes
+Moronga
+Mulitas
+Panucho
+Papadzules
+Parilladas
+Pastel Azteca
+Pejelagarto asado
+Picadillo
+Poc chuc
+Pollo asado
+Pollo Encacahuatado
+Pollo motulenos
+Pollo picado
+Pollo rostizado
+Pozole
+Quesadillas
+Rajas con crema
+Romeritos
+Salbutes
+Sincronizadas
+
+#soups
+
+Chilaquiles
+Sopes
+Sopa Azteca
+Sopa de pollo
+Sopa de tortilla
+tortilla soup
+Sopa tarasca
+Tacos
+Taco al pastor
+Taco Sinaloa
+Tamales
+taquitos
+tortillas
+tortas
+tostadas
+Tlacoyos
+Tlayudas
+Tripas
+
+#snacks/sides
+Arroz amarillo
+yellow rice
+Arroz con lima
+Arroz Espanol
+spanish rice
+Arroz verde
+green rice
+Atepocate
+Calabaza (squash)
+Camote
+mexican sweet potato
+Caviar de Carpa
+Ceviche
+Curtido
+Elote
+Ensalada de fruta (fruit salad)
+Fideos
+Frijoles
+Frijoles pintos
+Frijoles negros
+Frijoles charros
+Frijoles refritos
+refried beans
+Guacamole
+Jicama
+Jocoque
+Lentil soup
+Nachos
+Nopalitos
+Pambazos
+Papas (potatoes)
+Pico de gallo
+Queso de cuajo
+Queso flameado
+Salsa
+Tortillas
+Totopo
+Yuca Cassava
