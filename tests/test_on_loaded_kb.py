@@ -26,13 +26,16 @@ class TestOnLoadedKB(unittest.TestCase):
 
     def test_match_food_name_only(self):
         self.assertEqual(Ingredient('butter').match_to_food(self.kb).food_type.food_id, '01001')
-        self.assertEqual(Ingredient('sour cream').match_to_food(self.kb).food_type.food_id, '01001')
+        self.assertEqual(Ingredient('sour cream').match_to_food(self.kb).food_type.food_id, '01179')
         self.assertEqual(Ingredient('egg').match_to_food(self.kb).food_type.food_id, '01123')
+        self.assertEqual(Ingredient('flour').match_to_food(self.kb).food_type.food_id, '20081')
 
     def test_match_food_special_cases(self):
         self.assertEqual(Ingredient('beef', descriptor='ground').match_to_food(self.kb).food_type.food_id, '23567')
         self.assertEqual(Ingredient('onion', preparation='chopped').match_to_food(self.kb).food_type.food_id, '11282')
         self.assertEqual(Ingredient('ketchup').match_to_food(self.kb).food_type.food_id, '11935')
+        self.assertEqual(Ingredient('flour').match_to_food(self.kb).food_type.food_id, '20081')
+        self.assertEqual(Ingredient('water').match_to_food(self.kb).food_type.food_id, '14411')
 
     def test_match_food_none(self):
         self.assertEqual(Ingredient('asdfgph').match_to_food(self.kb).food_type, None)

@@ -104,7 +104,9 @@ class TestAddStyles(unittest.TestCase):
 
     def test_duplicates_different_category(self):
         food = kb.Food()
-        self.assertRaises(RuntimeError, food.add_styles, ['a', 'b'], ['b', 'c'])
+        food.add_styles(['a', 'b'], ['b', 'c'])
+        self.assertEqual(food.positive_tags, ['a', 'b'])
+        self.assertEqual(food.negative_tags, ['c'])
 
     def test_duplicates_iterative_add(self):
         food = kb.Food()
