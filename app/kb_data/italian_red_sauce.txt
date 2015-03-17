@@ -1,0 +1,101 @@
+#italian_red
+oregano
+basil
+crushed tomato
+diced tomato
+tomato puree
+tomato sauce
+tomato paste
+olive oil
+garlic
+bay leaf
+#end_italian_red
+
+
+#italian_white
+cream
+parmesan
+nutmeg
+milk
+butter
+cheese
+#end_italian_white
+
+#italian_pesto
+pesto
+#end_italian_pesto
+
+
+#asian_orange
+orange
+brown sugar
+chicken broth
+vinegar
+garlic
+ginger
+cayenne
+soy sauce
+cornstarch
+orange marmalade
+orange zest
+#end_asian_orange
+
+
+#asian_teriyaki
+white sugar
+soy sauce
+cornstarch
+garlic
+vinegar
+ginger
+cayenne
+#end_asian_teriyaki
+
+
+#asian_brown
+oyster sauce
+fish sauce
+chicken broth
+brown sugar
+sesame oil
+cornstarch
+sherry
+mirin
+ginger
+#end_asian_brown
+
+#asian_peanut
+
+#end_asian_peanut
+
+
+
+#asian_sesame
+sesame oil
+vinegar
+garlic
+cornstarch
+sugar
+chicken broth
+ginger
+peanut oil
+rice wine
+wine
+#end_asian_sesame
+
+#end_asian_sesame
+
+#mexican_white
+cream of mushroom soup
+sour cream
+green chiles
+garlic
+#end_mexican_white
+
+
+#mexican_red
+enchilada sauce
+salsa
+garlic
+onion
+#end_mexican_red

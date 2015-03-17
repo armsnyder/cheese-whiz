@@ -4,7 +4,6 @@
 
 from compiler.ast import flatten
 import nltk
-import re
 
 from enums import Nutrient
 from enums import FoodGroup
@@ -21,9 +20,12 @@ class KnowledgeBase:
         self.cooking_wares = set()
         self.measurements = {}
         self.common_substitutions = []
-        self.italian_style = []
-        self.mexican_style = []
-        self.east_asian_style = []
+        self.italian_to_mexican_list = []
+        self.italian_to_asian_list = []
+        self.asian_to_italian_list = []
+        self.asian_to_mexican_list = []
+        self.mexican_to_italian_list = []
+        self.mexican_to_asian_list = []
         self.vegetarian_substitutions = []
         self.vegan_substitutions = []
 
@@ -44,10 +46,13 @@ class KnowledgeBase:
         util.vprint('\t%s foods' % str(len(self.foods)))
         util.vprint('\t%s cooking wares' % str(len(self.cooking_wares)))
         util.vprint('\t%s measurements' % str(len(self.measurements)))
+        util.vprint('\t%s italian to mexican' % str(len(self.italian_to_mexican_list)))
+        util.vprint('\t%s italian to asian' % str(len(self.italian_to_asian_list)))
+        util.vprint('\t%s asian to mexican' % str(len(self.asian_to_mexican_list)))
+        util.vprint('\t%s asian to italian' % str(len(self.asian_to_italian_list)))
+        util.vprint('\t%s mexican to italian' % str(len(self.mexican_to_italian_list)))
+        util.vprint('\t%s mexican to asian' % str(len(self.mexican_to_asian_list)))
         util.vprint('\t%s common substitutions' % str(len(self.common_substitutions)))
-        util.vprint('\t%s Italian substitutions' % str(len(self.italian_style)))
-        util.vprint('\t%s Mexican substitutions' % str(len(self.mexican_style)))
-        util.vprint('\t%s East Asian substitutions' % str(len(self.east_asian_style)))
         util.vprint('\t%s vegan substitutions' % str(len(self.vegan_substitutions)))
         util.vprint('\t%s vegetarian substitutions' % str(len(self.vegetarian_substitutions)))
 
@@ -59,7 +64,7 @@ class KnowledgeBase:
             food_des_lines = food_des_txt.readlines()
             for food_des_line in food_des_lines:
                 parsed_line = parse_usda_line(food_des_line)
-                new_food = Food(parsed_line[0], parsed_line[1], parsed_line[2], common_name=parsed_line[4])
+                new_food = Food(parsed_line[0], parsed_line[1], parsed_line[2])
                 if new_food.food_group in food_group_blacklist:
                     continue
                 if new_food.food_id in food_id_blacklist:
@@ -109,6 +114,8 @@ class KnowledgeBase:
                 self.common_substitutions.append(self._format_raw_sub(parsed_in_out[1], parsed_in_out[0][:-1], 'common'))
             else:
                 self.common_substitutions.append(self._format_raw_sub(parsed_in_out[0], parsed_in_out[1], 'common'))
+
+
 
     def _format_raw_sub(self, raw_food_in, raw_food_out, reason):
         """
@@ -220,35 +227,64 @@ class KnowledgeBase:
         Loads Italian, Mexican, South Asian, vegan, AND vegetarian text files into fields
         """
         # TODO: I feel really bad about the use of copied code, so a helper function could be good to write sometime.
-        italian_sub_list = read_txt_lines_into_list('kb_data/italian_style.txt')
-        mexican_sub_list = read_txt_lines_into_list('kb_data/mexican_style.txt')
-        south_asian_sub_list = read_txt_lines_into_list('kb_data/east_asian_style.txt')
+        mexican_to_italian = read_specific_lines(util.relative_path("kb_data/style_substitutions.txt"), "#mexican_to_italian", "#end_mexican_to_italian")
+        mexican_to_asian = read_specific_lines(util.relative_path("kb_data/style_substitutions.txt"), "#mexican_to_asian", "#end_mexican_to_asian")
+        asian_to_italian = read_specific_lines(util.relative_path("kb_data/style_substitutions.txt"), "#asian_to_italian", "#end_asian_to_italian")
+        asian_to_mexican = read_specific_lines(util.relative_path("kb_data/style_substitutions.txt"), "#asian_to_mexican", "#end_asian_to_mexican")
+        italian_to_mexican = read_specific_lines(util.relative_path("kb_data/style_substitutions.txt"), "#italian_to_mexican", "#end_italian_to_mexican")
+        italian_to_asian = read_specific_lines(util.relative_path("kb_data/style_substitutions.txt"), "#italian_to_asian", "#end_italian_to_asian")
         vegan_sub_list = read_txt_lines_into_list('kb_data/vegan_substitutions.txt')
         vegetarian_sub_list = read_txt_lines_into_list('kb_data/vegetarian_substitutions.txt')
-        for raw_sub in italian_sub_list:
+
+        for raw_sub in mexican_to_italian:
             parsed_in_out = [thing.strip() for thing in raw_sub.split('=')]
             if len(parsed_in_out) != 2:
                 util.warning('Incorrect substitution string: ' + raw_sub)
                 continue
-            self.italian_style.append(self._format_raw_sub(parsed_in_out[0], parsed_in_out[1], 'italian'))
-        for raw_sub in mexican_sub_list:
+            self.mexican_to_italian_list.append(self._format_raw_sub(parsed_in_out[0], parsed_in_out[1], 'mexican_to_italian'))
+
+        for raw_sub in mexican_to_asian:
             parsed_in_out = [thing.strip() for thing in raw_sub.split('=')]
             if len(parsed_in_out) != 2:
                 util.warning('Incorrect substitution string: ' + raw_sub)
                 continue
-            self.mexican_style.append(self._format_raw_sub(parsed_in_out[0], parsed_in_out[1], 'mexican'))
-        for raw_sub in south_asian_sub_list:
+            self.mexican_to_asian_list.append(self._format_raw_sub(parsed_in_out[0], parsed_in_out[1], 'mexican_to_asian'))
+
+        for raw_sub in asian_to_italian:
             parsed_in_out = [thing.strip() for thing in raw_sub.split('=')]
             if len(parsed_in_out) != 2:
                 util.warning('Incorrect substitution string: ' + raw_sub)
                 continue
-            self.east_asian_style.append(self._format_raw_sub(parsed_in_out[0], parsed_in_out[1], 'east_asian'))
+            self.asian_to_italian_list.append(self._format_raw_sub(parsed_in_out[0], parsed_in_out[1], 'asian_to_italian'))
+
+        for raw_sub in asian_to_mexican:
+            parsed_in_out = [thing.strip() for thing in raw_sub.split('=')]
+            if len(parsed_in_out) != 2:
+                util.warning('Incorrect substitution string: ' + raw_sub)
+                continue
+            self.asian_to_mexican_list.append(self._format_raw_sub(parsed_in_out[0], parsed_in_out[1], 'asian_to_mexican'))
+
+        for raw_sub in italian_to_asian:
+            parsed_in_out = [thing.strip() for thing in raw_sub.split('=')]
+            if len(parsed_in_out) != 2:
+                util.warning('Incorrect substitution string: ' + raw_sub)
+                continue
+            self.italian_to_asian_list.append(self._format_raw_sub(parsed_in_out[0], parsed_in_out[1], 'italian_to_asian'))
+
+        for raw_sub in italian_to_mexican:
+            parsed_in_out = [thing.strip() for thing in raw_sub.split('=')]
+            if len(parsed_in_out) != 2:
+                util.warning('Incorrect substitution string: ' + raw_sub)
+                continue
+            self.italian_to_mexican_list.append(self._format_raw_sub(parsed_in_out[0], parsed_in_out[1], 'italian_to_mexican'))
+
         for raw_sub in vegan_sub_list:
             parsed_in_out = [thing.strip() for thing in raw_sub.split('=')]
             if len(parsed_in_out) != 2:
                 util.warning('Incorrect substitution string: ' + raw_sub)
                 continue
             self.vegan_substitutions.append(self._format_raw_sub(parsed_in_out[0], parsed_in_out[1], 'vegan'))
+
         for raw_sub in vegetarian_sub_list:
             parsed_in_out = [thing.strip() for thing in raw_sub.split('=')]
             if len(parsed_in_out) != 2:
@@ -267,10 +303,7 @@ class KnowledgeBase:
         for food in self.foods:
             ok = True
             for token in ingredient_tokens:
-                db_food_name = food.name
-                if food.common_name:
-                    db_food_name = "%s %s" % (db_food_name, food.common_name)
-                if token not in db_food_name.lower():
+                if token not in food.name.lower():
                     ok = False
                     break
             if ok:
@@ -321,17 +354,17 @@ class Food:
 
     def add_styles(self, positive_styles, negative_styles):
         for style in positive_styles:
-            if style in self.negative_tags:
-                util.warning("Food" + self.name + "cannot have identical + and - tags")
+            if style in self.positive_tags:
                 continue
-            elif style not in self.positive_tags:
+            else:
                 self.positive_tags.append(style)
-
         for style in negative_styles:
             if style in self.positive_tags:
-                util.warning("Food " + str(self.name) + " cannot have identical + and - tags")
+                self.positive_tags.remove(style)
+                raise RuntimeError("Food obj cannot have identical + and - tags")
+            if style in self.negative_tags:
                 continue
-            elif style not in self.negative_tags:
+            else:
                 self.negative_tags.append(style)
 
 
@@ -363,6 +396,30 @@ def read_txt_lines_into_list(file_name):
             if len(line) and line[-1] == '\n':
                 line = line[:-1]
             if len(line) and line[0] != '#':
+                result.append(line.lower())
+    return result
+
+def read_specific_lines(file_name, start, end):
+    """
+    Given a filename, returns a list with each cell being a line from the file
+    starting with start tag and ending with end tag
+    Converts to lowercase
+    :param file_name: filename of source
+    :return: list of file lines
+    """
+    result = []
+    read = False
+    with open(util.relative_path(file_name)) as source_file:
+        source_lines = source_file.readlines()
+        for line in source_lines:
+            if len(line) and line[-1] == '\n':
+                line = line[:-1]
+            if line == start:
+                read = True
+            if line == end:
+                read = False
+                break
+            if len(line) and line[0] != '#' and read:
                 result.append(line.lower())
     return result
 

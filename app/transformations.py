@@ -1,4 +1,6 @@
 import recipe
+import kb
+from enums import FoodGroup
 
 
 def to_vegan(from_recipe):
@@ -12,6 +14,22 @@ def to_vegan(from_recipe):
     :param from_recipe: old recipe
     :return: new recipe
     """
+    veg_recipe = to_vegetarian(from_recipe)
+
+    for ingredient in veg_recipe.ingredients:
+        if ingredient.food_type.food_group == FoodGroup.DAIRY_AND_EGG_PRODUCTS:
+            found = False
+            # Look for substitution in kb.vegan_substitutes
+            for name, substitution in kb.vegan_substitutions:
+                if name == ingredient.name:
+                    vegan_ingredient = substitution
+                    found = True
+            if found is False:
+                vegan_ingredient = 'textured vegetable protein'
+            recipe.ingredients.append(vegan_ingredient)
+        else:
+            recipe.ingredients.append(ingredient)
+
     return recipe.Recipe()  # Stub
 
 
@@ -25,6 +43,23 @@ def to_vegetarian(from_recipe):
     :param from_recipe: old recipe
     :return: new recipe
     """
+    for ingredient in from_recipe.ingredients:
+        if ingredient.food_type.food_group in (FoodGroup.POULTRY_PRODUCTS, FoodGroup.SAUSAGES_AND_LUNCHEON_MEATS,
+                                               FoodGroup.PORK_PRODUCTS, FoodGroup.BEEF_PRODUCTS,
+                                               FoodGroup.FINFISH_AND_SHELLFISH_PRODUCTS,
+                                               FoodGroup.LAMB_VEAL_AND_GAME_PRODUCTS):
+            # Look for substitution in kb.vegetarian_substitutes
+            for name, substitution in kb.vegetarian_substitutions:
+                found = False
+                if name == ingredient.name:
+                    veg_ingredient = substitution
+                    found = True
+            if found is False:
+                veg_ingredient = 'textured vegetable protein'
+            recipe.ingredients.append(veg_ingredient)
+        else:
+            recipe.ingredients.append(ingredient)
+
     return recipe.Recipe()  # Stub
 
 

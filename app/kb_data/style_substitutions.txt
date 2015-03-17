@@ -1,0 +1,244 @@
+#sauce_words
+alfredo
+marinara
+teriyaki
+#end_sauce_words
+
+
+
+#mexican_ingredients
+salsa
+guacamole
+
+#dairy
+sour cream
+crema mexicana
+cheddar
+monterey jack
+cotija cheese
+
+#beans and veg
+black beans
+kidney bean
+pinto bean
+onion
+
+#grains
+tortilla
+taco
+taco shell
+tostada
+empanada
+torta
+rice
+
+#end_mexican_ingredients
+
+
+
+#mexican_spices
+cumin
+cilantro
+lime
+jalapeno
+cloves
+chile
+coriander
+oregano
+cayenne
+chili powder
+thyme
+epazote
+chile powder
+chili
+green peppers
+red pepper
+yellow pepper
+garlic
+taco seasoning
+lime juice
+#end_mexican_spices
+
+
+#italian_spices
+oregano
+basil
+garlic
+bay leaves
+rosemary
+red pepper flake
+sage
+parsley
+nutmeg
+#end_italian_spices
+
+
+
+
+
+
+#italian_ingredients
+cream
+red wine
+prociutto
+mozzarella
+pecorino romano
+parmesan
+gorgonzola
+fontina
+ricotta
+
+
+#list of pasta
+Agnolotti
+Bavette
+bigoli
+bucatini
+Cannelloni
+crespelle
+Cappellini
+cappelletti
+Conchiglie
+Ditalini
+Eliche
+Farfalle
+festoni
+fettuccine
+filatieddi
+fusilli
+Garganelli
+gemelli
+Gnocchi
+Gnocchi di semolino
+Lasagna
+linguine
+macaroni
+Offelle
+orecchiette
+Orzo
+penne
+penne rigati
+perciatelli
+pici
+rotelle
+Ravioli
+rigatoni
+rotini
+Spaghetti
+spaghettini
+Stelline
+Tacconi
+tortellini
+Vermicelli
+Ziti
+
+
+#meats
+prosciutto
+pancetta
+pepperoni
+salami
+speck
+guanciale
+
+#end_italian_ingredients
+
+
+#asian_spices
+soy sauce
+cilantro
+sesame oil
+chile sauce
+fish sauce
+sriracha
+red curry paste
+white pepper
+oyster sauce
+ginger
+hot sauce
+paprika
+hoisin sauce
+mirin
+sherry
+brown sugar
+ginger root
+rice vinegar
+vinegar
+chili sauce
+
+#end_asian_spices
+
+
+
+
+#TRANSFORM INGREDIENT SUBSTITUTES
+
+#mexican_to_italian
+sour cream *= ricotta cheese
+tortilla *= lasagna noodle
+taco shell = lasagna noodle
+salsa *= tomato sauce OR crushed tomato OR spaghetti sauce
+cheddar cheese = parmesan OR pecorino romano
+cheddar = parmesan
+monterey jack = mozzarella
+cream of mushroom soup = alfredo sauce
+tortilla chips = lasagna noodle
+nacho cheese = alfredo sauce
+#end_mexican_to_italian
+
+#mexican_to_asian
+
+
+#end_mexican_to_asian
+
+#italian_to_mexican
+ricotta = sour cream
+parmesan = cheddar cheese
+mozzarella = monterey jack
+spaghetti sauce = salsa
+tomato sauce = salsa
+crushed tomato = salsa
+#end_italian_to_mexican
+
+
+#italian_to_asian
+ricotta *= tofu
+lasagna = potsticker wrappers OR wide rice noodles
+pasta = rice noodle OR rice
+olive oil = vegetable oil OR peanut oil
+cheese = tofu
+
+#end_italian_to_asian
+
+
+
+#asian_to_italian
+tofu = ricotta
+potsticker wrappers = manicotti
+1 rice noodle = 2 fettuccine
+peanut oil = olive oil OR vegetable oil
+sesame oil = olive oil
+rice = ditalini OR couscous OR orzo
+curry paste = tomato paste with 1/4 teaspoon red pepper flakes
+rice vinegar = vinegar
+black vinegar = vinegar
+
+#end_asian_to_italian
+
+
+
+
+
+#asian_to_mexican
+tofu = sour cream
+potsticker wrappers = tortilla
+gyoza wrappers = tortilla
+sesame oil = olive oil
+bean sprouts = diced bell peppers
+rice vinegar = vinegar
+curry paste = chili sauce
+ginger root = cumin
+ginger = cumin
+
+
+#end_asian_to_mexican
