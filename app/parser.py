@@ -13,7 +13,10 @@ def parse_html(html):
     :return: Title string, list of ingredient/quantity tuples, and list of step strings
     """
     soup = BeautifulSoup(html)
-    title = soup.find('span', {'itemprop': 'name'}).get_text()
++    if soup.find('span', {'itemprop': 'name'}):
++        title = soup.find('span', {'itemprop': 'name'}).get_text()
++    elif soup.find('h1', {'itemprop': 'name'}):
++        title = soup.find('h1', {'itemprop': 'name'}).get_text()
     ingredients = soup.find_all('p', {'itemprop': 'ingredients'})
     tupes = []
     for i in ingredients:
