@@ -42,8 +42,6 @@ class TestOnLoadedKB(unittest.TestCase):
         self.assertEqual(Ingredient('asdfgph').match_to_food(self.kb).food_type, None)
         self.assertEqual(Ingredient('lime zest').match_to_food(self.kb).food_type, None)
 
-
-
     def test_parse_ingredient(self):
         name, descriptors, prep, prep_descriptors = parse_ingredient("finely chopped fresh basil", self.kb)
         self.assertEqual(descriptors, 'none')

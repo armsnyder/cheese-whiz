@@ -4,6 +4,7 @@ import nltk
 
 import util
 import recipe
+import kb
 
 
 def parse_ingredient(ingredient, knowledge_base):
@@ -37,7 +38,12 @@ def parse_ingredient(ingredient, knowledge_base):
             name_string = ' '.join(name_words[w:])
             break
 
-    rest_string = ' '.join(rest_words).decode('utf-8')
+    # TODO: Make sure jalapeno works with this encoding
+    try:
+        rest_words = [word.decode('unicode_escape').encode('ascii', 'ignore') for word in rest_words]
+    except UnicodeEncodeError:
+        util.warning('Unicode error - ' + str(rest_words))
+    rest_string = ' '.join(rest_words)
     tokens = nltk.word_tokenize(rest_string)
     pos_tagged_tokens = nltk.pos_tag(tokens)
     for word, tag in pos_tagged_tokens:
@@ -68,6 +74,7 @@ def parse_ingredient(ingredient, knowledge_base):
         pd = ' '.join(prep_description_words)
 
     return name_string, d, p, pd
+
 
 def parse_html(html):
     """
@@ -131,7 +138,19 @@ def get_html(url):
         return None
 
 
-def make_recipe(title, ingredients, steps):
+def url_to_recipe(url, knowledge_base):
+    """
+    Takes a recipe URL and returns a Recipe object
+    :param url: recipe url
+    :param knowledge_base: loaded knowledge base
+    :return: Recipe
+    """
+    recipe_html = get_html(url)
+    recipe_title, recipe_ingredients, recipe_steps = parse_html(recipe_html)
+    return make_recipe(recipe_title, recipe_ingredients, recipe_steps, knowledge_base)
+
+
+def make_recipe(title, ingredients, steps, knowledge_base):
     """
     STUB DESCRIPTION:
     Write the make_recipe function in app.parser that will take as input the output of parse_html, and output a
@@ -141,7 +160,13 @@ def make_recipe(title, ingredients, steps):
     :param steps: list of steps (strings)
     :return: Recipe
     """
-    return recipe.Recipe()  # Stub
+    ingredient_object_list = []
+    for ingredient_string, quantity_string in ingredients:
+        quantity = knowledge_base.interpret_quantity(quantity_string)
+        i_name, i_descriptor, i_prep, i_prep_descriptor = parse_ingredient(ingredient_string, knowledge_base)
+        ingredient_object_list.append(
+            recipe.Ingredient(i_name, quantity, i_descriptor, i_prep, i_prep_descriptor).match_to_food(knowledge_base))
+    return recipe.Recipe(title, ingredient_object_list, steps)
 
 
 def format_for_autograder(url):
