@@ -4,7 +4,8 @@ import re
 
 class Recipe:
 
-    def __init__(self, ingredients=None, steps=None):
+    def __init__(self, title=None, ingredients=None, steps=None):
+        self.title = title
         self.ingredients = []
         self.steps = []
         if ingredients:

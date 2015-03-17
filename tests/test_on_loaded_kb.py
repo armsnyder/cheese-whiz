@@ -3,6 +3,7 @@
 import unittest
 from app.recipe import Ingredient
 from app.kb import KnowledgeBase
+from app.parser import parse_ingredient
 
 
 class TestOnLoadedKB(unittest.TestCase):
@@ -40,3 +41,24 @@ class TestOnLoadedKB(unittest.TestCase):
     def test_match_food_none(self):
         self.assertEqual(Ingredient('asdfgph').match_to_food(self.kb).food_type, None)
         self.assertEqual(Ingredient('lime zest').match_to_food(self.kb).food_type, None)
+
+    def test_parse_ingredient(self):
+        name, descriptors, prep, prep_descriptors = parse_ingredient("finely chopped fresh basil", self.kb)
+        self.assertEqual(descriptors, 'none')
+        self.assertEqual(prep, 'chopped')
+        self.assertEqual(prep_descriptors, 'finely')
+        self.assertEqual(name, 'fresh basil')
+
+    def test_parse_ingredient_huh(self):
+        name, descriptors, prep, prep_descriptors = parse_ingredient("finely chopped fresh spaghetti", self.kb)
+        self.assertEqual(descriptors, 'fresh')
+        self.assertEqual(prep, 'chopped')
+        self.assertEqual(prep_descriptors, 'finely')
+        self.assertEqual(name, 'spaghetti')
+
+    def test_parse_ingredient_with_commas(self):
+        name, descriptors, prep, prep_descriptors = parse_ingredient("boneless, skinless chicken, washed and dried", self.kb)
+        self.assertEqual(descriptors, 'boneless skinless')
+        self.assertEqual(prep, 'washed dried')
+        self.assertEqual(prep_descriptors, 'none')
+        self.assertEqual(name, 'chicken')
