@@ -41,8 +41,6 @@ def parse_ingredient(ingredient, knowledge_base):
     """
     # TODO: consider words with 2 POS tags (remove from consideration after being added?)
     # TODO: use context clues?
-    # TODO: use only accepted ingredients names as the basis for name (rather than all nouns)
-    # TODO: Change from lists to a single string object
     # Look for commas, ands, other syntax patterns
 
     descriptor = []
@@ -76,6 +74,8 @@ def parse_ingredient(ingredient, knowledge_base):
             preparation.append(word)
         if word[-2:] == 'ly':
             prep_description.append(word)
+        else:
+            descriptor.append(word)
 
         # tokens = nltk.word_tokenize(word)
         # pos_tagged_tokens = nltk.pos_tag(tokens)
