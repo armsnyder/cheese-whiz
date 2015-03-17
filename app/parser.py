@@ -38,10 +38,7 @@ def parse_ingredient(ingredient, knowledge_base):
             break
 
     # TODO: Make sure jalapeno works with this encoding
-    try:
-        rest_words = [word.decode('unicode_escape').encode('ascii', 'ignore') for word in rest_words]
-    except UnicodeEncodeError:
-        util.warning('Unicode error - ' + str(rest_words))
+    rest_words = [thing.decode('unicode_escape').encode('ascii', 'ignore') for thing in rest_words]
     rest_string = ' '.join(rest_words)
     tokens = nltk.word_tokenize(rest_string)
     pos_tagged_tokens = nltk.pos_tag(tokens)
