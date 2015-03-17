@@ -23,6 +23,7 @@ def parse_ingredient(ingredient, knowledge_base):
     descriptor_words = []
     preparation_words = []
     prep_description_words = []
+    only_name_words = []
 
     ingredient = ingredient.replace(', or to taste', '')
 
@@ -36,8 +37,6 @@ def parse_ingredient(ingredient, knowledge_base):
             rest_words = name_words[:w]
             name_string = ' '.join(name_words[w:])
             break
-    if name_string == 'unknown':
-        util.warning('Could not find ingredient %s in KB' % name_words)
 
     # TODO: Make sure jalapeno works with this encoding
     try:
@@ -48,8 +47,9 @@ def parse_ingredient(ingredient, knowledge_base):
     tokens = nltk.word_tokenize(rest_string)
     pos_tagged_tokens = nltk.pos_tag(tokens)
     for word, tag in pos_tagged_tokens:
-        # if tag == 'NN':
-        #     name_words.append(word)
+        if name_string == 'unknown':
+            if tag == 'NN':
+                only_name_words.append(word)
         if tag == 'ADJ' or tag == 'JJ':
             descriptor_words.append(word)
         elif tag == 'VBD':
@@ -57,6 +57,9 @@ def parse_ingredient(ingredient, knowledge_base):
         elif tag == 'ADV' or tag == 'RB':
             prep_description_words.append(word)
 
+    if name_string == 'unknown':
+        if only_name_words:
+            name_string = ' '.join(only_name_words)
     if not descriptor_words:
         d = 'none'
     else:
