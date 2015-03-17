@@ -3,6 +3,7 @@
 import unittest
 from app.recipe import Ingredient
 from app.kb import KnowledgeBase
+from app.parser import parse_ingredient
 
 
 class TestOnLoadedKB(unittest.TestCase):

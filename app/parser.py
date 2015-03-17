@@ -14,8 +14,7 @@ def parse_ingredient(ingredient, knowledge_base):
     """
     # TODO: consider words with 2 POS tags (remove from consideration after being added?)
     # TODO: use context clues?
-    # TODO: use only accepted ingredients names as the basis for name (rather than all nouns)
-    # Look for commas, ands, other syntax patterns
+    # TODO: handle commas, ands, other syntax patterns
 
 
     name_string = 'unknown'
@@ -28,33 +27,30 @@ def parse_ingredient(ingredient, knowledge_base):
 
     name_words = ingredient.split()
     for w in range(len(name_words)):
-        if not knowledge_base.lookup_food(' '.join(name_words[w:])):
+        query = ' '.join(name_words[w:])
+        if not knowledge_base.lookup_food(query):
             rest_words = name_words[:(w+1)]
             continue
         else:
             rest_words = name_words[:w]
             name_string = ' '.join(name_words[w:])
             break
-    if not name_words:
+    if name_string == 'unknown':
         util.warning('Could not find ingredient %s in KB' % name_words)
-        rest_words = name_words
 
-    tokens = nltk.word_tokenize(' '.join(rest_words))
+    rest_string = ' '.join(rest_words).decode('utf-8')
+    tokens = nltk.word_tokenize(rest_string)
     pos_tagged_tokens = nltk.pos_tag(tokens)
     for word, tag in pos_tagged_tokens:
         # if tag == 'NN':
         #     name_words.append(word)
-        if tag == 'ADJ':
+        if tag == 'ADJ' or tag == 'JJ':
             descriptor_words.append(word)
         elif tag == 'VBD':
             preparation_words.append(word)
-        elif tag == 'ADV':
+        elif tag == 'ADV' or tag == 'RB':
             prep_description_words.append(word)
 
-    # if not name_words:
-    #     n = 'unknown'
-    # else:
-    #     n = ' '.join(name_words)
     if not descriptor_words:
         d = 'none'
     else:
@@ -81,6 +77,8 @@ def parse_html(html):
         title = soup.find('span', {'itemprop': 'name'}).get_text()
     elif soup.find('h1', {'itemprop': 'name'}):
         title = soup.find('h1', {'itemprop': 'name'}).get_text()
+    else:
+        title = 'untitled'
     ingredients = soup.find_all('p', {'itemprop': 'ingredients'})
     ingredient_quantity_string_tuples = []
     for i in ingredients:
@@ -99,76 +97,6 @@ def parse_html(html):
     else:
         steps.append('No directions.')
     return title, ingredient_quantity_string_tuples, steps
-
-
-# def parse_ingredient(ingredient, knowledge_base):
-#     """
-#     Takes ingredient-name string from parse_html, separates ingredient into name, descriptor, preparation, and prep descriptor
-#     :param ingredients: list of string tuples ("ingredient-name", "ingredient-amount")
-#     :return: ingredient name, list of descriptors, list of preparations, list of prep descriptors
-#     """
-#     # TODO: consider words with 2 POS tags (remove from consideration after being added?)
-#     # TODO: use context clues?
-#     # Look for commas, ands, other syntax patterns
-#
-#     descriptor = []
-#     preparation = []
-#     prep_description = []
-#     rest = []
-#
-#     ingredient = ingredient.replace(', or to taste', '')
-#     name = ingredient.split(',')
-#     name = [t.strip() for t in name]
-#     if len(name) > 1:
-#         True
-#         # solve for commas
-#         # if 'and' in name[-1:]
-#
-#     name = ' '.join(name).split()
-#     for w in range(len(name)):
-#         if w+1 == len(name):
-#             util.warning('Could not find ingredient %s in KB' % name)
-#             rest = name
-#             name = 'unknown'
-#         elif not knowledge_base.lookup_food(' '.join(name[w:])):
-#             rest = name[:(w+1)]
-#             continue
-#         else:
-#             rest = name[:w]
-#             name = ' '.join(name[w:])
-#             break
-#     for word in rest:
-#         if word[-2:] == 'ed':
-#             preparation.append(word)
-#         if word[-2:] == 'ly':
-#             prep_description.append(word)
-#         else:
-#             descriptor.append(word)
-#
-#         # tokens = nltk.word_tokenize(word)
-#         # pos_tagged_tokens = nltk.pos_tag(tokens)
-#         # for tok, tag in pos_tagged_tokens:
-#         #     if tag == 'ADJ':
-#         #         descriptor.append(tok)
-#         #     elif tag == 'VBD':
-#         #         preparation.append(tok)
-#         #     elif tag == 'ADV':
-#         #         prep_description.append(tok)
-#         #     else:
-#         #         util.warning('Could not interpret word as descriptor, preparation, or preparation descriptor')
-#     if not descriptor:
-#         d = 'none'
-#     else:
-#         d = ' '.join(descriptor)
-#     if not preparation:
-#         p = 'none'
-#     else:
-#         p = ' '.join(preparation)
-#     if not prep_description:
-#         pd = 'none'
-#     else:
-#         pd = ' '.join(prep_description)
-#     return name, d, p, pd
 
 
 def url_to_dictionary(url):
