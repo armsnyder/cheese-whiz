@@ -13,14 +13,14 @@ from app.style_fusions import spice_classify
 from app.parser import parse_ingredient
 from app.recipe import Recipe, Ingredient
 from app.transformations import to_vegan
+import app.app
 
 
 class TestOnLoadedKB(unittest.TestCase):
 
     @classmethod
     def setUpClass(cls):
-        cls.kb = KnowledgeBase()
-        cls.kb.load()
+        cls.kb = app.app.load_knowledge_base()
 
     # def test_match_food_name_and_description(self):
     #     self.assertEqual(Ingredient('olive oil').match_to_food(self.kb).food_type.food_id, '04053')
