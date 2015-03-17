@@ -47,7 +47,7 @@ A list of ingredient equalities, completely raw and unparsed, which support mult
 **vegan_substitutions.txt**  
 A list of ingredient equalities, completely raw and unparsed, which support multiple substitution options. This is used as a basic starting point reference for the vegan substitution function.
 
-**vegatarian_substitutions.txt**  
+**vegetarian_substitutions.txt**  
 A list of ingredient equalities, completely raw and unparsed, which support multiple substitution options. This is used as a basic starting point reference for the vegetarian substitution function.
 
 **italian_style.txt**  
@@ -56,23 +56,23 @@ A list of ingredient equality statements, completely raw and unparsed, that defi
 **mexican_style.txt**  
 A list of ingredient equality statements, completely raw and unparsed, that define exchanges one might make to make a recipe *more* Mexican.
 
-**south_asian_style.txt**  
-A list of ingredient equality statements, completely raw and unparsed, that define exchanges one might make to make a recipe *more* South Asian.
+**east_asian_style.txt**  
+A list of ingredient equality statements, completely raw and unparsed, that define exchanges one might make to make a recipe *more* East Asian.
 
 ### Running the Program
 To run the program with a graphical interface, simply run the program with no command line arguments:  
 ```
-python cheese-whiz.py
+>> python cheese-whiz.py
 ```
 To run the program in the command line, run it with a URL argument:
 ```
-python cheese-whiz.py http://allrecipes.com/Recipe/Baked-Flan
+>> python cheese-whiz.py http://allrecipes.com/Recipe/Baked-Flan
 ```
 
 ### Packages
 For convenience, we have included a requirements.txt file in the root directory to install external libraries. To install these dependencies, run this command:
 ```
-pip install -r requirements.txt
+>> pip install -r requirements.txt
 ```
 
 #### Standard Libraries
@@ -94,7 +94,7 @@ We used a number of built-in Python libraries. Without going into detail, here t
 In addition to the standard Python libraries, several packages modules were used to improve performance.
 
 **nltk**  
-Natural Language Toolkit used for tokenizing natural lanuage and labeling parts of speech
+Natural Language Toolkit used for tokenizing natural language and labeling parts of speech
 
 **beautifulsoup4**  
 A web scraper used for pulling html content out of tags
