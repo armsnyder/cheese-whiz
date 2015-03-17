@@ -1,6 +1,7 @@
 import unittest
 import tests.autograder
 import app.parser as parser
+import app.kb as kb
 
 
 ideal_grade = 0.9
@@ -19,7 +20,10 @@ class TestAutograder(unittest.TestCase):
 class TestIngredientNameParser(unittest.TestCase):
 
     def test_parse_ingredient(self):
-        name, descriptors, prep, prep_descriptors = parser.parse_ingredient("finely chopped fresh basil")
-        self.assertEqual(prep, ['chopped'])
-        self.assertEqual(prep_descriptors, ['finely'])
+        knowledge_base = kb.KnowledgeBase()
+        knowledge_base._load_foods()
+        name, descriptors, prep, prep_descriptors = parser.parse_ingredient("finely chopped fresh basil", knowledge_base)
+        self.assertEqual(descriptors, 'none')
+        self.assertEqual(prep, 'chopped')
+        self.assertEqual(prep_descriptors, 'finely')
         self.assertEqual(name, 'fresh basil')
