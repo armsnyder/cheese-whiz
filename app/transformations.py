@@ -2,33 +2,34 @@ import recipe
 from enums import FoodGroup
 
 
-def to_vegan(knowledge_base, from_recipe):
-    """
-    Takes a Recipe input and output vegan Recipe.
-    First, fun the to_vegetarian function.
-    Loop through ingredients, checking food group (look in enums.py) for no-no groups. If the ingredient is of
-    a no-no-group, check for a substitution in kb.vegan_substitutions (not yet written). If no suitable substitution
-    can be found, replace with a quantity of TVP of equal weight.
-    :param from_recipe: knowledge_base, old recipe
-    :return: new recipe
-    """
-    veg_recipe = to_vegetarian(knowledge_base, from_recipe)
-
-    for ingredient in veg_recipe.ingredients:
-        if ingredient.food_type.food_group == FoodGroup.DAIRY_AND_EGG_PRODUCTS:
-            found = False
-            # Look for substitution in kb.vegan_substitutes
-            for name, substitution in knowledge_base.vegan_substitutions:
-                if name == ingredient.name:
-                    vegan_ingredient = substitution
-                    found = True
-            if not found:
-                vegan_ingredient = 'textured vegetable protein'
-            recipe.ingredients.append(vegan_ingredient)
-        else:
-            recipe.ingredients.append(ingredient)
-
-    return recipe.Recipe()
+# def to_vegan(knowledge_base, from_recipe):
+#     """
+#     Takes a Recipe input and output vegan Recipe.
+#     First, fun the to_vegetarian function.
+#     Loop through ingredients, checking food group (look in enums.py) for no-no groups. If the ingredient is of
+#     a no-no-group, check for a substitution in kb.vegan_substitutions (not yet written). If no suitable substitution
+#     can be found, replace with a quantity of TVP of equal weight.
+#     :param from_recipe: knowledge_base, old recipe
+#     :return: new recipe
+#     """
+#
+#     veg_recipe = to_vegetarian(knowledge_base, from_recipe)
+#     new_recipe = recipe.Recipe(None, None, veg_recipe.steps)
+#
+#     for ingredient in veg_recipe.ingredients:
+#         if ingredient.food_type.food_group == FoodGroup.DAIRY_AND_EGG_PRODUCTS:
+#             found = False
+#             # Look for substitution in kb.vegan_substitutes
+#             for name, substitution in knowledge_base.vegan_substitutions:
+#                 if name == ingredient.name:
+#                     vegan_ingredient = substitution
+#                     found = True
+#             if not found:
+#                 vegan_ingredient = 'textured vegetable protein'
+#             new_recipe.ingredients.append(vegan_ingredient)
+#         else:
+#             new_recipe.ingredients.append(ingredient)
+#     return new_recipe
 
 
 def to_vegetarian(knowledge_base, from_recipe):
@@ -40,24 +41,26 @@ def to_vegetarian(knowledge_base, from_recipe):
     :param from_recipe: knowledge_base, old recipe
     :return: new recipe
     """
+    new_recipe = recipe.Recipe(None, None, from_recipe.steps)
+
     for ingredient in from_recipe.ingredients:
         if ingredient.food_type.food_group in (FoodGroup.POULTRY_PRODUCTS, FoodGroup.SAUSAGES_AND_LUNCHEON_MEATS,
                                                FoodGroup.PORK_PRODUCTS, FoodGroup.BEEF_PRODUCTS,
                                                FoodGroup.FINFISH_AND_SHELLFISH_PRODUCTS,
                                                FoodGroup.LAMB_VEAL_AND_GAME_PRODUCTS):
             # Look for substitution in kb.vegetarian_substitutes
-            for name, substitution in knowledge_base.vegetarian_substitutions:
+            print knowledge_base.vegetarian_substitutions
+            for name in knowledge_base.vegetarian_substitutions:
                 found = False
                 if name == ingredient.name:
-                    veg_ingredient = substitution
+                    veg_ingredient = name
                     found = True
             if not found:
                 veg_ingredient = 'textured vegetable protein'
-            recipe.ingredients.append(veg_ingredient)
+            new_recipe.ingredients.append(veg_ingredient)
         else:
-            recipe.ingredients.append(ingredient)
-
-    return recipe.Recipe()
+            new_recipe.ingredients.append(ingredient)
+    return new_recipe
 
 
 def make_healthy(from_recipe):
