@@ -290,7 +290,6 @@ class KnowledgeBase:
         parse = regex.numletter.match(string)
         if parse:
             q.amount = util.fraction_to_decimal(parse.group(1))
-            print parse.group(1)
             if parse.group(2) in self.measurements:
                 q.unit = parse.group(2)
 

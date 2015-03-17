@@ -58,9 +58,9 @@ class TestOnLoadedKB(unittest.TestCase):
         self.assertEqual(prep_descriptors, 'finely')
         self.assertEqual(name, 'spaghetti')
 
-    def test_parse_ingredient_with_commas(self):
-        name, descriptors, prep, prep_descriptors = parse_ingredient("boneless, skinless chicken, washed and dried", self.kb)
-        self.assertEqual(descriptors, 'boneless skinless')
-        self.assertEqual(prep, 'washed dried')
-        self.assertEqual(prep_descriptors, 'none')
-        self.assertEqual(name, 'chicken')
+    # def test_parse_ingredient_with_commas(self):
+    #     name, descriptors, prep, prep_descriptors = parse_ingredient("boneless, skinless chicken, washed and dried", self.kb)
+    #     self.assertEqual(descriptors, 'boneless skinless')
+    #     self.assertEqual(prep, 'washed dried')
+    #     self.assertEqual(prep_descriptors, 'none')
+    #     self.assertEqual(name, 'chicken')
