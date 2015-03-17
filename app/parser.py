@@ -6,7 +6,6 @@ import util
 import recipe
 
 
-
 def parse_html(html):
     """
     Takes HTML and does some basic parsing
@@ -112,3 +111,40 @@ def format_for_autograder(url):
     :return: JSON for autograder
     """
     pass
+
+
+def find_cooking_tools(steps, knowledge_base):
+    """
+    finds cooking tools by comparing step string to cooking_wares.txt.
+    Avoids duplicates by replacing found items with empty string.
+    :param steps:
+    :return: list of tools as list of words
+    """
+    wares = knowledge_base.cooking_wares
+    tool_list = []
+    for e in steps:
+        e = e.lower()
+        for tool in wares:
+            if tool in e and tool not in tool_list:
+                e = e.replace(tool, '')
+                tool_list.append(tool)
+                # print tool
+    return tool_list
+
+
+def find_cooking_methods(steps, knowledge_base):
+    """
+    finds cooking methods by comparing step string to cooking_terms.txt.
+    Avoids duplicates by replacing matched methods with empty string.
+    :param steps:
+    :return: method list as list of words
+    """
+    verbiage = knowledge_base.cooking_terms
+    method_list = []
+    for step in steps:
+        step = step.lower()
+        for method in verbiage:
+            if method in step and method not in method_list:
+                step = step.replace(method, '')
+                method_list.append(method)
+    return method_list

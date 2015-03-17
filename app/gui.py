@@ -11,6 +11,7 @@ import time
 
 import util
 import app
+import parser
 
 
 class GUI(ttk.Frame):
@@ -131,8 +132,6 @@ class GUI(ttk.Frame):
             self.main_window.pack_configure(padx=10, pady=10)
             message = ttk.Label(self.main_window, text="Waiting for knowledge base to load...")
             message.pack()
-            test_url = ttk.Label(self.main_window, text=self.recipe_url)
-            test_url.pack()
         else:
             self.display_recipe_state()
 
@@ -150,6 +149,9 @@ class GUI(ttk.Frame):
         self.parent.geometry('500x800')
         message = ttk.Label(self.main_window, text="(Recipe displays here)")
         message.pack()
+
+        recipe = parser.url_to_dictionary(self.recipe_url)
+
         self.center_on_screen()
 
     def raise_and_focus(self):

@@ -21,7 +21,7 @@ class KnowledgeBase:
         self.common_substitutions = []
         self.italian_style = []
         self.mexican_style = []
-        self.south_asian_style = []
+        self.east_asian_style = []
         self.vegetarian_substitutions = []
         self.vegan_substitutions = []
 
@@ -45,7 +45,7 @@ class KnowledgeBase:
         util.vprint('\t%s common substitutions' % str(len(self.common_substitutions)))
         util.vprint('\t%s Italian substitutions' % str(len(self.italian_style)))
         util.vprint('\t%s Mexican substitutions' % str(len(self.mexican_style)))
-        util.vprint('\t%s South Asian substitutions' % str(len(self.south_asian_style)))
+        util.vprint('\t%s East Asian substitutions' % str(len(self.east_asian_style)))
         util.vprint('\t%s vegan substitutions' % str(len(self.vegan_substitutions)))
         util.vprint('\t%s vegetarian substitutions' % str(len(self.vegetarian_substitutions)))
 
@@ -61,6 +61,14 @@ class KnowledgeBase:
                 if new_food.food_group in food_group_blacklist:
                     continue
                 if new_food.food_id in food_id_blacklist:
+                    continue
+                bad_food_name = False
+                for keyword_group in food_keyword_blacklist:
+                    for keyword in keyword_group:
+                        if keyword in new_food.name:
+                            bad_food_name = True
+                if bad_food_name:
+                    util.vprint("Skipping " + new_food.name)
                     continue
                 if new_food.food_id in nutritional_data:
                     new_food.nutritional_data = nutritional_data[new_food.food_id]
@@ -189,7 +197,7 @@ class KnowledgeBase:
         # TODO: I feel really bad about the use of copied code, so a helper function could be good to write sometime.
         italian_sub_list = read_txt_lines_into_list('kb_data/italian_style.txt')
         mexican_sub_list = read_txt_lines_into_list('kb_data/mexican_style.txt')
-        south_asian_sub_list = read_txt_lines_into_list('kb_data/south_asian_style.txt')
+        south_asian_sub_list = read_txt_lines_into_list('kb_data/east_asian_style.txt')
         vegan_sub_list = read_txt_lines_into_list('kb_data/vegan_substitutions.txt')
         vegetarian_sub_list = read_txt_lines_into_list('kb_data/vegetarian_substitutions.txt')
         for raw_sub in italian_sub_list:
@@ -209,7 +217,7 @@ class KnowledgeBase:
             if len(parsed_in_out) != 2:
                 util.warning('Incorrect substitution string: ' + raw_sub)
                 continue
-            self.south_asian_style.append(self._format_raw_sub(parsed_in_out[0], parsed_in_out[1], 'south_asian'))
+            self.east_asian_style.append(self._format_raw_sub(parsed_in_out[0], parsed_in_out[1], 'east_asian'))
         for raw_sub in vegan_sub_list:
             parsed_in_out = [thing.strip() for thing in raw_sub.split('=')]
             if len(parsed_in_out) != 2:
@@ -383,5 +391,10 @@ food_id_blacklist = \
     [
 
     ]
+
+food_keyword_blacklist = \
+    [
+        ['frozen']
+    ]  # Format each element as a list of keywords
 
 food_id_blacklist = flatten(food_id_blacklist)
