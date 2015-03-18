@@ -18,7 +18,7 @@ def parse_ingredient(ingredient, knowledge_base):
     # TODO: handle commas, ands, other syntax patterns
     tag_name = ['NN', 'NNP', 'NNPS', 'NNS', 'PRP', 'PRP$']
     tag_des = ['JJ']
-    tag_prep= ['VBD', 'VBN']
+    tag_prep = ['VBD', 'VBN']
     tag_prep_des = ['ADV', 'RB', 'RBR', 'RBS']
     special_cases = {
         'des': ['ground'],

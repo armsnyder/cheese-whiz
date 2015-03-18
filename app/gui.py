@@ -13,6 +13,7 @@ import util
 import app
 import parser
 import transformations
+import style_fusions
 
 
 class GUI(ttk.Frame):
@@ -181,15 +182,15 @@ class GUI(ttk.Frame):
                                           self.knowledge_base, recipe))).pack()
         more_mexican_button = ttk.Button(button_frame, text="More Mexican",
                                          command=lambda: self.display_recipe_state(
-                                             transformations.transform_style(
+                                             style_fusions.recipe_fusion(
                                                  recipe, 'mexican', self.knowledge_base))).pack()
         more_asian_button = ttk.Button(button_frame, text="More Asian",
                                        command=lambda: self.display_recipe_state(
-                                           transformations.transform_style(
+                                           style_fusions.recipe_fusion(
                                                recipe, 'asian', self.knowledge_base))).pack()
         more_italian = ttk.Button(button_frame, text="More Italian",
                                   command=lambda: self.display_recipe_state(
-                                      transformations.transform_style(
+                                      style_fusions.recipe_fusion(
                                           recipe, 'italian', self.knowledge_base))).pack()
         next_recipe_button = ttk.Button(button_frame, text="Next Recipe", command=self.next_recipe).pack(pady=50)
 
