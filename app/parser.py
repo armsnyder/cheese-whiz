@@ -18,7 +18,7 @@ def parse_ingredient(ingredient, knowledge_base):
     # TODO: handle commas, ands, other syntax patterns
     tag_name = ['NN', 'NNP', 'NNPS', 'NNS', 'PRP', 'PRP$']
     tag_des = ['JJ']
-    tag_prep= ['VBD', 'VBN']
+    tag_prep = ['VBD', 'VBN']
     tag_prep_des = ['ADV', 'RB', 'RBR', 'RBS']
     special_cases = {
         'des': ['ground'],
@@ -35,6 +35,7 @@ def parse_ingredient(ingredient, knowledge_base):
     ingredient = ingredient.lower()
     ingredient = ingredient.replace(', or to taste', '')
     ingredient = ingredient.replace(' or to taste', '')
+    ingredient = remove_unicode(ingredient)
     i_tokens = nltk.pos_tag(nltk.word_tokenize(ingredient))
     # for i in range(len(i_tokens)):
     #     ii = i_tokens[i][0]
@@ -51,9 +52,6 @@ def parse_ingredient(ingredient, knowledge_base):
             rest_words = i_tokens[:w]
             name_string = ' '.join([t[0] for t in i_tokens[w:]])
             break
-
-    print i_tokens
-    print name_string
 
     for i in range(len(rest_words)):
         tag = rest_words[i][1]
@@ -76,9 +74,6 @@ def parse_ingredient(ingredient, knowledge_base):
             prep_description_words.append(word)
         else:
             descriptor_words.append(word)
-    print descriptor_words
-    print preparation_words
-    print prep_description_words
 
     if name_string == 'unknown':
         if only_name_words:
@@ -112,6 +107,7 @@ def parse_html(html):
         title = soup.find('h1', {'itemprop': 'name'}).get_text()
     else:
         title = 'untitled'
+    title = title.lower()
     ingredients = soup.find_all('p', {'itemprop': 'ingredients'})
     ingredient_quantity_string_tuples = []
     for i in ingredients:
@@ -129,6 +125,7 @@ def parse_html(html):
             steps.append(d.get_text())
     else:
         steps.append('No directions.')
+
     return title, ingredient_quantity_string_tuples, steps
 
 

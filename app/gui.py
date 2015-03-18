@@ -12,6 +12,8 @@ import time
 import util
 import app
 import parser
+import transformations
+import style_fusions
 
 
 class GUI(ttk.Frame):
@@ -135,7 +137,7 @@ class GUI(ttk.Frame):
         else:
             self.display_recipe_state()
 
-    def display_recipe_state(self):
+    def display_recipe_state(self, recipe=None):
         """
         Loads the main interface, which shows the recipe and options for transformation
         """
@@ -147,7 +149,8 @@ class GUI(ttk.Frame):
         self.current_window = 'recipe'
         self.init_main_window()
         self.parent.geometry('800x800')
-        recipe = parser.url_to_recipe(self.recipe_url, self.knowledge_base)
+        if not recipe:
+            recipe = parser.url_to_recipe(self.recipe_url, self.knowledge_base)
         title = ttk.Label(self.main_window, text=recipe.title)
         title.pack()
         recipe_frame = ttk.Frame(self.main_window)
@@ -155,19 +158,40 @@ class GUI(ttk.Frame):
             IngredientWidget(recipe_frame, ingredient).pack()
 
         for step in reversed(recipe.steps):
-            StepWidget(recipe_frame, step).pack(side=Tkinter.BOTTOM)
+            StepWidget(recipe_frame, step).pack(side=Tkinter.BOTTOM, pady=10)
 
         recipe_frame.pack(side=Tkinter.LEFT)
 
         button_frame = ttk.Frame(self.main_window)
 
-        more_healthy_button = ttk.Button(button_frame, text="More Healthy").pack()
-        less_healthy_button = ttk.Button(button_frame, text="Less Healthy").pack()
-        vegetarian_button = ttk.Button(button_frame, text="Vegetarian").pack()
-        vegan_button = ttk.Button(button_frame, text="Vegan").pack()
-        more_mexican_button = ttk.Button(button_frame, text="More Mexican").pack()
-        more_asian_button = ttk.Button(button_frame, text="More Asian").pack()
-        more_italian = ttk.Button(button_frame, text="More Italian").pack()
+        more_healthy_button = ttk.Button(button_frame, text="More Healthy",
+                                         command=lambda: self.display_recipe_state(
+                                             transformations.make_healthy(
+                                                 recipe, self.knowledge_base))).pack()
+        less_healthy_button = ttk.Button(button_frame, text="Less Healthy",
+                                         command=lambda: self.display_recipe_state(
+                                             transformations.make_unhealthy(
+                                                 recipe, self.knowledge_base))).pack()
+        vegetarian_button = ttk.Button(button_frame, text="Vegetarian",
+                                       command=lambda: self.display_recipe_state(
+                                           transformations.to_vegetarian(
+                                               self.knowledge_base, recipe))).pack()
+        vegan_button = ttk.Button(button_frame, text="Vegan",
+                                  command=lambda: self.display_recipe_state(
+                                      transformations.to_vegan(
+                                          self.knowledge_base, recipe))).pack()
+        more_mexican_button = ttk.Button(button_frame, text="More Mexican",
+                                         command=lambda: self.display_recipe_state(
+                                             style_fusions.recipe_fusion(
+                                                 recipe, 'mexican', self.knowledge_base))).pack()
+        more_asian_button = ttk.Button(button_frame, text="More Asian",
+                                       command=lambda: self.display_recipe_state(
+                                           style_fusions.recipe_fusion(
+                                               recipe, 'asian', self.knowledge_base))).pack()
+        more_italian = ttk.Button(button_frame, text="More Italian",
+                                  command=lambda: self.display_recipe_state(
+                                      style_fusions.recipe_fusion(
+                                          recipe, 'italian', self.knowledge_base))).pack()
         next_recipe_button = ttk.Button(button_frame, text="Next Recipe", command=self.next_recipe).pack(pady=50)
 
         button_frame.pack(side=Tkinter.RIGHT)
@@ -177,6 +201,9 @@ class GUI(ttk.Frame):
     def next_recipe(self):
         self.url_state()
         pass
+
+    def to_veg(self, recipe, knowledge_base):
+        self.display_recipe_state(transformations.to_vegetarian(knowledge_base, recipe))
 
     def raise_and_focus(self):
         # window.lift()
@@ -225,7 +252,7 @@ class IngredientWidget(ttk.Frame):
         self.init_widgets()
 
     def init_widgets(self):
-        quantity = ttk.Label(self, text=self.ingredient.quantity.amount)
+        quantity = ttk.Label(self, text='%.2f' % self.ingredient.quantity.amount)
         unit = ttk.Label(self, text=self.ingredient.quantity.unit)
         name = ttk.Label(self, text=self.ingredient.name)
         descriptor = ttk.Label(self, text=self.ingredient.descriptor)

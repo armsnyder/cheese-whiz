@@ -90,6 +90,7 @@ We used a number of built-in Python libraries. Without going into detail, here t
 * sys
 * os
 * pickle
+* difflib
 
 #### External Packages
 In addition to the standard Python libraries, several packages modules were used to improve performance.
