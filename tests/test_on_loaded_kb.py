@@ -1,15 +1,7 @@
 # Any tests that require a fully loaded knowledge base should go here since the loading takes time
 
 import unittest
-from app.recipe import Ingredient
-from app.kb import KnowledgeBase
-from app.parser import parse_html
-from app.parser import get_html
 from app.parser import url_to_recipe
-from app.cooking_tools import find_cooking_tools, find_cooking_methods
-from app.style_fusions import classify_recipe
-from app.style_fusions import spice_classify
-# from app.style_fusions import testing_recipe
 from app.parser import parse_ingredient
 from app.recipe import Recipe, Ingredient
 from app.transformations import to_vegan
@@ -38,7 +30,6 @@ class TestOnLoadedKB(unittest.TestCase):
         self.assertEqual(Ingredient('butter').match_to_food(self.kb).food_type.food_id, '01001')
         self.assertEqual(Ingredient('sour cream').match_to_food(self.kb).food_type.food_id, '01179')
         self.assertEqual(Ingredient('egg').match_to_food(self.kb).food_type.food_id, '01123')
-        self.assertEqual(Ingredient('flour').match_to_food(self.kb).food_type.food_id, '20081')
 
     def test_match_food_special_cases(self):
         self.assertEqual(Ingredient('beef', descriptor='ground').match_to_food(self.kb).food_type.food_id, '23567')
@@ -51,27 +42,7 @@ class TestOnLoadedKB(unittest.TestCase):
         self.assertEqual(Ingredient('asdfgph').match_to_food(self.kb).food_type, None)
         self.assertEqual(Ingredient('lime zest').match_to_food(self.kb).food_type, None)
 
-    def test_parse_ingredient(self):
-        name, descriptors, prep, prep_descriptors = parse_ingredient("finely chopped fresh basil", self.kb)
-        self.assertEqual(descriptors, 'none')
-        self.assertEqual(prep, 'chopped')
-        self.assertEqual(prep_descriptors, 'finely')
-        self.assertEqual(name, 'fresh basil')
 
-    def test_parse_ingredient_huh(self):
-        name, descriptors, prep, prep_descriptors = parse_ingredient("finely chopped fresh spaghetti", self.kb)
-        self.assertEqual(descriptors, 'fresh')
-        self.assertEqual(prep, 'chopped')
-        self.assertEqual(prep_descriptors, 'finely')
-        self.assertEqual(name, 'spaghetti')
-
-    def test_parse_ingredient_with_commas(self):
-        name, descriptors, prep, prep_descriptors = parse_ingredient("boneless, skinless chicken, washed and dried", self.kb)
-        self.assertEqual(descriptors, 'boneless skinless')
-        self.assertEqual(prep, 'washed dried')
-        self.assertEqual(prep_descriptors, 'none')
-        self.assertEqual(name, 'chicken')
-        self.assertEqual(Ingredient('lime zest').match_to_food(self.kb).food_type, None)
 
 
     def test_fusion(self):

@@ -64,7 +64,7 @@ class KnowledgeBase:
             food_des_lines = food_des_txt.readlines()
             for food_des_line in food_des_lines:
                 parsed_line = parse_usda_line(food_des_line)
-                new_food = Food(parsed_line[0], parsed_line[1], parsed_line[2])
+                new_food = Food(parsed_line[0], parsed_line[1], parsed_line[2], common_name=parsed_line[4])
                 if new_food.food_group in food_group_blacklist:
                     continue
                 if new_food.food_id in food_id_blacklist:
@@ -75,7 +75,6 @@ class KnowledgeBase:
                         if keyword in new_food.name:
                             bad_food_name = True
                 if bad_food_name:
-                    util.vprint("Skipping " + new_food.name)
                     continue
                 if new_food.food_id in nutritional_data:
                     new_food.nutritional_data = nutritional_data[new_food.food_id]
@@ -114,8 +113,6 @@ class KnowledgeBase:
                 self.common_substitutions.append(self._format_raw_sub(parsed_in_out[1], parsed_in_out[0][:-1], 'common'))
             else:
                 self.common_substitutions.append(self._format_raw_sub(parsed_in_out[0], parsed_in_out[1], 'common'))
-
-
 
     def _format_raw_sub(self, raw_food_in, raw_food_out, reason):
         """
@@ -303,7 +300,10 @@ class KnowledgeBase:
         for food in self.foods:
             ok = True
             for token in ingredient_tokens:
-                if token not in food.name.lower():
+                db_food_name = food.name
+                if food.common_name:
+                    db_food_name = "%s %s" % (db_food_name, food.common_name)
+                if token not in db_food_name.lower():
                     ok = False
                     break
             if ok:
@@ -354,17 +354,14 @@ class Food:
 
     def add_styles(self, positive_styles, negative_styles):
         for style in positive_styles:
-            if style in self.positive_tags:
-                continue
-            else:
+            if style in self.negative_tags:
+                util.warning('Food obj cannot have identical + and - tags')
+            elif style not in self.positive_tags:
                 self.positive_tags.append(style)
         for style in negative_styles:
             if style in self.positive_tags:
-                self.positive_tags.remove(style)
-                raise RuntimeError("Food obj cannot have identical + and - tags")
-            if style in self.negative_tags:
-                continue
-            else:
+                util.warning('Food obj cannot have identical + and - tags')
+            elif style not in self.negative_tags:
                 self.negative_tags.append(style)
 
 

@@ -128,7 +128,7 @@ class TestQuantityInterpreter(unittest.TestCase):
 
         quantity = knowledge_base.interpret_quantity('27 salamanders')
         self.assertEqual(quantity.amount, 27)
-        self.assertEqual(quantity.unit, 'unit')
+        self.assertEqual(quantity.unit, 'units')
 
 
 class TestIngredientLookup(unittest.TestCase):
@@ -191,16 +191,6 @@ class TestIngredientLookup(unittest.TestCase):
         self.assertEqual(test_cheese_list, correct_cheese_list)
 
 
-class TestFractionToDecimal(unittest.TestCase):
-
-    def test_basic(self):
-        self.assertEqual(util.fraction_to_decimal('1'), 1)
-        self.assertEqual(util.fraction_to_decimal('1.5'), 1.5)
-        self.assertEqual(util.fraction_to_decimal('1/2'), 0.5)
-        self.assertEqual(util.fraction_to_decimal('a'), 1)
-        self.assertEqual(util.fraction_to_decimal('3 cups'), 1)
-
-
 class TestSubstitutionParser(unittest.TestCase):
 
     def setUp(self):
@@ -211,22 +201,22 @@ class TestSubstitutionParser(unittest.TestCase):
         a = self.knowledge_base._format_raw_sub('1 cup  Beer',
                                                 '1 cup nonalcoholic beer OR 1 cup chicken broth', 'common')
         i1 = recipe.Ingredient('beer', quantity=kb.Quantity(1, 'cup'))
-        i2 = recipe.Ingredient('nonalcoholic beer', quantity=kb.Quantity(1, 'cup'))
+        i2 = recipe.Ingredient('beer', quantity=kb.Quantity(1, 'cup'), descriptor='nonalcoholic')
         i3 = recipe.Ingredient('chicken broth', quantity=kb.Quantity(1, 'cup'))
         b = kb.CommonSubstitution(i1, [i2, i3], 'common')
         self.assertSameSubObj(a, b)
 
     def test_no_unit(self):
         a = self.knowledge_base._format_raw_sub('4 lettuce', '2 arugula', 'common')
-        i1 = recipe.Ingredient('lettuce', quantity=kb.Quantity(4, 'unit'))
-        i2 = recipe.Ingredient('arugula', quantity=kb.Quantity(2, 'unit'))
+        i1 = recipe.Ingredient('lettuce', quantity=kb.Quantity(4, 'units'))
+        i2 = recipe.Ingredient('arugula', quantity=kb.Quantity(2, 'units'))
         b = kb.CommonSubstitution(i1, [i2], 'common')
         self.assertSameSubObj(a, b)
 
     def test_no_unit_or_quantity(self):
         a = self.knowledge_base._format_raw_sub('lettuce', 'arugula', 'common')
-        i1 = recipe.Ingredient('lettuce', quantity=kb.Quantity(1, 'unit'))
-        i2 = recipe.Ingredient('arugula', quantity=kb.Quantity(1, 'unit'))
+        i1 = recipe.Ingredient('lettuce', quantity=kb.Quantity(1, 'units'))
+        i2 = recipe.Ingredient('arugula', quantity=kb.Quantity(1, 'units'))
         b = kb.CommonSubstitution(i1, [i2], 'common')
         self.assertSameSubObj(a, b)
 
@@ -242,7 +232,7 @@ class TestSubstitutionParser(unittest.TestCase):
                                                 '1 box arugula OR 2 packages mixed greens', 'mexican')
         i1 = recipe.Ingredient('lettuce', quantity=kb.Quantity(1.5, 'cup'))
         i2 = recipe.Ingredient('arugula', quantity=kb.Quantity(1, 'box'))
-        i3 = recipe.Ingredient('mixed greens', quantity=kb.Quantity(2, 'packages'))
+        i3 = recipe.Ingredient('greens', quantity=kb.Quantity(2, 'packages'), preparation='mixed')
         b = kb.CommonSubstitution(i1, [i2, i3], 'mexican')
         self.assertSameSubObj(a, b)
 

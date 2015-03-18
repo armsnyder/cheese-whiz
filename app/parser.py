@@ -17,7 +17,6 @@ def parse_ingredient(ingredient, knowledge_base):
     # TODO: use context clues?
     # TODO: handle commas, ands, other syntax patterns
 
-
     name_string = 'unknown'
     rest_words = []
     descriptor_words = []
@@ -26,6 +25,18 @@ def parse_ingredient(ingredient, knowledge_base):
     only_name_words = []
 
     ingredient = ingredient.replace(', or to taste', '')
+    ingredient = ingredient.replace(' or to taste', '')
+    i_tokens = nltk.word_tokenize(ingredient)
+
+
+
+
+
+
+
+
+
+
 
     name_words = ingredient.split()
     for w in range(len(name_words)):
@@ -218,5 +229,14 @@ def remove_unicode(text):
     :return: text without unicode
     """
     # TODO: Make sure jalapeno works with this encoding
-    encoded_text = text.encode('utf-8')
+    try:
+        decoded_text = text.decode('unicode_escape')
+    except UnicodeDecodeError:
+        util.warning('UnicodeDecodeError on decode: '+text)
+        decoded_text = ''
+    try:
+        encoded_text = decoded_text.encode('utf-8')
+    except UnicodeDecodeError:
+        util.warning('UnicodeDecodeError on encode: '+text)
+        encoded_text = ''
     return regex.uni.sub('', encoded_text)
