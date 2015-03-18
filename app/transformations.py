@@ -125,30 +125,30 @@ def lookup_healthy_ingredient(from_ingredient, knowledge_base):
     return from_ingredient
 
 
-def lookup_alternative_recipe(from_recipe, unavailable_ingredient_list):
+def lookup_alternative_recipe(original_recipe_name, unavailable_ingredient_list):
     """
     STUB DESCRIPTION:
     Write lookup_alternative_recipe function to take args: Recipe, list of unavailable Ingredients
     (returned from transform_availability #60)
     It should query allrecipes.com using the advanced search to specify the recipe title and missing ingredients.
     If helper functions are needed, write them as stubs and make new issues for them.
-    :param from_recipe: old recipe
+    :param original_recipe_name: Title string from recipe to be replaced
     :param unavailable_ingredient_list: unavailable ingredients list
     :return: new recipe URL
     """
     url = 'http://allrecipes.com/search/default.aspx?ms=0&origin=Home+Page&rt=r&qt=i&wt='
-    title_words = from_recipe.title.split()
-    for i in range(len(title_words)):
-        if i == len(title_words)-1:
-            url += title_words[i]
+    #title_words = from_recipe.title.split()
+    for i in range(len(original_recipe_name)):
+        if i == len(original_recipe_name)-1:
+            url += original_recipe_name[i]
         else:
-            url += title_words[i] + '%20'
+            url += original_recipe_name[i] + '%20'
     url += str('&pqt=i&fo=0')
     for j in range(len(unavailable_ingredient_list)):
         url += '&u' + str('j') + '=' + str(unavailable_ingredient_list[j])
     url = get_html(url)
     print url
-    return url  # Stub
+    return url
 
 
 def transform_availability(old_recipe, old_ingredient, kb):
