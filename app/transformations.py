@@ -12,24 +12,33 @@ def to_vegan(knowledge_base, from_recipe):
     :param from_recipe: knowledge_base, old recipe
     :return: new recipe
     """
+    # print "Testing Vegan: "
+    old_title = from_recipe.title
+    from_recipe = to_vegetarian(knowledge_base, from_recipe)
 
-    veg_recipe = to_vegetarian(knowledge_base, from_recipe)
-    new_recipe = recipe.Recipe(None, None, veg_recipe.steps)
+    for ingredient in from_recipe.ingredients:
+        if ingredient.food_type is not None:
+            if ingredient.food_type.food_group in FoodGroup.DAIRY_AND_EGG_PRODUCTS:
+                # Look for substitution in kb.vegetarian_substitutes
+                for sub in knowledge_base.vegan_substitutions:
+                    for item in range(len(from_recipe.ingredients)):
+                        if sub.food_in.name in from_recipe.ingredients[item].name:
+                            subbed_ingredient = from_recipe.ingredients[item].name
+                            # print "item to sub: " + from_recipe.ingredients[item].name
+                            # print "replace with: " + sub.food_out[0].name
+                            from_recipe.ingredients[item] = sub.food_out[0]
+                            from_recipe.ingredients[item].match_to_food(knowledge_base)
+                            # print "subbed"
+                            for step_num in range(len(from_recipe.steps)):
+                                from_recipe.steps[step_num] = from_recipe.steps[step_num].replace(subbed_ingredient,
+                                                                                                  sub.food_out[0].name)
+    # for i in from_recipe.ingredients:
+    #     print i.name
+    # for s in range(len(from_recipe.steps)):
+    #    print from_recipe.steps[s]
 
-    for ingredient in veg_recipe.ingredients:
-        if ingredient.food_type.food_group == FoodGroup.DAIRY_AND_EGG_PRODUCTS:
-            found = False
-            # Look for substitution in kb.vegan_substitutes
-            for name, substitution in knowledge_base.vegan_substitutions:
-                if name == ingredient.name:
-                    vegan_ingredient = substitution
-                    found = True
-            if not found:
-                vegan_ingredient = 'textured vegetable protein'
-            new_recipe.ingredients.append(vegan_ingredient)
-        else:
-            new_recipe.ingredients.append(ingredient)
-    return new_recipe
+    from_recipe.change_title('Vegan ' + old_title)
+    return from_recipe
 
 
 def to_vegetarian(knowledge_base, from_recipe):
@@ -41,26 +50,34 @@ def to_vegetarian(knowledge_base, from_recipe):
     :param from_recipe: knowledge_base, old recipe
     :return: new recipe
     """
-    new_recipe = recipe.Recipe(None, None, from_recipe.steps)
-
+    # print "Testing Vegetarian: "
     for ingredient in from_recipe.ingredients:
-        if ingredient.food_type.food_group in (FoodGroup.POULTRY_PRODUCTS, FoodGroup.SAUSAGES_AND_LUNCHEON_MEATS,
-                                               FoodGroup.PORK_PRODUCTS, FoodGroup.BEEF_PRODUCTS,
-                                               FoodGroup.FINFISH_AND_SHELLFISH_PRODUCTS,
-                                               FoodGroup.LAMB_VEAL_AND_GAME_PRODUCTS):
-            # Look for substitution in kb.vegetarian_substitutes
-            print knowledge_base.vegetarian_substitutions
-            for name in knowledge_base.vegetarian_substitutions:
-                found = False
-                if name == ingredient.name:
-                    veg_ingredient = name
-                    found = True
-            if not found:
-                veg_ingredient = 'textured vegetable protein'
-            new_recipe.ingredients.append(veg_ingredient)
-        else:
-            new_recipe.ingredients.append(ingredient)
-    return new_recipe
+        if ingredient.food_type is not None:
+            if ingredient.food_type.food_group in (FoodGroup.POULTRY_PRODUCTS, FoodGroup.SAUSAGES_AND_LUNCHEON_MEATS,
+                                                   FoodGroup.PORK_PRODUCTS, FoodGroup.BEEF_PRODUCTS,
+                                                   FoodGroup.FINFISH_AND_SHELLFISH_PRODUCTS,
+                                                   FoodGroup.LAMB_VEAL_AND_GAME_PRODUCTS):
+                # Look for substitution in kb.vegetarian_substitutes
+                for sub in knowledge_base.vegetarian_substitutions:
+                    for item in range(len(from_recipe.ingredients)):
+                        if sub.food_in.name in from_recipe.ingredients[item].name:
+                            subbed_ingredient = from_recipe.ingredients[item].name
+                            # print "item to sub: " + from_recipe.ingredients[item].name
+                            # print "replace with: " + sub.food_out[0].name
+                            from_recipe.ingredients[item] = sub.food_out[0]
+                            from_recipe.ingredients[item].match_to_food(knowledge_base)
+                            # print "subbed"
+                            for step_num in range(len(from_recipe.steps)):
+                                from_recipe.steps[step_num] = from_recipe.steps[step_num].replace(subbed_ingredient,
+                                                                                                  sub.food_out[0].name)
+        # for i in from_recipe.ingredients:
+        #     print i.name
+    # for s in range(len(from_recipe.steps)):
+    #    print from_recipe.steps[s]
+
+    old_title = from_recipe.title
+    from_recipe.change_title('Vegetarian ' + old_title)
+    return from_recipe
 
 
 def make_healthy(from_recipe):
@@ -133,19 +150,3 @@ def transform_availability(old_recipe, old_ingredient, kb):
     if not possible_substitutions:
         pass
     return possible_substitutions
-
-
-def transform_style(old_recipe, target_style):
-    """
-    STUB DESCRIPTION:
-    Write transform_style function to take a recipe and a target style as inputs and output another recipe object
-    (in the desired style).
-    Loop through the ingredients in the recipe. For each ingredient, check if it exists in the knowledge base style
-    transform list for the desired style. If it does, make the exchange.
-    The tricky bit will be finding the correct Food object to substitute in from the USDA database.
-    Feel free to think up helper functions, write stubs, and make new issues for them.
-    :param old_recipe: recipe
-    :param target_style: style string
-    :return: new recipe
-    """
-    return recipe.Recipe()  # Stub

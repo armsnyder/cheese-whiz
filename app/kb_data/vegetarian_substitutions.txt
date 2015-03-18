@@ -1,40 +1,41 @@
 # Substitutions for meats. Use in to_vegan substitutions as well.
-# Add flavoring information? Other nutrients? (e.g. fish oils)
 
 #Poultry
-chicken = tofu OR tempeh OR seitan
+chicken = tofu
 turkey = tofu
-duck = seitan OR tofu
+duck = tempeh
 
 #Pork
-pork = cubed tofu OR textured soy protein OR tempeh OR beans
+pork = cubed tofu
 pulled pork = shredded tempeh
 
 #Ham
 ham = tofu
 
 #Fish
-fish = mashed chickpeas OR tofu OR tempeh OR seitan
+fish = mashed chickpeas
+fillet = mashed chickpeas
+tuna = mashed chickpeas
 
 #Beef
-beef = eggplant OR mushroom OR cubed tofu
+beef = mushroom
 
 #Steak
-steak = eggplant OR portobello mushroom cap
+steak = eggplant
 
 #Ground Meat
-ground beef = ground tempeh OR seitan OR textured vegetable protein
-ground turkey = ground tempeh OR seitan OR textured vegetable protein
-ground pork = ground tempeh OR seitan OR textured vegetable protein
-ground chicken = ground tempeh OR seitan OR textured vegetable protein
-hamburger meat = portobello mushroom cap OR ground tempeh OR black beans and onions and bread crumbs OR textured vegetable protein
-hotdog meat = ground tempeh OR textured vegetable protein
+ground beef = soy protein concentrate
+ground turkey = ground tempeh
+ground pork = ground tempeh
+ground chicken = ground tempeh
+hamburger meat = portobello mushroom
+hotdog meat = mashed chickpeas
 
 #Sausage
-sausage = mushrooms OR mashed chickpeas and chopped onions and breadcrumbs
+sausage = soy protein concentrate
 
 #Bacon
-bacon = veggie chips OR sun-dried tomatoes OR sliced tofu OR sliced tempeh OR textured vegetable protein
+bacon = sliced tofu
 
 #Stocks
 beef stock = vegetable broth
@@ -43,4 +44,4 @@ chicken stock = vegetable broth
 chicken broth = vegetable broth
 
 #Gelatin
-gelatin = agar-agar OR tapioca
+gelatin = tapioca
