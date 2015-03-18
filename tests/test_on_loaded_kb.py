@@ -58,7 +58,7 @@ class TestOnLoadedKB(unittest.TestCase):
         print "\n", made_recipe.title
         recipe_fusion(made_recipe, "to_italian", self.kb)
 
-        made_recipe = url_to_recipe('http://allrecipes.com/recipe/hamburgers-by-eddie/', self.kb)
+        made_recipe = url_to_recipe('http://allrecipes.com/Recipe/Barbeque-Roasted-Salmon/Detail.aspx?evt19=1&referringHubId=1', self.kb)
         print "\n", made_recipe.title
         recipe_fusion(made_recipe, "to_italian", self.kb)
 
