@@ -80,7 +80,7 @@ def to_vegetarian(knowledge_base, from_recipe):
     return from_recipe
 
 
-def make_healthy(from_recipe):
+def make_healthy(from_recipe, knowledge_base):
     """
     STUB DESCRIPTION:
     Write make_healthy function to take a Recipe input and output a healthier Recipe.
@@ -89,10 +89,11 @@ def make_healthy(from_recipe):
     :param from_recipe: old recipe
     :return: new recipe
     """
-    return recipe.Recipe()  # Stub
+
+    return from_recipe
 
 
-def make_unhealthy(from_recipe):
+def make_unhealthy(from_recipe, knowledge_base):
     """
     STUB DESCRIPTION:
     Take a Recipe input, and return a Recipe that has been made unhealthy.
@@ -101,10 +102,17 @@ def make_unhealthy(from_recipe):
     :param from_recipe: old recipe
     :return: new recipe
     """
-    return recipe.Recipe()  # Stub
+    q = knowledge_base.interpret_quantity('1 can')
+    cheez = recipe.Ingredient('Cheez Whiz', q)
+    cheez.match_to_food(knowledge_base)
+
+    from_recipe.ingredients.append(cheez)
+    from_recipe.steps.append('Garnish with Cheez Whiz as desired. Spray Cheez Whiz directly into mouth.')
+
+    return from_recipe
 
 
-def lookup_healthy_ingredient(from_ingredient):
+def lookup_healthy_ingredient(from_ingredient, knowledge_base):
     """
     STUB DESCRIPTION:
     Write a function that takes an Ingredient input and outputs a healthier Ingredient, using simple search terms
@@ -112,7 +120,8 @@ def lookup_healthy_ingredient(from_ingredient):
     :param from_ingredient:
     :return: Ingredient, or None
     """
-    return recipe.Ingredient()  # Stub
+
+    return from_ingredient
 
 
 def lookup_alternative_recipe(from_recipe, unavailable_ingredient_list):

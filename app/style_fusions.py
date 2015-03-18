@@ -359,7 +359,7 @@ def recipe_fusion(made_recipe, fusion_style, knowledge_base):
                     made_recipe.replace_ingredient_in_steps(subbed_ingredient, sub.food_out[0].name)
 
         for e in range(len(made_recipe.steps)): print made_recipe.steps[e]
-        made_recipe.change_title("Mexican " + made_recipe.title)
+        made_recipe.change_title("Italian " + made_recipe.title)
 
     if "neutral" in sauce_type and "mexican" in fusion_style:
         for spice in master_spices:
@@ -411,7 +411,7 @@ def recipe_fusion(made_recipe, fusion_style, knowledge_base):
                     made_recipe.replace_ingredient_in_steps(subbed_ingredient, sub.food_out[0].name)
 
         for e in range(len(made_recipe.steps)): print made_recipe.steps[e]
-        made_recipe.change_title("Mexican " + made_recipe.title)
+        made_recipe.change_title("Italian " + made_recipe.title)
 
     if "neutral" in sauce_type and "asian" in fusion_style:
         for spice in master_spices:
@@ -437,7 +437,7 @@ def recipe_fusion(made_recipe, fusion_style, knowledge_base):
                     made_recipe.replace_ingredient_in_steps(subbed_ingredient, sub.food_out[0].name)
 
         for e in range(len(made_recipe.steps)): print made_recipe.steps[e]
-        made_recipe.change_title("Mexican " + made_recipe.title)
+        made_recipe.change_title("Asian " + made_recipe.title)
 
     return made_recipe
 
