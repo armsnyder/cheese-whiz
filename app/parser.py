@@ -1,6 +1,7 @@
 from bs4 import BeautifulSoup
 import urllib2
 import nltk
+import regex
 
 import util
 import recipe
@@ -15,8 +16,15 @@ def parse_ingredient(ingredient, knowledge_base):
     # TODO: consider words with 2 POS tags (remove from consideration after being added?)
     # TODO: use context clues?
     # TODO: handle commas, ands, other syntax patterns
-
-
+    tag_name = ['NN', 'NNP', 'NNPS', 'NNS', 'PRP', 'PRP$']
+    tag_des = ['JJ']
+    tag_prep= ['VBD', 'VBN']
+    tag_prep_des = ['ADV', 'RB', 'RBR', 'RBS']
+    special_cases = {
+        'des': ['ground'],
+        'prep': [],
+        'prep_des': []
+        }
     name_string = 'unknown'
     rest_words = []
     descriptor_words = []
@@ -24,34 +32,53 @@ def parse_ingredient(ingredient, knowledge_base):
     prep_description_words = []
     only_name_words = []
 
+    ingredient = ingredient.lower()
     ingredient = ingredient.replace(', or to taste', '')
-
-    name_words = ingredient.split()
-    for w in range(len(name_words)):
-        query = ' '.join(name_words[w:])
-        if not knowledge_base.lookup_food(query):
-            rest_words = name_words[:(w+1)]
-            continue
-        else:
-            rest_words = name_words[:w]
-            name_string = ' '.join(name_words[w:])
+    ingredient = ingredient.replace(' or to taste', '')
+    i_tokens = nltk.pos_tag(nltk.word_tokenize(ingredient))
+    # for i in range(len(i_tokens)):
+    #     ii = i_tokens[i][0]
+    #     if ii in special_cases:
+    #         i_tokens = i_tokens[:i].append((ii, special_cases[ii])).append(i_tokens[i+1:])
+    for i in range(len(i_tokens)):
+        if i_tokens[i][0] == ',' and i != 0 and i != len(i_tokens)-1:
+            if i_tokens[i-1][1] in tag_name:
+                i_tokens = i_tokens[i+1:] + i_tokens[:i]
+                break
+    for w in range(len(i_tokens)):
+        query = ' '.join([t[0] for t in i_tokens[w:]])
+        if knowledge_base.lookup_food(query):
+            rest_words = i_tokens[:w]
+            name_string = ' '.join([t[0] for t in i_tokens[w:]])
             break
 
-    # TODO: Make sure jalapeno works with this encoding
-    rest_words = [thing.decode('unicode_escape').encode('ascii', 'ignore') for thing in rest_words]
-    rest_string = ' '.join(rest_words)
-    tokens = nltk.word_tokenize(rest_string)
-    pos_tagged_tokens = nltk.pos_tag(tokens)
-    for word, tag in pos_tagged_tokens:
+    print i_tokens
+    print name_string
+
+    for i in range(len(rest_words)):
+        tag = rest_words[i][1]
+        word = rest_words[i][0]
         if name_string == 'unknown':
             if tag == 'NN':
                 only_name_words.append(word)
-        if tag == 'ADJ' or tag == 'JJ':
+        if tag in tag_des or word in special_cases['des']:
             descriptor_words.append(word)
-        elif tag == 'VBD':
+        elif tag in tag_prep or word in special_cases['prep']:
             preparation_words.append(word)
-        elif tag == 'ADV' or tag == 'RB':
+        elif tag in tag_prep_des or word in special_cases['prep_des']:
             prep_description_words.append(word)
+        elif tag == 'IN':
+            descriptor_words.append(word)
+            if i < len(rest_words) - 1:
+                descriptor_words.append(rest_words[i+1][0])
+                i += 1
+        elif tag == 'CC':
+            prep_description_words.append(word)
+        else:
+            descriptor_words.append(word)
+    print descriptor_words
+    print preparation_words
+    print prep_description_words
 
     if name_string == 'unknown':
         if only_name_words:
@@ -105,16 +132,33 @@ def parse_html(html):
     return title, ingredient_quantity_string_tuples, steps
 
 
-def url_to_dictionary(url):
+def url_to_dictionary(url, knowledge_base):
     """
     FOR TESTING PURPOSES ONLY, takes a url and runs the various parsing functions to return a dictionary in the JSON
     representation that Miriam's autograder accepts
     :param url: url of requested recipe
     :return: dictionary in autograder-acceptable format
     """
-    html = get_html(url)
-    # etc
-    pass
+    final_recipe = url_to_recipe(url, knowledge_base)
+    result = {
+        'ingredients': [ingredient_to_dictionary(i) for i in final_recipe.ingredients],
+        'primary cooking method': final_recipe.primary_method,
+        'cooking methods': final_recipe.methods,
+        'cooking tools': final_recipe.tools
+    }
+    return result
+
+
+def ingredient_to_dictionary(ingredient):
+    result = {
+        'name': ingredient.name,
+        'quantity': ingredient.quantity.amount,
+        'measurement': ingredient.quantity.unit,
+        'descriptor': ingredient.descriptor,
+        'preparation': ingredient.preparation,
+        'prep-description': ingredient.prep_description
+    }
+    return result
 
 
 def get_html(url):
@@ -162,16 +206,50 @@ def make_recipe(title, ingredients, steps, knowledge_base):
         i_name, i_descriptor, i_prep, i_prep_descriptor = parse_ingredient(ingredient_string, knowledge_base)
         ingredient_object_list.append(
             recipe.Ingredient(i_name, quantity, i_descriptor, i_prep, i_prep_descriptor).match_to_food(knowledge_base))
-    return recipe.Recipe(title, ingredient_object_list, steps)
+    result = recipe.Recipe(title, ingredient_object_list, steps)
+    result.methods = find_cooking_methods(steps, knowledge_base)
+    result.tools = find_cooking_tools(steps, knowledge_base)
+    result.primary_method = find_primary_method(result.methods)
+    return result
 
 
-def format_for_autograder(url):
-    """
-    Formats our recipe representation as a dictionary to be read by autograder
-    :param url: Recipe url
-    :return: JSON for autograder
-    """
-    pass
+def find_primary_method(methods):
+    method_index = []
+    for i in range(len(methods)):
+        method_index.append((methods[i], sort_methods(methods[i], i, len(methods))))
+    return sorted(method_index, key=lambda x: x[1], reverse=True)[0][0]
+
+
+def sort_methods(method, i, n):
+    top_methods = ['bake',
+                   'broil',
+                   'grill',
+                   'poach',
+                   'roast',
+                   'barbeque',
+                   'smoke',
+                   'braise',
+                   'stew',
+                   'fry',
+                   'panfry',
+                   'cook',
+                   'scald',
+                   'microwave',
+                   'sautee',
+                   'saute',
+                   'deep-fry',
+                   'simmer',
+                   'cure',
+                   'sear',
+                   'blacken',
+                   'brown',
+                   'boil']
+    rank = i * 75 / n
+    for j in range(len(top_methods)):
+        if top_methods[j] in method:
+            rank += (len(top_methods) - j) * 100 / len(top_methods)
+            break
+    return rank
 
 
 def find_cooking_tools(steps, knowledge_base):
@@ -209,3 +287,23 @@ def find_cooking_methods(steps, knowledge_base):
                 step = step.replace(method, '')
                 method_list.append(method)
     return method_list
+
+
+def remove_unicode(text):
+    """
+    Cleans ingredient text from allrecipes
+    :param text: text with unicode
+    :return: text without unicode
+    """
+    # TODO: Make sure jalapeno works with this encoding
+    try:
+        decoded_text = text.decode('unicode_escape')
+    except UnicodeDecodeError:
+        util.warning('UnicodeDecodeError on decode: '+text)
+        decoded_text = ''
+    try:
+        encoded_text = decoded_text.encode('utf-8')
+    except UnicodeDecodeError:
+        util.warning('UnicodeDecodeError on encode: '+text)
+        encoded_text = ''
+    return regex.uni.sub('', encoded_text)

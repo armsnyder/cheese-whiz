@@ -2,34 +2,34 @@ import recipe
 from enums import FoodGroup
 
 
-# def to_vegan(knowledge_base, from_recipe):
-#     """
-#     Takes a Recipe input and output vegan Recipe.
-#     First, fun the to_vegetarian function.
-#     Loop through ingredients, checking food group (look in enums.py) for no-no groups. If the ingredient is of
-#     a no-no-group, check for a substitution in kb.vegan_substitutions (not yet written). If no suitable substitution
-#     can be found, replace with a quantity of TVP of equal weight.
-#     :param from_recipe: knowledge_base, old recipe
-#     :return: new recipe
-#     """
-#
-#     veg_recipe = to_vegetarian(knowledge_base, from_recipe)
-#     new_recipe = recipe.Recipe(None, None, veg_recipe.steps)
-#
-#     for ingredient in veg_recipe.ingredients:
-#         if ingredient.food_type.food_group == FoodGroup.DAIRY_AND_EGG_PRODUCTS:
-#             found = False
-#             # Look for substitution in kb.vegan_substitutes
-#             for name, substitution in knowledge_base.vegan_substitutions:
-#                 if name == ingredient.name:
-#                     vegan_ingredient = substitution
-#                     found = True
-#             if not found:
-#                 vegan_ingredient = 'textured vegetable protein'
-#             new_recipe.ingredients.append(vegan_ingredient)
-#         else:
-#             new_recipe.ingredients.append(ingredient)
-#     return new_recipe
+def to_vegan(knowledge_base, from_recipe):
+    """
+    Takes a Recipe input and output vegan Recipe.
+    First, fun the to_vegetarian function.
+    Loop through ingredients, checking food group (look in enums.py) for no-no groups. If the ingredient is of
+    a no-no-group, check for a substitution in kb.vegan_substitutions (not yet written). If no suitable substitution
+    can be found, replace with a quantity of TVP of equal weight.
+    :param from_recipe: knowledge_base, old recipe
+    :return: new recipe
+    """
+
+    veg_recipe = to_vegetarian(knowledge_base, from_recipe)
+    new_recipe = recipe.Recipe(None, None, veg_recipe.steps)
+
+    for ingredient in veg_recipe.ingredients:
+        if ingredient.food_type.food_group == FoodGroup.DAIRY_AND_EGG_PRODUCTS:
+            found = False
+            # Look for substitution in kb.vegan_substitutes
+            for name, substitution in knowledge_base.vegan_substitutions:
+                if name == ingredient.name:
+                    vegan_ingredient = substitution
+                    found = True
+            if not found:
+                vegan_ingredient = 'textured vegetable protein'
+            new_recipe.ingredients.append(vegan_ingredient)
+        else:
+            new_recipe.ingredients.append(ingredient)
+    return new_recipe
 
 
 def to_vegetarian(knowledge_base, from_recipe):

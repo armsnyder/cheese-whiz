@@ -8,6 +8,9 @@ class Recipe:
         self.title = title
         self.ingredients = []
         self.steps = []
+        self.primary_method = 'none'
+        self.methods = []
+        self.tools = []
         if ingredients:
             self.add_ingredients(ingredients)
         if steps:
@@ -22,8 +25,8 @@ class Recipe:
 
 class Ingredient:
 
-    def __init__(self, name='', quantity=None, descriptor='', preparation='', prep_description='', available=True,
-                 food_type=None):
+    def __init__(self, name='none', quantity=None, descriptor='none', preparation='none', prep_description='none',
+                 available=True, food_type=None):
         self.name = name
         self.quantity = quantity  # kb.Quantity object
         self.descriptor = descriptor
@@ -38,13 +41,18 @@ class Ingredient:
         @:param knowledge_base: knowledge_base object to search in
         """
         self.food_type = None
+        words = []
+        for word in [self.prep_description, self.preparation, self.descriptor, self.name]:
+            if word == 'none':
+                words.append('')
+            else:
+                words.append(word)
         attempts = [
             lambda: self._match_special_cases(knowledge_base),
-            lambda: self._match_attempt(knowledge_base, ' '.join(
-                [self.prep_description, self.preparation, self.descriptor, self.name])),
-            lambda: self._match_attempt(knowledge_base, ' '.join([self.preparation, self.descriptor, self.name])),
-            lambda: self._match_attempt(knowledge_base, ' '.join([self.descriptor, self.name])),
-            lambda: self._match_attempt(knowledge_base, self.name),
+            lambda: self._match_attempt(knowledge_base, ' '.join([words[0], words[1], words[2], words[3]])),
+            lambda: self._match_attempt(knowledge_base, ' '.join([words[1], words[2], words[3]])),
+            lambda: self._match_attempt(knowledge_base, ' '.join([words[2], words[3]])),
+            lambda: self._match_attempt(knowledge_base, words[3]),
             ]
         for attempt in attempts:
             attempt()
@@ -62,8 +70,8 @@ class Ingredient:
         full_name = ' '.join([self.prep_description, self.preparation, self.descriptor, self.name])
         if 'ground' in full_name and 'beef' in full_name and '%' not in full_name:
             self._match_attempt(knowledge_base, 'Beef, ground, 85% lean meat')
-        if self.name == 'flour' and not self.descriptor:
-            self._match_attempt(knowledge_base, 'wheat flour all-purpose')
+        if self.name == 'flour' and self.descriptor == 'none':
+            self._match_attempt(knowledge_base, 'wheat flour all-purpose enriched bleached')
         if self.name == 'water':
             self._match_attempt(knowledge_base, 'tap water')
 
