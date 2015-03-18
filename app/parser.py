@@ -132,16 +132,33 @@ def parse_html(html):
     return title, ingredient_quantity_string_tuples, steps
 
 
-def url_to_dictionary(url):
+def url_to_dictionary(url, knowledge_base):
     """
     FOR TESTING PURPOSES ONLY, takes a url and runs the various parsing functions to return a dictionary in the JSON
     representation that Miriam's autograder accepts
     :param url: url of requested recipe
     :return: dictionary in autograder-acceptable format
     """
-    html = get_html(url)
-    # etc
-    pass
+    final_recipe = url_to_recipe(url, knowledge_base)
+    result = {
+        'ingredients': [ingredient_to_dictionary(i) for i in final_recipe.ingredients],
+        'primary cooking method': final_recipe.primary_method,
+        'cooking methods': final_recipe.methods,
+        'cooking tools': final_recipe.tools
+    }
+    return result
+
+
+def ingredient_to_dictionary(ingredient):
+    result = {
+        'name': ingredient.name,
+        'quantity': ingredient.quantity.amount,
+        'measurement': ingredient.quantity.unit,
+        'descriptor': ingredient.descriptor,
+        'preparation': ingredient.preparation,
+        'prep-description': ingredient.prep_description
+    }
+    return result
 
 
 def get_html(url):
@@ -189,16 +206,50 @@ def make_recipe(title, ingredients, steps, knowledge_base):
         i_name, i_descriptor, i_prep, i_prep_descriptor = parse_ingredient(ingredient_string, knowledge_base)
         ingredient_object_list.append(
             recipe.Ingredient(i_name, quantity, i_descriptor, i_prep, i_prep_descriptor).match_to_food(knowledge_base))
-    return recipe.Recipe(title, ingredient_object_list, steps)
+    result = recipe.Recipe(title, ingredient_object_list, steps)
+    result.methods = find_cooking_methods(steps, knowledge_base)
+    result.tools = find_cooking_tools(steps, knowledge_base)
+    result.primary_method = find_primary_method(result.methods)
+    return result
 
 
-def format_for_autograder(url):
-    """
-    Formats our recipe representation as a dictionary to be read by autograder
-    :param url: Recipe url
-    :return: JSON for autograder
-    """
-    pass
+def find_primary_method(methods):
+    method_index = []
+    for i in range(len(methods)):
+        method_index.append((methods[i], sort_methods(methods[i], i, len(methods))))
+    return sorted(method_index, key=lambda x: x[1], reverse=True)[0][0]
+
+
+def sort_methods(method, i, n):
+    top_methods = ['bake',
+                   'broil',
+                   'grill',
+                   'poach',
+                   'roast',
+                   'barbeque',
+                   'smoke',
+                   'braise',
+                   'stew',
+                   'fry',
+                   'panfry',
+                   'cook',
+                   'scald',
+                   'microwave',
+                   'sautee',
+                   'saute',
+                   'deep-fry',
+                   'simmer',
+                   'cure',
+                   'sear',
+                   'blacken',
+                   'brown',
+                   'boil']
+    rank = i * 75 / n
+    for j in range(len(top_methods)):
+        if top_methods[j] in method:
+            rank += (len(top_methods) - j) * 100 / len(top_methods)
+            break
+    return rank
 
 
 def find_cooking_tools(steps, knowledge_base):

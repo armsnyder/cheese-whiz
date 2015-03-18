@@ -8,6 +8,9 @@ class Recipe:
         self.title = title
         self.ingredients = []
         self.steps = []
+        self.primary_method = 'none'
+        self.methods = []
+        self.tools = []
         if ingredients:
             self.add_ingredients(ingredients)
         if steps:
