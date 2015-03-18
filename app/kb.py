@@ -20,11 +20,10 @@ class KnowledgeBase:
         self.cooking_wares = set()
         self.measurements = {}
         self.common_substitutions = []
-        self.italian_spices_list = []
         self.italian_spices_subs = []
         self.asian_spices_subs = []
         self.mexican_spices_subs = []
-
+        self.italian_spices_list = []
         self.mexican_spices_list = []
         self.asian_spices_list = []
         self.italian_to_mexican_list = []
@@ -33,6 +32,9 @@ class KnowledgeBase:
         self.asian_to_mexican_list = []
         self.mexican_to_italian_list = []
         self.mexican_to_asian_list = []
+        self.neutral_to_asian_list = []
+        self.neutral_to_mexican_list = []
+        self.neutral_to_italian_list = []
         self.vegetarian_substitutions = []
         self.vegan_substitutions = []
 
@@ -240,7 +242,12 @@ class KnowledgeBase:
         italian_spices_subs = read_specific_lines(util.relative_path("kb_data/style_substitutions.txt"), "#italian_spices_subs", "#end_italian_spices_subs")
         italian_spices = read_specific_lines(util.relative_path("kb_data/style_substitutions.txt"), "#italian_spices_subs", "#end_italian_spices_subs")
         asian_spices = read_specific_lines(util.relative_path("kb_data/style_substitutions.txt"), "#asian_spices", "#end_asian_spices")
+        asian_spices_subs = read_specific_lines(util.relative_path("kb_data/style_substitutions.txt"), "#asian_spices_subs", "#end_asian_spices_subs")
         mexican_spices = read_specific_lines(util.relative_path("kb_data/style_substitutions.txt"), "#mexican_spices", "#end_mexican_spices")
+        mexican_spices_subs = read_specific_lines(util.relative_path("kb_data/style_substitutions.txt"), "#mexican_spices_subs", "#end_mexican_spices_subs")
+        neutral_to_asian = read_specific_lines(util.relative_path("kb_data/style_substitutions.txt"), "#neutral_to_asian", "#end_neutral_to_asian")
+        neutral_to_mexican = read_specific_lines(util.relative_path("kb_data/style_substitutions.txt"), "#neutral_to_mexican", "#end_neutral_to_mexican")
+        neutral_to_italian = read_specific_lines(util.relative_path("kb_data/style_substitutions.txt"), "#neutral_to_italian", "#end_neutral_to_italian")
 
         vegan_sub_list = read_txt_lines_into_list('kb_data/vegan_substitutions.txt')
         vegetarian_sub_list = read_txt_lines_into_list('kb_data/vegetarian_substitutions.txt')
@@ -258,6 +265,20 @@ class KnowledgeBase:
                 util.warning('Incorrect substitution string: ' + raw_sub)
                 continue
             self.italian_spices_subs.append(self._format_raw_sub(parsed_in_out[0], parsed_in_out[1], 'italian'))
+
+        for raw_sub in asian_spices_subs:
+            parsed_in_out = [thing.strip() for thing in raw_sub.split('=')]
+            if len(parsed_in_out) != 2:
+                util.warning('Incorrect substitution string: ' + raw_sub)
+                continue
+            self.asian_spices_subs.append(self._format_raw_sub(parsed_in_out[0], parsed_in_out[1], 'asian'))
+
+        for raw_sub in mexican_spices_subs:
+            parsed_in_out = [thing.strip() for thing in raw_sub.split('=')]
+            if len(parsed_in_out) != 2:
+                util.warning('Incorrect substitution string: ' + raw_sub)
+                continue
+            self.mexican_spices_subs.append(self._format_raw_sub(parsed_in_out[0], parsed_in_out[1], 'mexican'))
 
         for spice in mexican_spices:
             self.mexican_spices_list.append(self.lookup_single_food(spice))
@@ -320,6 +341,27 @@ class KnowledgeBase:
                 util.warning('Incorrect substitution string: ' + raw_sub)
                 continue
             self.vegetarian_substitutions.append(self._format_raw_sub(parsed_in_out[0], parsed_in_out[1], 'vegetarian'))
+
+        for raw_sub in neutral_to_italian:
+            parsed_in_out = [thing.strip() for thing in raw_sub.split('=')]
+            if len(parsed_in_out) != 2:
+                util.warning('Incorrect substitution string: ' + raw_sub)
+                continue
+            self.neutral_to_italian_list.append(self._format_raw_sub(parsed_in_out[0], parsed_in_out[1], 'neutral_to_italian'))
+
+        for raw_sub in neutral_to_asian:
+            parsed_in_out = [thing.strip() for thing in raw_sub.split('=')]
+            if len(parsed_in_out) != 2:
+                util.warning('Incorrect substitution string: ' + raw_sub)
+                continue
+            self.neutral_to_asian_list.append(self._format_raw_sub(parsed_in_out[0], parsed_in_out[1], 'neutral_to_asian'))
+
+        for raw_sub in neutral_to_mexican:
+            parsed_in_out = [thing.strip() for thing in raw_sub.split('=')]
+            if len(parsed_in_out) != 2:
+                util.warning('Incorrect substitution string: ' + raw_sub)
+                continue
+            self.neutral_to_mexican_list.append(self._format_raw_sub(parsed_in_out[0], parsed_in_out[1], 'neutral_to_mexican'))
 
     def lookup_food(self, food_name):
         """
