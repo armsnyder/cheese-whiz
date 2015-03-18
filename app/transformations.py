@@ -1,5 +1,6 @@
 import recipe
 from enums import FoodGroup
+from parser import get_html
 
 
 def to_vegan(knowledge_base, from_recipe):
@@ -135,7 +136,19 @@ def lookup_alternative_recipe(from_recipe, unavailable_ingredient_list):
     :param unavailable_ingredient_list: unavailable ingredients list
     :return: new recipe URL
     """
-    return 'url'  # Stub
+    url = 'http://allrecipes.com/search/default.aspx?ms=0&origin=Home+Page&rt=r&qt=i&wt='
+    title_words = from_recipe.title.split()
+    for i in range(len(title_words)):
+        if i == len(title_words)-1:
+            url += title_words[i]
+        else:
+            url += title_words[i] + '%20'
+    url += str('&pqt=i&fo=0')
+    for j in range(len(unavailable_ingredient_list)):
+        url += '&u' + str('j') + '=' + str(unavailable_ingredient_list[j])
+    url = get_html(url)
+    print url
+    return url  # Stub
 
 
 def transform_availability(old_recipe, old_ingredient, kb):

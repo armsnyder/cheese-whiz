@@ -131,6 +131,10 @@ def parse_html(html):
     return title, ingredient_quantity_string_tuples, steps
 
 
+def get_first_recipe_from_search_results(html):
+    soup = BeautifulSoup(html)
+
+
 def url_to_dictionary(url, knowledge_base):
     """
     FOR TESTING PURPOSES ONLY, takes a url and runs the various parsing functions to return a dictionary in the JSON
