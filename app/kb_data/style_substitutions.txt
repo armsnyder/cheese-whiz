@@ -6,61 +6,7 @@ salsa
 #end_sauce_words
 
 
-
-#mexican_ingredients
-salsa
-guacamole
-
-#dairy
-sour cream
-crema mexicana
-cheddar
-monterey jack
-cotija cheese
-
-#beans and veg
-black beans
-kidney bean
-pinto bean
-onion
-
-#grains
-tortilla
-taco
-taco shell
-tostada
-empanada
-torta
-rice
-
-#end_mexican_ingredients
-
-
-
-#mexican_spices
-cumin
-cilantro
-lime
-jalapeno
-cloves
-chile
-coriander
-oregano
-cayenne
-chili powder
-thyme
-epazote
-chile powder
-chili
-green peppers
-red pepper
-yellow pepper
-garlic
-taco seasoning
-lime juice
-taco sauce
-parsley
-#end_mexican_spices
+# GENERIC SPICE SUBS
 
 #mexican_spices_subs
 generic_spice = cumin
@@ -87,6 +33,43 @@ generic_spice = taco sauce
 generic_spice = parsley
 #end_mexican_spices_subs
 
+#italian_spices_subs
+generic_spice = oregano
+generic_spice = basil
+generic_spice = garlic
+generic_spice = bay leaves
+generic_spice = rosemary
+generic_spice = red pepper flake
+generic_spice = sage
+generic_spice = parsley
+generic_spice = nutmeg
+#end_italian_spices_subs
+
+
+#asian_spices_subs
+generic_spice = soy sauce
+generic_spice = cilantro
+generic_spice = sesame oil
+generic_spice = chile sauce
+generic_spice = fish sauce
+generic_spice = sriracha
+generic_spice = red curry paste
+generic_spice = white pepper
+generic_spice = oyster sauce
+generic_spice = ginger
+generic_spice = hot sauce
+generic_spice = paprika
+generic_spice = hoisin sauce
+generic_spice = mirin
+generic_spice = sherry
+generic_spice = brown sugar
+generic_spice = ginger root
+generic_spice = rice vinegar
+generic_spice = vinegar
+generic_spice = chili sauce
+#end_asian_spices_subs
+
+# COMMON SPICES LIST
 
 #italian_spices
 oregano
@@ -100,19 +83,135 @@ parsley
 nutmeg
 #end_italian_spices
 
+#mexican_spices
+cumin
+cilantro
+lime
+jalapeno
+cloves
+chile
+coriander
+oregano
+cayenne
+chili powder
+thyme
+epazote
+chile powder
+chili
+green peppers
+red pepper
+yellow pepper
+garlic
+taco seasoning
+lime juice
+taco sauce
+parsley
+#end_mexican_spices
 
-#italian_spices_subs
-generic_spice = oregano
-generic_spice = basil
-generic_spice = garlic
-generic_spice = bay leaves
-generic_spice = rosemary
-generic_spice = red pepper flake
-generic_spice = sage
-generic_spice = parsley
-generic_spice = nutmeg
-#end_italian_spices_subs
 
+#asian_spices
+soy sauce
+cilantro
+sesame oil
+chile sauce
+fish sauce
+sriracha
+red curry paste
+white pepper
+oyster sauce
+ginger
+hot sauce
+paprika
+hoisin sauce
+mirin
+sherry
+brown sugar
+ginger root
+rice vinegar
+vinegar
+chili sauce
+#end_asian_spices
+
+#master_spices
+soy sauce
+cilantro
+sesame oil
+chile sauce
+fish sauce
+sriracha
+red curry paste
+white pepper
+oyster sauce
+ginger
+hot sauce
+paprika
+hoisin sauce
+mirin
+sherry
+brown sugar
+ginger root
+rice vinegar
+vinegar
+chili sauce
+cumin
+cilantro
+lime
+jalapeno
+cloves
+chile
+coriander
+oregano
+cayenne
+chili powder
+thyme
+epazote
+chile powder
+chili
+green peppers
+red pepper
+yellow pepper
+garlic
+taco seasoning
+lime juice
+taco sauce
+parsley
+oregano
+basil
+garlic
+bay leaves
+rosemary
+red pepper flake
+sage
+parsley
+nutmeg
+ketchup
+mustard
+cinnamon
+allspice
+carraway
+cardamom
+carraway seeds
+chives
+cinnamon
+curry powder
+dill weed
+dill seeds
+dill powder
+fennel
+five-spice powder
+ginseng
+mace
+majoram
+mint
+paprika
+peppercorns
+tarragon
+thyme
+turmeric
+#end_master_spices
+
+
+# COMMON INGREDIENTS LIST
 
 #italian_ingredients
 cream
@@ -178,31 +277,33 @@ guanciale
 
 #end_italian_ingredients
 
+#mexican_ingredients
+salsa
+guacamole
 
-#asian_spices
-soy sauce
-cilantro
-sesame oil
-chile sauce
-fish sauce
-sriracha
-red curry paste
-white pepper
-oyster sauce
-ginger
-hot sauce
-paprika
-hoisin sauce
-mirin
-sherry
-brown sugar
-ginger root
-rice vinegar
-vinegar
-chili sauce
+#dairy
+sour cream
+crema mexicana
+cheddar
+monterey jack
+cotija cheese
 
-#end_asian_spices
+#beans and veg
+black beans
+kidney bean
+pinto bean
+onion
 
+#grains
+tortilla
+taco
+taco shell
+tostada
+empanada
+torta
+rice
+
+#end_mexican_ingredients
 
 
 
@@ -223,10 +324,19 @@ taco sauce = tomato puree
 #end_mexican_to_italian
 
 #mexican_to_asian
+sour cream = tofu
+tortilla = potsticker wrappers
+olive oil = sesame oil
+peppers = bean sprouts
+vinegar = rice vinegar
+cumin = ginger
+chili sauce = curry paste
+lime juice = brown sugar
+lime = brown sugar
+crushed tomato = orange marmalade
+tomato paste = orange marmalade
+cream of mushroom soup = soy sauce
 #end_mexican_to_asian
-
-
-
 
 
 #italian_to_mexican
@@ -245,7 +355,8 @@ lasagna = potsticker wrappers OR wide rice noodles
 pasta = rice noodle OR rice
 olive oil = vegetable oil OR peanut oil
 cheese = tofu
-
+tomato paste = curry paste
+tomato juice = soy sauce
 #end_italian_to_asian
 
 
@@ -267,9 +378,6 @@ soy sauce = tomato juice
 #end_asian_to_italian
 
 
-
-
-
 #asian_to_mexican
 tofu = sour cream
 potsticker wrappers = tortilla
@@ -285,3 +393,87 @@ orange marmalade = tomato paste
 orange juice = crushed tomato
 orange zest = tomato paste
 #end_asian_to_mexican
+
+
+
+#neutral_to_mexican
+tofu = sour cream
+potsticker wrappers = tortilla
+gyoza wrappers = tortilla
+sesame oil = olive oil
+bean sprouts = diced bell peppers
+rice vinegar = vinegar
+curry paste = chili sauce
+ginger root = cumin
+ginger = cumin
+brown sugar = lime juice
+orange marmalade = tomato paste
+orange juice = crushed tomato
+orange zest = tomato paste
+#end_asian_to_mexican
+ricotta = sour cream
+parmesan = cheddar cheese
+mozzarella = monterey jack
+spaghetti sauce = salsa
+tomato sauce = salsa
+crushed tomato = salsa
+ricotta = sour cream
+parmesan = cheddar cheese
+mozzarella = monterey jack
+spaghetti sauce = salsa
+tomato sauce = salsa
+crushed tomato = salsa
+#end_neutral_to_mexican
+
+
+#neutral_to_italian
+tofu = ricotta
+potsticker wrappers = manicotti
+1 rice noodle = 2 fettuccine
+peanut oil = olive oil OR vegetable oil
+sesame oil = olive oil
+rice = ditalini OR couscous OR orzo
+curry paste = tomato paste with 1/4 teaspoon red pepper flakes
+rice vinegar = vinegar
+black vinegar = vinegar
+orange marmalade = tomato paste
+orange juice = crushed tomato
+orange zest = tomato paste
+soy sauce = tomato juice
+sour cream = ricotta cheese
+#tortilla = cooked manicotti
+taco shell = cooked manicotti
+salsa = tomato sauce OR crushed tomato OR spaghetti sauce
+cheddar cheese = parmesan cheese
+cheddar = parmesan
+monterey jack = mozzarella
+cream of mushroom soup = alfredo sauce
+tortilla chips = lasagna noodle
+nacho cheese = alfredo sauce
+taco sauce = tomato puree
+bread = foccacia
+#end_neutral_to_italian
+
+
+#neutral_to_asian
+ricotta = tofu
+lasagna = potsticker wrappers OR wide rice noodles
+pasta = rice noodle OR rice
+olive oil = vegetable oil OR peanut oil
+cheese = tofu
+tomato paste = curry paste
+tomato juice = soy sauce
+sour cream = tofu
+tortilla = potsticker wrappers
+olive oil = sesame oil
+peppers = bean sprouts
+vinegar = rice vinegar
+cumin = ginger
+chili sauce = curry paste
+lime juice = brown sugar
+lime = brown sugar
+crushed tomato = orange marmalade
+tomato paste = orange marmalade
+cream of mushroom soup = soy sauce
+ketchup = tomato paste
+#end_neutral_to_asian

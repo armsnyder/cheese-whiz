@@ -142,7 +142,8 @@ def spice_classify(made_recipe, knowledge_base):
 
     if (sauce_status == False) and (classification == "mexican"):
         result = "mexican_no_sauce"
-
+    else:
+        result = "neutral"
     # recipe_fusion(made_recipe, result, fusion_style, knowledge_base)
     return result
 
@@ -170,6 +171,13 @@ def recipe_fusion(made_recipe, fusion_style, knowledge_base):
     asian_spices = kb.read_specific_lines(util.relative_path("kb_data/style_substitutions.txt"), "#asian_spices", "#end_asian_spices")
     asian_ingredients = kb.read_specific_lines(util.relative_path("kb_data/style_substitutions.txt"), "#asian_ingredients", "#end_asian_ingredients")
 
+    master_spices = kb.read_specific_lines(util.relative_path("kb_data/style_substitutions.txt"), "#master_spices", "#end_master_spices")
+
+
+    neutral_to_asian = kb.read_specific_lines(util.relative_path("kb_data/style_substitutions.txt"), "#neutral_to_asian", "#end_neutral_to_asian")
+    neutral_to_mexican = kb.read_specific_lines(util.relative_path("kb_data/style_substitutions.txt"), "#neutral_to_mexican", "#end_neutral_to_mexican")
+    neutral_to_italian = kb.read_specific_lines(util.relative_path("kb_data/style_substitutions.txt"), "#neutral_to_italian", "#end_neutral_to_italian")
+
 
     italian_red = kb.read_specific_lines(util.relative_path("kb_data/italian_red_sauce.txt"), "#italian_red", "#end_italian_red")
     italian_white = kb.read_specific_lines(util.relative_path("kb_data/italian_red_sauce.txt"), "#italian_white", "#end_italian_white")
@@ -182,9 +190,9 @@ def recipe_fusion(made_recipe, fusion_style, knowledge_base):
 
     # mexican to italian
 
-    fusion_style = "to_italian"
 
-    if "mexican" in sauce_type:
+    #mexican to italian
+    if "mexican" in sauce_type and "italian" in fusion_style:
         for spice in mexican_spices:
             for e in range(len(made_recipe.ingredients)):
                 if spice in made_recipe.ingredients[e].name:
@@ -197,7 +205,6 @@ def recipe_fusion(made_recipe, fusion_style, knowledge_base):
                     replaced_ingredient = made_recipe.ingredients[e].name
                     made_recipe.ingredients[e] = knowledge_base.italian_spices_subs[spicesub].food_out[0]
                     made_recipe.replace_ingredient_in_steps(replaced_ingredient, knowledge_base.italian_spices_subs[spicesub].food_out[0].name)
-                    for e in range(len(made_recipe.steps)): print made_recipe.steps[e]
 
 
         for sub in knowledge_base.mexican_to_italian_list:
@@ -209,18 +216,26 @@ def recipe_fusion(made_recipe, fusion_style, knowledge_base):
                     made_recipe.ingredients[e] = sub.food_out[0]
                     made_recipe.replace_ingredient_in_steps(subbed_ingredient, sub.food_out[0].name)
 
-
-        # for i in made_recipe.ingredients: print i.name
         for e in range(len(made_recipe.steps)): print made_recipe.steps[e]
-
         made_recipe.change_title("Italian " + made_recipe.title)
 
-    if sauce_type == "mexican_no_sauce":
+    #mexican to asian
+    if "mexican" in sauce_type and "asian" in fusion_style:
+        for spice in mexican_spices:
+            for e in range(len(made_recipe.ingredients)):
+                if spice in made_recipe.ingredients[e].name:
+                    print "matched spice: ", spice, made_recipe.ingredients[e].name
+                    print "amount: ", made_recipe.ingredients[e].quantity.amount, made_recipe.ingredients[e].quantity.unit
+                if spice in made_recipe.ingredients[e].name and spice not in asian_spices:
+                    print "not in mexican:", made_recipe.ingredients[e].name
+                    spicesub = randrange(1,len(knowledge_base.asian_spices_subs))
+                    print "replaced: ", made_recipe.ingredients[e].name, " with ", knowledge_base.asian_spices_subs[spicesub].food_out[0].name
+                    replaced_ingredient = made_recipe.ingredients[e].name
+                    made_recipe.ingredients[e] = knowledge_base.asian_spices_subs[spicesub].food_out[0]
+                    made_recipe.replace_ingredient_in_steps(replaced_ingredient, knowledge_base.asian_spices_subs[spicesub].food_out[0].name)
 
-        print "mexican_no_sauce: sub foods"
-        # for i in knowledge_base.mexican_to_italian_list:
-        #     print i.food_in.name, i.food_out[0].name
-        for sub in knowledge_base.mexican_to_italian_list:
+
+        for sub in knowledge_base.mexican_to_asian_list:
             for e in range(len(made_recipe.ingredients)):
                 if sub.food_in.name in made_recipe.ingredients[e].name.lower():
                     subbed_ingredient = made_recipe.ingredients[e].name.lower()
@@ -229,13 +244,25 @@ def recipe_fusion(made_recipe, fusion_style, knowledge_base):
                     made_recipe.ingredients[e] = sub.food_out[0]
                     made_recipe.replace_ingredient_in_steps(subbed_ingredient, sub.food_out[0].name)
 
-        # for i in made_recipe.ingredients: print i.name
         for e in range(len(made_recipe.steps)): print made_recipe.steps[e]
+        made_recipe.change_title("Asian " + made_recipe.title)
 
-        made_recipe.change_title("Italian " + made_recipe.title)
 
-
+    #asian to italian
     if "asian" in sauce_type and "italian" in fusion_style:
+        for spice in asian_spices:
+            for e in range(len(made_recipe.ingredients)):
+                if spice in made_recipe.ingredients[e].name:
+                    print "matched spice: ", spice, " with ", made_recipe.ingredients[e].name
+                    print "amount: ", made_recipe.ingredients[e].quantity.amount, made_recipe.ingredients[e].quantity.unit
+                if spice in made_recipe.ingredients[e].name and spice not in italian_spices:
+                    print "not in italian:", made_recipe.ingredients[e].name
+                    spicesub = randrange(1,len(knowledge_base.italian_spices_subs))
+                    print "replaced: ", made_recipe.ingredients[e].name, " with ", knowledge_base.italian_spices_subs[spicesub].food_out[0].name
+                    replaced_ingredient = made_recipe.ingredients[e].name
+                    made_recipe.ingredients[e] = knowledge_base.italian_spices_subs[spicesub].food_out[0]
+                    made_recipe.replace_ingredient_in_steps(replaced_ingredient, knowledge_base.italian_spices_subs[spicesub].food_out[0].name)
+
 
         for sub in knowledge_base.asian_to_italian_list:
             for e in range(len(made_recipe.ingredients)):
@@ -248,6 +275,169 @@ def recipe_fusion(made_recipe, fusion_style, knowledge_base):
 
         for e in range(len(made_recipe.steps)): print made_recipe.steps[e]
         made_recipe.change_title("Italian " + made_recipe.title)
+
+    #asian to italian
+    if "asian" in sauce_type and "mexican" in fusion_style:
+        for spice in asian_spices:
+            for e in range(len(made_recipe.ingredients)):
+                if spice in made_recipe.ingredients[e].name:
+                    print "matched spice: ", spice, " with ", made_recipe.ingredients[e].name
+                    print "amount: ", made_recipe.ingredients[e].quantity.amount, made_recipe.ingredients[e].quantity.unit
+                if spice in made_recipe.ingredients[e].name and spice not in mexican_spices:
+                    print "not in italian:", made_recipe.ingredients[e].name
+                    spicesub = randrange(1,len(knowledge_base.mexican_spices_subs))
+                    print "replaced: ", made_recipe.ingredients[e].name, " with ", knowledge_base.mexican_spices_subs[spicesub].food_out[0].name
+                    replaced_ingredient = made_recipe.ingredients[e].name
+                    made_recipe.ingredients[e] = knowledge_base.mexican_spices_subs[spicesub].food_out[0]
+                    made_recipe.replace_ingredient_in_steps(replaced_ingredient, knowledge_base.mexican_spices_subs[spicesub].food_out[0].name)
+
+
+        for sub in knowledge_base.asian_to_mexican_list:
+            for e in range(len(made_recipe.ingredients)):
+                if sub.food_in.name in made_recipe.ingredients[e].name.lower():
+                    subbed_ingredient = made_recipe.ingredients[e].name.lower()
+                    print "item to sub: " + subbed_ingredient
+                    print "replace with: " + sub.food_out[0].name
+                    made_recipe.ingredients[e] = sub.food_out[0]
+                    made_recipe.replace_ingredient_in_steps(subbed_ingredient, sub.food_out[0].name)
+
+        for e in range(len(made_recipe.steps)): print made_recipe.steps[e]
+        made_recipe.change_title("Mexican " + made_recipe.title)
+
+
+    #italian to asian
+    if "italian" in sauce_type and "asian" in fusion_style:
+        for spice in italian_spices:
+            for e in range(len(made_recipe.ingredients)):
+                if spice in made_recipe.ingredients[e].name:
+                    print "matched spice: ", spice, made_recipe.ingredients[e].name
+                    print "amount: ", made_recipe.ingredients[e].quantity.amount, made_recipe.ingredients[e].quantity.unit
+                if spice in made_recipe.ingredients[e].name and spice not in asian_spices:
+                    print "not in italian:", made_recipe.ingredients[e].name
+                    spicesub = randrange(1,len(knowledge_base.asian_spices_subs))
+                    print "replaced: ", made_recipe.ingredients[e].name, " with ", knowledge_base.asian_spices_subs[spicesub].food_out[0].name
+                    replaced_ingredient = made_recipe.ingredients[e].name
+                    made_recipe.ingredients[e] = knowledge_base.asian_spices_subs[spicesub].food_out[0]
+                    made_recipe.replace_ingredient_in_steps(replaced_ingredient, knowledge_base.asian_spices_subs[spicesub].food_out[0].name)
+
+
+        for sub in knowledge_base.asian_to_italian_list:
+            for e in range(len(made_recipe.ingredients)):
+                if sub.food_in.name in made_recipe.ingredients[e].name.lower():
+                    subbed_ingredient = made_recipe.ingredients[e].name.lower()
+                    print "item to sub: " + subbed_ingredient
+                    print "replace with: " + sub.food_out[0].name
+                    made_recipe.ingredients[e] = sub.food_out[0]
+                    made_recipe.replace_ingredient_in_steps(subbed_ingredient, sub.food_out[0].name)
+
+        for e in range(len(made_recipe.steps)): print made_recipe.steps[e]
+        made_recipe.change_title("Asian " + made_recipe.title)
+
+    #italian to mexican
+    if "italian" in sauce_type and "mexican" in fusion_style:
+        for spice in italian_spices:
+            for e in range(len(made_recipe.ingredients)):
+                if spice in made_recipe.ingredients[e].name:
+                    print "matched spice: ", spice, made_recipe.ingredients[e].name
+                    print "amount: ", made_recipe.ingredients[e].quantity.amount, made_recipe.ingredients[e].quantity.unit
+                if spice in made_recipe.ingredients[e].name and spice not in mexican_spices:
+                    print "not in mexican:", made_recipe.ingredients[e].name
+                    spicesub = randrange(1,len(knowledge_base.mexican_spices_subs))
+                    print "replaced: ", made_recipe.ingredients[e].name, " with ", knowledge_base.mexican_spices_subs[spicesub].food_out[0].name
+                    replaced_ingredient = made_recipe.ingredients[e].name
+                    made_recipe.ingredients[e] = knowledge_base.mexican_spices_subs[spicesub].food_out[0]
+                    made_recipe.replace_ingredient_in_steps(replaced_ingredient, knowledge_base.mexican_spices_subs[spicesub].food_out[0].name)
+
+
+        for sub in knowledge_base.mexican_to_italian_list:
+            for e in range(len(made_recipe.ingredients)):
+                if sub.food_in.name in made_recipe.ingredients[e].name.lower():
+                    subbed_ingredient = made_recipe.ingredients[e].name.lower()
+                    print "item to sub: " + subbed_ingredient
+                    print "replace with: " + sub.food_out[0].name
+                    made_recipe.ingredients[e] = sub.food_out[0]
+                    made_recipe.replace_ingredient_in_steps(subbed_ingredient, sub.food_out[0].name)
+
+        for e in range(len(made_recipe.steps)): print made_recipe.steps[e]
+        made_recipe.change_title("Mexican " + made_recipe.title)
+
+    if "neutral" in sauce_type and "mexican" in fusion_style:
+        for spice in master_spices:
+            for e in range(len(made_recipe.ingredients)):
+                if spice in made_recipe.ingredients[e].name:
+                    print "matched spice: ", spice, made_recipe.ingredients[e].name
+                    print "amount: ", made_recipe.ingredients[e].quantity.amount, made_recipe.ingredients[e].quantity.unit
+                if spice in made_recipe.ingredients[e].name and spice not in mexican_spices:
+                    print "not in mexican:", made_recipe.ingredients[e].name
+                    spicesub = randrange(1,len(knowledge_base.mexican_spices_subs))
+                    print "replaced: ", made_recipe.ingredients[e].name, " with ", knowledge_base.mexican_spices_subs[spicesub].food_out[0].name
+                    replaced_ingredient = made_recipe.ingredients[e].name
+                    made_recipe.ingredients[e] = knowledge_base.mexican_spices_subs[spicesub].food_out[0]
+                    made_recipe.replace_ingredient_in_steps(replaced_ingredient, knowledge_base.mexican_spices_subs[spicesub].food_out[0].name)
+
+        for sub in knowledge_base.neutral_to_mexican_list:
+            for e in range(len(made_recipe.ingredients)):
+                if sub.food_in.name in made_recipe.ingredients[e].name.lower():
+                    subbed_ingredient = made_recipe.ingredients[e].name.lower()
+                    print "item to sub: " + subbed_ingredient
+                    print "replace with: " + sub.food_out[0].name
+                    made_recipe.ingredients[e] = sub.food_out[0]
+                    made_recipe.replace_ingredient_in_steps(subbed_ingredient, sub.food_out[0].name)
+
+        for e in range(len(made_recipe.steps)): print made_recipe.steps[e]
+        made_recipe.change_title("Mexican " + made_recipe.title)
+
+    if "neutral" in sauce_type and "italian" in fusion_style:
+        for spice in master_spices:
+            for e in range(len(made_recipe.ingredients)):
+                if spice in made_recipe.ingredients[e].name:
+                    print "matched spice: ", spice, made_recipe.ingredients[e].name
+                    print "amount: ", made_recipe.ingredients[e].quantity.amount, made_recipe.ingredients[e].quantity.unit
+                if spice in made_recipe.ingredients[e].name and spice not in italian_spices:
+                    print "not in italian:", made_recipe.ingredients[e].name
+                    spicesub = randrange(1,len(knowledge_base.italian_spices_subs))
+                    print "replaced: ", made_recipe.ingredients[e].name, " with ", knowledge_base.italian_spices_subs[spicesub].food_out[0].name
+                    replaced_ingredient = made_recipe.ingredients[e].name
+                    made_recipe.ingredients[e] = knowledge_base.italian_spices_subs[spicesub].food_out[0]
+                    made_recipe.replace_ingredient_in_steps(replaced_ingredient, knowledge_base.italian_spices_subs[spicesub].food_out[0].name)
+
+        for sub in knowledge_base.neutral_to_italian_list:
+            for e in range(len(made_recipe.ingredients)):
+                if sub.food_in.name in made_recipe.ingredients[e].name.lower():
+                    subbed_ingredient = made_recipe.ingredients[e].name.lower()
+                    print "item to sub: " + subbed_ingredient
+                    print "replace with: " + sub.food_out[0].name
+                    made_recipe.ingredients[e] = sub.food_out[0]
+                    made_recipe.replace_ingredient_in_steps(subbed_ingredient, sub.food_out[0].name)
+
+        for e in range(len(made_recipe.steps)): print made_recipe.steps[e]
+        made_recipe.change_title("Mexican " + made_recipe.title)
+
+    if "neutral" in sauce_type and "asian" in fusion_style:
+        for spice in master_spices:
+            for e in range(len(made_recipe.ingredients)):
+                if spice in made_recipe.ingredients[e].name:
+                    print "matched spice: ", spice, made_recipe.ingredients[e].name
+                    print "amount: ", made_recipe.ingredients[e].quantity.amount, made_recipe.ingredients[e].quantity.unit
+                if spice in made_recipe.ingredients[e].name and spice not in asian_spices:
+                    print "not in asian:", made_recipe.ingredients[e].name
+                    spicesub = randrange(1,len(knowledge_base.asian_spices_subs))
+                    print "replaced: ", made_recipe.ingredients[e].name, " with ", knowledge_base.asian_spices_subs[spicesub].food_out[0].name
+                    replaced_ingredient = made_recipe.ingredients[e].name
+                    made_recipe.ingredients[e] = knowledge_base.asian_spices_subs[spicesub].food_out[0]
+                    made_recipe.replace_ingredient_in_steps(replaced_ingredient, knowledge_base.asian_spices_subs[spicesub].food_out[0].name)
+
+        for sub in knowledge_base.neutral_to_asian_list:
+            for e in range(len(made_recipe.ingredients)):
+                if sub.food_in.name in made_recipe.ingredients[e].name.lower():
+                    subbed_ingredient = made_recipe.ingredients[e].name.lower()
+                    print "item to sub: " + subbed_ingredient
+                    print "replace with: " + sub.food_out[0].name
+                    made_recipe.ingredients[e] = sub.food_out[0]
+                    made_recipe.replace_ingredient_in_steps(subbed_ingredient, sub.food_out[0].name)
+
+        for e in range(len(made_recipe.steps)): print made_recipe.steps[e]
+        made_recipe.change_title("Mexican " + made_recipe.title)
 
     return made_recipe
 

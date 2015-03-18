@@ -58,6 +58,9 @@ class TestOnLoadedKB(unittest.TestCase):
         print "\n", made_recipe.title
         recipe_fusion(made_recipe, "to_italian", self.kb)
 
+        made_recipe = url_to_recipe('http://allrecipes.com/recipe/hamburgers-by-eddie/', self.kb)
+        print "\n", made_recipe.title
+        recipe_fusion(made_recipe, "to_italian", self.kb)
 
         # testhtml = get_html('http://allrecipes.com/Recipe/Chicken-Enchiladas-II/')
         # print made_recipe.title
