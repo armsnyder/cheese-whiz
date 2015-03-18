@@ -1,6 +1,7 @@
 from bs4 import BeautifulSoup
 import urllib2
 import nltk
+import regex
 
 import util
 import recipe
@@ -37,8 +38,7 @@ def parse_ingredient(ingredient, knowledge_base):
             name_string = ' '.join(name_words[w:])
             break
 
-    # TODO: Make sure jalapeno works with this encoding
-    rest_words = [thing.decode('unicode_escape').encode('ascii', 'ignore') for thing in rest_words]
+    rest_words = [remove_unicode(thing) for thing in rest_words]
     rest_string = ' '.join(rest_words)
     tokens = nltk.word_tokenize(rest_string)
     pos_tagged_tokens = nltk.pos_tag(tokens)
@@ -209,3 +209,14 @@ def find_cooking_methods(steps, knowledge_base):
                 step = step.replace(method, '')
                 method_list.append(method)
     return method_list
+
+
+def remove_unicode(text):
+    """
+    Cleans ingredient text from allrecipes
+    :param text: text with unicode
+    :return: text without unicode
+    """
+    # TODO: Make sure jalapeno works with this encoding
+    encoded_text = text.encode('utf-8')
+    return regex.uni.sub('', encoded_text)
