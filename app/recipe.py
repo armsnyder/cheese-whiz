@@ -19,6 +19,9 @@ class Recipe:
     def add_steps(self, steps_list):
         self.steps.extend(steps_list)
 
+    def change_title(self, new_title):
+        self.title = new_title
+
 
 class Ingredient:
 

@@ -1,5 +1,4 @@
 # Substitutions for meats. Use in to_vegan substitutions as well.
-# Add flavoring information? Other nutrients? (e.g. fish oils)
 
 #Poultry
 chicken = tofu OR tempeh OR seitan
@@ -14,13 +13,13 @@ pulled pork = shredded tempeh
 ham = tofu
 
 #Fish
-fish = mashed chickpeas OR tofu OR tempeh OR seitan
+fish = tofu, tempeh, seitan, mashed chickpeas
 
 #Beef
-beef = eggplant OR mushroom OR cubed tofu
+beef = eggplant, mushroom, cubed tofu
 
 #Steak
-steak = eggplant OR portobello mushroom cap
+steak = eggplant, mushroom
 
 #Ground Meat
 ground beef = ground tempeh OR seitan OR textured vegetable protein
