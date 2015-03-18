@@ -35,6 +35,7 @@ def parse_ingredient(ingredient, knowledge_base):
     ingredient = ingredient.lower()
     ingredient = ingredient.replace(', or to taste', '')
     ingredient = ingredient.replace(' or to taste', '')
+    ingredient = remove_unicode(ingredient)
     i_tokens = nltk.pos_tag(nltk.word_tokenize(ingredient))
     # for i in range(len(i_tokens)):
     #     ii = i_tokens[i][0]
@@ -51,9 +52,6 @@ def parse_ingredient(ingredient, knowledge_base):
             rest_words = i_tokens[:w]
             name_string = ' '.join([t[0] for t in i_tokens[w:]])
             break
-
-    print i_tokens
-    print name_string
 
     for i in range(len(rest_words)):
         tag = rest_words[i][1]
@@ -76,9 +74,6 @@ def parse_ingredient(ingredient, knowledge_base):
             prep_description_words.append(word)
         else:
             descriptor_words.append(word)
-    print descriptor_words
-    print preparation_words
-    print prep_description_words
 
     if name_string == 'unknown':
         if only_name_words:
@@ -189,10 +184,6 @@ def url_to_recipe(url, knowledge_base):
     """
     recipe_html = get_html(url)
     recipe_title, recipe_ingredients, recipe_steps = parse_html(recipe_html)
-
-    print recipe_title
-    print recipe_ingredients
-    print recipe_steps
     return make_recipe(recipe_title, recipe_ingredients, recipe_steps, knowledge_base)
 
 
