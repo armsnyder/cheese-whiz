@@ -2,6 +2,7 @@
 alfredo
 marinara
 teriyaki
+salsa
 #end_sauce_words
 
 
@@ -57,6 +58,8 @@ yellow pepper
 garlic
 taco seasoning
 lime juice
+taco sauce
+parsley
 #end_mexican_spices
 
 
@@ -175,21 +178,26 @@ chili sauce
 
 #mexican_to_italian
 sour cream *= ricotta cheese
-tortilla *= lasagna noodle
-taco shell = lasagna noodle
+#tortilla *= cooked manicotti
+taco shell = cooked manicotti
 salsa *= tomato sauce OR crushed tomato OR spaghetti sauce
-cheddar cheese = parmesan OR pecorino romano
+cheddar cheese = parmesan cheese
 cheddar = parmesan
 monterey jack = mozzarella
 cream of mushroom soup = alfredo sauce
 tortilla chips = lasagna noodle
 nacho cheese = alfredo sauce
+taco sauce = tomato puree
 #end_mexican_to_italian
 
+
+
 #mexican_to_asian
-
-
 #end_mexican_to_asian
+
+
+
+
 
 #italian_to_mexican
 ricotta = sour cream

@@ -4,8 +4,6 @@
 # import unittest
 # from app.parser import parse_html
 # from app.parser import get_html
-# from app.cooking_tools import find_cooking_tools, find_cooking_methods
-# from app.style_fusions import classify_recipe
 # from app.style_fusions import spice_classify
 #
 # class TestParseHtml(unittest.TestCase):

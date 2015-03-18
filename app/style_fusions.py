@@ -15,7 +15,7 @@ def classify_recipe(made_recipe):
     italian_titles = kb.read_txt_lines_into_list(util.relative_path("kb_data/italian_titles.txt"))
     mexican_titles = kb.read_txt_lines_into_list(util.relative_path("kb_data/mexican_titles.txt"))
     east_asian_titles = kb.read_txt_lines_into_list(util.relative_path("kb_data/east_asian_titles.txt"))
-    recipe_title = made_recipe.title.lower()
+    recipe_title = (made_recipe.title()).lower()
 
     recipe_type = "neutral"
     for potential_title in italian_titles:
@@ -27,34 +27,43 @@ def classify_recipe(made_recipe):
     for potential_title in east_asian_titles:
         if potential_title in recipe_title:
             recipe_type = "asian"
-
-    print "\n" + recipe_title
     return recipe_type
 
 
+def sauce_status(sauce_words, made_recipe):
+    pass
 
-def spice_classify(parsed_html, knowledge_base):
+def spice_classify(made_recipe, knowledge_base):
     sauce_words = kb.read_specific_lines(util.relative_path("kb_data/style_substitutions.txt"), "#sauce_words", "#end_sauce_words")
-    classification = classify_recipe(parsed_html[0])
-    recipe_steps = parsed_html
+    classification = classify_recipe(made_recipe.title)
+    print "classification of recipe: ", classification
+    recipe_steps = made_recipe.steps
+    print "Recipe Steps: ", recipe_steps
     sauce_status = False
     result = ""
 
-    for step in recipe_steps[2]:
-        if "soy sauce" in step or "taco sauce":
+    for step in recipe_steps:
+        if "soy sauce" in step:
             step = step.replace("soy sauce", '')
+        if "taco sauce" in step:
             step = step.replace("taco sauce", '')
         if " sauce " in step:
             sauce_status = True
             break
-        for sauces in sauce_words:
-            if sauces in step or recipe_steps[0]:
+        for sauce in sauce_words:
+            if sauce in step:
+                print sauce
+                sauce_status = True
+                break
+            elif sauce in recipe_steps[0]:
+                print sauce
                 sauce_status = True
                 break
 
     ingredient_list = []
-    for (item, amount) in parsed_html[1]:
-        ingredient_list.append(item)
+    for item in made_recipe.ingredients:
+        print item.name, item.quantity.amount, item.quantity.unit
+        ingredient_list.append(item.name)
 
     if sauce_status == True and classification == "italian":
         # print "italian with sauce"
@@ -120,10 +129,10 @@ def spice_classify(parsed_html, knowledge_base):
         mexican_white = kb.read_specific_lines(util.relative_path("kb_data/italian_red_sauce.txt"), "#mexican_white", "#end_mexican_white")
 
         red_result = SequenceMatcher(None, ingredient_list, mexican_red).ratio()
-        print "red_result: "
+        print "mexican_red_result: "
         print red_result
         white_result = SequenceMatcher(None, ingredient_list, mexican_white).ratio()
-        print "white_result: "
+        print "mexican_white_result: "
         print white_result
 
         if white_result > red_result:
@@ -131,45 +140,85 @@ def spice_classify(parsed_html, knowledge_base):
         else:
             result = "mexican_red"
 
-    if sauce_status == False and classification == "mexican":
+    if (sauce_status == False) and (classification == "mexican"):
         result = "mexican_no_sauce"
 
-    remove_spices(parsed_html, result, knowledge_base)
+    # recipe_fusion(made_recipe, result, fusion_style, knowledge_base)
     return result
 
 
-# def testing_recipe(from_recipe):
-#     print from_recipe.ingredients
 
 
-def remove_spices(parsed_results, sauce_type, knowledge_base):
+def testing_recipe(from_recipe):
+    for ingredient_objects in from_recipe.ingredients:
+        print ingredient_objects.name
 
-    type_fusion = "to_italian"
+
+def recipe_fusion(made_recipe, fusion_style, knowledge_base):
+    sauce_type = spice_classify(made_recipe, knowledge_base)
+    print "sauce type: ", sauce_type
 
     mexican_spices = kb.read_specific_lines(util.relative_path("kb_data/style_substitutions.txt"), "#mexican_spices", "#end_mexican_spices")
     mexican_ingredients = kb.read_specific_lines(util.relative_path("kb_data/style_substitutions.txt"), "#mexican_ingredients", "#end_mexican_ingredients")
-    mexican_to__italian = kb.read_specific_lines(util.relative_path("kb_data/style_substitutions.txt"), "#mexican_to_italian", "#end_mexican_to_italian")
 
     italian_spices = kb.read_specific_lines(util.relative_path("kb_data/style_substitutions.txt"), "#italian_spices", "#end_italian_spices")
+    italian_ingredients = kb.read_specific_lines(util.relative_path("kb_data/style_substitutions.txt"), "#italian_ingredients", "#end_italian_ingredients")
+
+
     asian_spices = kb.read_specific_lines(util.relative_path("kb_data/style_substitutions.txt"), "#asian_spices", "#end_asian_spices")
+    asian_ingredients = kb.read_specific_lines(util.relative_path("kb_data/style_substitutions.txt"), "#asian_ingredients", "#end_asian_ingredients")
+
+
+    italian_red = kb.read_specific_lines(util.relative_path("kb_data/italian_red_sauce.txt"), "#italian_red", "#end_italian_red")
+    italian_white = kb.read_specific_lines(util.relative_path("kb_data/italian_red_sauce.txt"), "#italian_white", "#end_italian_white")
+    italian_green = kb.read_specific_lines(util.relative_path("kb_data/italian_red_sauce.txt"), "#italian_pesto", "#end_italian_pesto")
+    mexican_red = kb.read_specific_lines(util.relative_path("kb_data/italian_red_sauce.txt"), "#mexican_red", "#end_mexican_red")
+    mexican_white = kb.read_specific_lines(util.relative_path("kb_data/italian_red_sauce.txt"), "#mexican_white", "#end_mexican_white")
+    asian_orange = kb.read_specific_lines(util.relative_path("kb_data/italian_red_sauce.txt"), "#asian_orange", "#asian_orange_end")
+    asian_brown = kb.read_specific_lines(util.relative_path("kb_data/italian_red_sauce.txt"), "#asian_brown", "#asian_brown_end")
+    asian_sesame = kb.read_specific_lines(util.relative_path("kb_data/italian_red_sauce.txt"), "#asian_sesame", "#asian_sesame_end")
 
     # mexican to italian
 
-    if sauce_type != "mexican_no_sauce":
+    fusion_style = "to_italian"
+
+    if "mexican" in sauce_type:
+        sub_list = "knowledge_base." "mexican_" + fusion_style + "_list"
+
         fusion_method = randrange(1, 4)
 
-        if fusion_method==1:
+        print "spice matching:"
+        for spice in mexican_spices:
+            for e in range(len(made_recipe.ingredients)):
+                if spice in made_recipe.ingredients[e].name:
+                    print "matched spice: ", spice, made_recipe.ingredients[e].name
+                    print "amount: ", made_recipe.ingredients[e].quantity.amount, made_recipe.ingredients[e].quantity.unit
+                if spice in made_recipe.ingredients[e].name and spice not in italian_spices:
+                    print "not in italian:", made_recipe.ingredients[e].name
+
+
+
+                # if
+                #     subbed_ingredient = made_recipe.ingredients[e].name.lower()
+                #     print "item to sub: " + subbed_ingredient
+                #     print "replace with: " + sub.food_out[0].name
+                #     made_recipe.ingredients[e] = sub.food_out[0]
+                #     made_recipe.replace_ingredient_in_steps(subbed_ingredient, sub.food_out[0].name)
+
+
+
+        if fusion_method==1 and sauce_type=="mexican_white":
+            for i in mexican_white:
+                pass
             print 1
             #replace sauce with red sauce
 
         if fusion_method==2:
             print 2
-
             #replace sauce with italian white
 
         if fusion_method==3:
             print 3
-
             #replace with pesto
 
         if fusion_method==4:
@@ -177,10 +226,51 @@ def remove_spices(parsed_results, sauce_type, knowledge_base):
             #replace with dry italian herbs
 
 
-        for spice in mexican_spices:
-            for (item, amount) in parsed_results[1]:
-                if spice in item:
-                    print item
+        print "sub foods"
+        # for i in knowledge_base.mexican_to_italian_list:
+        #     print i.food_in.name, i.food_out[0].name
+
+        for sub in knowledge_base.mexican_to_italian_list:
+            for e in range(len(made_recipe.ingredients)):
+                if sub.food_in.name in made_recipe.ingredients[e].name.lower():
+                    subbed_ingredient = made_recipe.ingredients[e].name.lower()
+                    print "item to sub: " + subbed_ingredient
+                    print "replace with: " + sub.food_out[0].name
+                    made_recipe.ingredients[e] = sub.food_out[0]
+                    made_recipe.replace_ingredient_in_steps(subbed_ingredient, sub.food_out[0].name)
+
+
+        # for i in made_recipe.ingredients: print i.name
+        for e in range(len(made_recipe.steps)): print made_recipe.steps[e]
+
+        made_recipe.change_title("Italian " + made_recipe.title)
+
+    if sauce_type == "mexican_no_sauce":
+
+        print "mexican_no_sauce: sub foods"
+        # for i in knowledge_base.mexican_to_italian_list:
+        #     print i.food_in.name, i.food_out[0].name
+        for sub in knowledge_base.mexican_to_italian_list:
+            for e in range(len(made_recipe.ingredients)):
+                if sub.food_in.name in made_recipe.ingredients[e].name.lower():
+                    subbed_ingredient = made_recipe.ingredients[e].name.lower()
+                    print "item to sub: " + subbed_ingredient
+                    print "replace with: " + sub.food_out[0].name
+                    made_recipe.ingredients[e] = sub.food_out[0]
+                    made_recipe.replace_ingredient_in_steps(subbed_ingredient, sub.food_out[0].name)
+
+        # for i in made_recipe.ingredients: print i.name
+        for e in range(len(made_recipe.steps)): print made_recipe.steps[e]
+
+        made_recipe.change_title("Italian " + made_recipe.title)
+
+
+    for spice in mexican_spices:
+        for item in made_recipe.ingredients:
+            if spice in item.name:
+                print ''
+
+    return made_recipe
 
         # this isn't done at all.
         # for (ingredient, substitution) in kb.mexican_to_italian:

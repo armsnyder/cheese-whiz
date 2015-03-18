@@ -4,7 +4,7 @@ import glob
 from pprint import pprint
 from collections import Counter
 
-from app.parser import format_for_autograder as student
+from app.app import student as student
 TEAM = 1 # enter your team number here
 
 def check_tools(answer, stud):
@@ -103,6 +103,7 @@ def main_for_test():
     result = []
     for answer in (get_file(fn) for fn in glob.iglob('tests/Recipes/*.json')):
         stud = student(answer['url'])
+        print 'ZZZ' + stud['primary cooking method']
         tmpmeth = 0
         tmptool = 0
         tmping = 0

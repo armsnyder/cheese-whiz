@@ -5,6 +5,7 @@ import pickle
 
 import kb
 import util
+import parser
 
 
 def main():
@@ -28,3 +29,8 @@ def load_knowledge_base():
         knowledge_base.load()
         pickle.dump(knowledge_base, open(kb_object_path, 'wb'))
     return knowledge_base
+
+
+def student(url):
+    knowledge_base = load_knowledge_base()
+    return parser.url_to_dictionary(url, knowledge_base)
