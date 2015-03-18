@@ -35,6 +35,8 @@ def parse_ingredient(ingredient, knowledge_base):
     ingredient = ingredient.lower()
     ingredient = ingredient.replace(', or to taste', '')
     ingredient = ingredient.replace(' or to taste', '')
+    ingredient = ingredient.replace(', to taste', '')
+    ingredient = ingredient.replace(' to taste', '')
     ingredient = remove_unicode(ingredient)
     i_tokens = nltk.pos_tag(nltk.word_tokenize(ingredient))
     # for i in range(len(i_tokens)):
