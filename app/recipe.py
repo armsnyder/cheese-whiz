@@ -4,7 +4,7 @@ import re
 
 class Recipe:
 
-    def __init__(self, title=None, ingredients=None, steps=None):
+    def __init__(self, title='', ingredients=None, steps=None):
         self.title = title
         self.ingredients = []
         self.steps = []
@@ -19,8 +19,22 @@ class Recipe:
     def add_ingredients(self, ingredients_list):
         self.ingredients.extend(ingredients_list)
 
+    def modify_ingredients(self, new_ingredients_list):
+        self.ingredients = new_ingredients_list
+
+    def modify_steps(self, new_steps):
+        self.steps = new_steps
+
+    def replace_ingredient_in_steps(self, old_food_name, new_food_name):
+        for step_num in range(len(self.steps)):
+            self.steps[step_num] = self.steps[step_num].lower()
+            self.steps[step_num] = self.steps[step_num].replace(old_food_name, new_food_name)
+
     def add_steps(self, steps_list):
         self.steps.extend(steps_list)
+
+    def change_title(self, new_title):
+        self.title = new_title
 
 
 class Ingredient:

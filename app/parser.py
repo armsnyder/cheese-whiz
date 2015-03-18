@@ -112,6 +112,7 @@ def parse_html(html):
         title = soup.find('h1', {'itemprop': 'name'}).get_text()
     else:
         title = 'untitled'
+    title = title.lower()
     ingredients = soup.find_all('p', {'itemprop': 'ingredients'})
     ingredient_quantity_string_tuples = []
     for i in ingredients:
@@ -129,6 +130,7 @@ def parse_html(html):
             steps.append(d.get_text())
     else:
         steps.append('No directions.')
+
     return title, ingredient_quantity_string_tuples, steps
 
 
@@ -187,6 +189,10 @@ def url_to_recipe(url, knowledge_base):
     """
     recipe_html = get_html(url)
     recipe_title, recipe_ingredients, recipe_steps = parse_html(recipe_html)
+
+    print recipe_title
+    print recipe_ingredients
+    print recipe_steps
     return make_recipe(recipe_title, recipe_ingredients, recipe_steps, knowledge_base)
 
 

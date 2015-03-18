@@ -1,6 +1,7 @@
 #italian_red
 oregano
 basil
+tomato
 crushed tomato
 diced tomato
 tomato puree
@@ -83,19 +84,21 @@ rice wine
 wine
 #end_asian_sesame
 
-#end_asian_sesame
 
 #mexican_white
 cream of mushroom soup
 sour cream
 green chiles
 garlic
+taco seasoning
 #end_mexican_white
 
 
 #mexican_red
 enchilada sauce
 salsa
+tomato
 garlic
 onion
+taco seasoning
 #end_mexican_red
