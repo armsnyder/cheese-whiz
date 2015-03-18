@@ -20,6 +20,13 @@ class KnowledgeBase:
         self.cooking_wares = set()
         self.measurements = {}
         self.common_substitutions = []
+        self.italian_spices_list = []
+        self.italian_spices_subs = []
+        self.asian_spices_subs = []
+        self.mexican_spices_subs = []
+
+        self.mexican_spices_list = []
+        self.asian_spices_list = []
         self.italian_to_mexican_list = []
         self.italian_to_asian_list = []
         self.asian_to_italian_list = []
@@ -230,8 +237,33 @@ class KnowledgeBase:
         asian_to_mexican = read_specific_lines(util.relative_path("kb_data/style_substitutions.txt"), "#asian_to_mexican", "#end_asian_to_mexican")
         italian_to_mexican = read_specific_lines(util.relative_path("kb_data/style_substitutions.txt"), "#italian_to_mexican", "#end_italian_to_mexican")
         italian_to_asian = read_specific_lines(util.relative_path("kb_data/style_substitutions.txt"), "#italian_to_asian", "#end_italian_to_asian")
+        italian_spices_subs = read_specific_lines(util.relative_path("kb_data/style_substitutions.txt"), "#italian_spices_subs", "#end_italian_spices_subs")
+        italian_spices = read_specific_lines(util.relative_path("kb_data/style_substitutions.txt"), "#italian_spices_subs", "#end_italian_spices_subs")
+        asian_spices = read_specific_lines(util.relative_path("kb_data/style_substitutions.txt"), "#asian_spices", "#end_asian_spices")
+        mexican_spices = read_specific_lines(util.relative_path("kb_data/style_substitutions.txt"), "#mexican_spices", "#end_mexican_spices")
+
         vegan_sub_list = read_txt_lines_into_list('kb_data/vegan_substitutions.txt')
         vegetarian_sub_list = read_txt_lines_into_list('kb_data/vegetarian_substitutions.txt')
+
+        for raw_sub in italian_spices:
+            parsed_in_out = [thing.strip() for thing in raw_sub.split('=')]
+            if len(parsed_in_out) != 2:
+                util.warning('Incorrect substitution string: ' + raw_sub)
+                continue
+            self.italian_spices_list.append(self._format_raw_sub(parsed_in_out[0], parsed_in_out[1], 'italian'))
+
+        for raw_sub in italian_spices_subs:
+            parsed_in_out = [thing.strip() for thing in raw_sub.split('=')]
+            if len(parsed_in_out) != 2:
+                util.warning('Incorrect substitution string: ' + raw_sub)
+                continue
+            self.italian_spices_subs.append(self._format_raw_sub(parsed_in_out[0], parsed_in_out[1], 'italian'))
+
+        for spice in mexican_spices:
+            self.mexican_spices_list.append(self.lookup_single_food(spice))
+
+        for spice in asian_spices:
+            self.asian_spices_list.append(self.lookup_single_food(spice))
 
         for raw_sub in mexican_to_italian:
             parsed_in_out = [thing.strip() for thing in raw_sub.split('=')]
@@ -309,6 +341,31 @@ class KnowledgeBase:
             if ok:
                 result.append(food)
         return result
+
+    def lookup_single_food(self, food_name):
+        """
+        Gets a list of foods that match a search string
+        :param food_name: search string
+        :return: list of foods in knowledge base
+        """
+        result = []
+        ingredient_tokens = [token.lower() for token in nltk.word_tokenize(food_name)]
+        for food in self.foods:
+            ok = True
+            for token in ingredient_tokens:
+                db_food_name = food.name
+                if food.common_name:
+                    db_food_name = "%s %s" % (db_food_name, food.common_name)
+                if token not in db_food_name.lower():
+                    ok = False
+                    break
+            if ok:
+                result.append(food)
+        if result == []:
+            return result
+        else:
+            print result[0].name
+            return result[0]
 
     def interpret_quantity(self, string):
         """

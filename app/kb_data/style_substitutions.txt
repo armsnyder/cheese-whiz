@@ -62,6 +62,31 @@ taco sauce
 parsley
 #end_mexican_spices
 
+#mexican_spices_subs
+generic_spice = cumin
+generic_spice = cilantro
+generic_spice = lime
+generic_spice = jalapeno
+generic_spice = cloves
+generic_spice = chile
+generic_spice = coriander
+generic_spice = oregano
+generic_spice = cayenne
+generic_spice = chili powder
+generic_spice = thyme
+generic_spice = epazote
+generic_spice = chile powder
+generic_spice = chili
+generic_spice = green peppers
+generic_spice = red pepper
+generic_spice = yellow pepper
+generic_spice = garlic
+generic_spice = taco seasoning
+generic_spice = lime juice
+generic_spice = taco sauce
+generic_spice = parsley
+#end_mexican_spices_subs
+
 
 #italian_spices
 oregano
@@ -76,8 +101,17 @@ nutmeg
 #end_italian_spices
 
 
-
-
+#italian_spices_subs
+generic_spice = oregano
+generic_spice = basil
+generic_spice = garlic
+generic_spice = bay leaves
+generic_spice = rosemary
+generic_spice = red pepper flake
+generic_spice = sage
+generic_spice = parsley
+generic_spice = nutmeg
+#end_italian_spices_subs
 
 
 #italian_ingredients
@@ -92,7 +126,6 @@ fontina
 ricotta
 
 
-#list of pasta
 Agnolotti
 Bavette
 bigoli
@@ -136,7 +169,6 @@ Vermicelli
 Ziti
 
 
-#meats
 prosciutto
 pancetta
 pepperoni
@@ -177,10 +209,10 @@ chili sauce
 #TRANSFORM INGREDIENT SUBSTITUTES
 
 #mexican_to_italian
-sour cream *= ricotta cheese
-#tortilla *= cooked manicotti
+sour cream = ricotta cheese
+#tortilla = cooked manicotti
 taco shell = cooked manicotti
-salsa *= tomato sauce OR crushed tomato OR spaghetti sauce
+salsa = tomato sauce OR crushed tomato OR spaghetti sauce
 cheddar cheese = parmesan cheese
 cheddar = parmesan
 monterey jack = mozzarella
@@ -189,8 +221,6 @@ tortilla chips = lasagna noodle
 nacho cheese = alfredo sauce
 taco sauce = tomato puree
 #end_mexican_to_italian
-
-
 
 #mexican_to_asian
 #end_mexican_to_asian
@@ -210,7 +240,7 @@ crushed tomato = salsa
 
 
 #italian_to_asian
-ricotta *= tofu
+ricotta = tofu
 lasagna = potsticker wrappers OR wide rice noodles
 pasta = rice noodle OR rice
 olive oil = vegetable oil OR peanut oil
@@ -230,7 +260,10 @@ rice = ditalini OR couscous OR orzo
 curry paste = tomato paste with 1/4 teaspoon red pepper flakes
 rice vinegar = vinegar
 black vinegar = vinegar
-
+orange marmalade = tomato paste
+orange juice = crushed tomato
+orange zest = tomato paste
+soy sauce = tomato juice
 #end_asian_to_italian
 
 
@@ -247,6 +280,8 @@ rice vinegar = vinegar
 curry paste = chili sauce
 ginger root = cumin
 ginger = cumin
-
-
+brown sugar = lime juice
+orange marmalade = tomato paste
+orange juice = crushed tomato
+orange zest = tomato paste
 #end_asian_to_mexican

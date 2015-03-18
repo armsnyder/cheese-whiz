@@ -154,6 +154,8 @@ def testing_recipe(from_recipe):
         print ingredient_objects.name
 
 
+
+
 def recipe_fusion(made_recipe, fusion_style, knowledge_base):
     sauce_type = spice_classify(made_recipe, knowledge_base)
     print "sauce type: ", sauce_type
@@ -195,6 +197,15 @@ def recipe_fusion(made_recipe, fusion_style, knowledge_base):
                     print "amount: ", made_recipe.ingredients[e].quantity.amount, made_recipe.ingredients[e].quantity.unit
                 if spice in made_recipe.ingredients[e].name and spice not in italian_spices:
                     print "not in italian:", made_recipe.ingredients[e].name
+                    spicesub = randrange(1,len(knowledge_base.italian_spices_subs))
+                # for sub in range(len(knowledge_base.italian_spices_subs)):
+                #     print "food out"
+                #     print knowledge_base.italian_spices_subs[sub].food_out[0].name
+                    print "replaced: ", made_recipe.ingredients[e].name, " with ", knowledge_base.italian_spices_subs[spicesub].food_out[0].name
+                    replaced_ingredient = made_recipe.ingredients[e].name
+                    made_recipe.ingredients[e] = knowledge_base.italian_spices_subs[spicesub].food_out[0]
+                    made_recipe.replace_ingredient_in_steps(replaced_ingredient, knowledge_base.italian_spices_subs[spicesub].food_out[0].name)
+                    for e in range(len(made_recipe.steps)): print made_recipe.steps[e]
 
 
 
@@ -265,10 +276,19 @@ def recipe_fusion(made_recipe, fusion_style, knowledge_base):
         made_recipe.change_title("Italian " + made_recipe.title)
 
 
-    for spice in mexican_spices:
-        for item in made_recipe.ingredients:
-            if spice in item.name:
-                print ''
+    if "asian" in sauce_type and "italian" in fusion_style:
+
+        for sub in knowledge_base.asian_to_italian_list:
+            for e in range(len(made_recipe.ingredients)):
+                if sub.food_in.name in made_recipe.ingredients[e].name.lower():
+                    subbed_ingredient = made_recipe.ingredients[e].name.lower()
+                    print "item to sub: " + subbed_ingredient
+                    print "replace with: " + sub.food_out[0].name
+                    made_recipe.ingredients[e] = sub.food_out[0]
+                    made_recipe.replace_ingredient_in_steps(subbed_ingredient, sub.food_out[0].name)
+
+        for e in range(len(made_recipe.steps)): print made_recipe.steps[e]
+        made_recipe.change_title("Italian " + made_recipe.title)
 
     return made_recipe
 
