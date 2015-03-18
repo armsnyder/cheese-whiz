@@ -49,9 +49,9 @@ class TestIngredientNameParser(unittest.TestCase):
     def test_parse_1(self):
         name, descriptors, prep, prep_descriptors = parser.parse_ingredient("Mustard, Ground", self.knowledge_base)
         self.assertEqual(descriptors, 'none')
-        self.assertEqual(prep, 'Ground')
+        self.assertEqual(prep, 'none')
         self.assertEqual(prep_descriptors, 'none')
-        self.assertEqual(name, 'Ground')
+        self.assertEqual(name, 'ground mustard')
 
     def test_parse_2(self):
         name, descriptors, prep, prep_descriptors = parse_ingredient("finely chopped basil", self.knowledge_base)
@@ -62,10 +62,10 @@ class TestIngredientNameParser(unittest.TestCase):
 
     def test_parse_4(self):
         name, descriptors, prep, prep_descriptors = parse_ingredient("Black Pepper, Ground", self.knowledge_base)
-        self.assertEqual(descriptors, 'Black')
-        self.assertEqual(prep, 'Ground')
+        self.assertEqual(descriptors, 'ground')
+        self.assertEqual(prep, 'none')
         self.assertEqual(prep_descriptors, 'none')
-        self.assertEqual(name, 'Pepper')
+        self.assertEqual(name, 'black pepper')
 
     def test_parse_7(self):
         name, descriptors, prep, prep_descriptors = parse_ingredient("boneless chicken thighs, with skin", self.knowledge_base)
