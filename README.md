@@ -19,7 +19,7 @@ Once the recipe has been fully parsed, the user has the option to perform a numb
 The user may choose to make a recipe into a Mexican, Italian, or South Asian variant of the same recipe, which is accomplished by substituting ingredients and adding additional spices to match the correct palate.
 
 ##### Healthy / Unhealthy
-The user may wish to make the recipe more (or less) healthy. A healthier recipe is accomplished by querying the knowledge base on each ingredient for a lower-fat or less-sugar version of each ingredient. A less healthy recipe is accomplished by looking for similar ingredients that are higher in far and sugar.
+The user may wish to make the recipe more (or less) healthy. A healthier recipe is accomplished by querying the knowledge base on each ingredient for a lower-fat or less-sugar version of each ingredient.
 
 ##### Vegetarian / Vegan
 If the user requests a vegetarian or vegan version of the recipe, our program checks the food group of each ingredient, which it finds in the knowledge base, to ensure it is safe. If it is not, it refers primarily to a list of substitutions.
@@ -64,7 +64,10 @@ To run the program with a graphical interface, simply run the program with no co
 ```
 >> python cheese-whiz.py
 ```
-The function that returns a dictionary for the autograder is app.app.student(url)
+The function that returns a dictionary for the autograder is:
+```
+app.app.student(url)
+```
 ### Packages
 For convenience, we have included a requirements.txt file in the root directory to install external libraries. To install these dependencies, run this command:
 ```
