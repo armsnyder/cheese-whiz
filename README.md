@@ -64,11 +64,7 @@ To run the program with a graphical interface, simply run the program with no co
 ```
 >> python cheese-whiz.py
 ```
-To run the program in the command line, run it with a URL argument:
-```
->> python cheese-whiz.py http://allrecipes.com/Recipe/Baked-Flan
-```
-
+The function that returns a dictionary for the autograder is app.app.student(url)
 ### Packages
 For convenience, we have included a requirements.txt file in the root directory to install external libraries. To install these dependencies, run this command:
 ```
