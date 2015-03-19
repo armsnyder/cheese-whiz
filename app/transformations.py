@@ -137,17 +137,10 @@ def lookup_alternative_recipe(original_recipe_name, unavailable_ingredient_list)
     :return: new recipe URL
     """
     url = 'http://allrecipes.com/search/default.aspx?ms=0&origin=Home+Page&rt=r&qt=i&wt='
-    #title_words = from_recipe.title.split()
-    for i in range(len(original_recipe_name)):
-        if i == len(original_recipe_name)-1:
-            url += original_recipe_name[i]
-        else:
-            url += original_recipe_name[i] + '%20'
-    url += str('&pqt=i&fo=0')
+    url += original_recipe_name.replace(' ', '%20')
+    url += '&pqt=i&fo=0'
     for j in range(len(unavailable_ingredient_list)):
-        url += '&u' + str('j') + '=' + str(unavailable_ingredient_list[j])
-    url = get_html(url)
-    print url
+        url += '&u' + str(j) + '=' + str(unavailable_ingredient_list[j].replace(' ', '%20'))
     return url
 
 

@@ -133,9 +133,9 @@ def parse_html(html):
 
 def get_first_recipe_from_search_results(html):
     soup = BeautifulSoup(html)
-    if soup.find('a', {'id':'ctl00_CenterColumnPlaceHolder_rptResults_ctl00_ucResultContainer_ucRecipeGrid_imgLink'}):
+    if soup.find('a', href=True, id='ctl00_CenterColumnPlaceHolder_rptResults_ctl00_ucResultContainer_ucRecipeGrid_imgLink'):
         first_recipe = soup.find('a', href=True, id='ctl00_CenterColumnPlaceHolder_rptResults_ctl00_ucResultContainer_ucRecipeGrid_imgLink')
-        result = 'http://allrecipes.com' + str(first_recipe.href)
+        result = 'http://allrecipes.com' + str(first_recipe['href'])
         return result
     return 'http://allrecipes.com/recipe/grilled-peanut-butter-and-jelly-sandwich/'
 

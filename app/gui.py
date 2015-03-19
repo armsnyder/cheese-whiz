@@ -138,7 +138,7 @@ class GUI(ttk.Frame):
         else:
             self.display_recipe_state()
 
-    def display_recipe_state(self, recipe=None):
+    def display_recipe_state(self, recipe=None, unavail_list=None, o_recipe_name=None):
         """
         Loads the main interface, which shows the recipe and options for transformation
         """
@@ -153,11 +153,16 @@ class GUI(ttk.Frame):
         self.main_window.pack_configure(padx=50, pady=10)
         if not recipe:
             recipe = parser.url_to_recipe(self.recipe_url, self.knowledge_base)
+        if not o_recipe_name:
+            o_recipe_name = recipe.title
+        if not unavail_list:
+            unavail_list = []
         title = ttk.Label(self.main_window, text=recipe.title)
         title.grid(row=0, column=0, columnspan=2)
         recipe_frame = ttk.Frame(self.main_window)
         for ingredient in recipe.ingredients:
-            IngredientWidget(recipe_frame, ingredient).pack()
+            IngredientWidget(recipe_frame, ingredient, unavail_list, o_recipe_name, self.knowledge_base,
+                             self.display_recipe_state, self).pack()
 
         for step in reversed(recipe.steps):
             StepWidget(recipe_frame, step).pack(side=Tkinter.BOTTOM, pady=10)
@@ -265,10 +270,15 @@ class StatusBar(ttk.Frame):
 
 
 class IngredientWidget(ttk.Frame):
-    def __init__(self, parent, ingredient):
+    def __init__(self, parent, ingredient, unavail_list, recipe_name, knowledge_base, callback, real_parent):
         ttk.Frame.__init__(self, parent)
+        self.parent = real_parent
+        self.callback = callback
+        self.unavail_list = unavail_list
+        self.recipe_name = recipe_name
         self.ingredient = ingredient
         self.init_widgets()
+        self.knowledge_base = knowledge_base
 
     def init_widgets(self):
         strip_none_list = []
@@ -313,7 +323,11 @@ class IngredientWidget(ttk.Frame):
         unavailable_button.pack(side=Tkinter.LEFT)
 
     def do_not_have(self):
-        pass
+        self.unavail_list.append(self.ingredient.name)
+        url = transformations.lookup_alternative_recipe(self.recipe_name, self.unavail_list)
+        new_url = parser.get_first_recipe_from_search_results(parser.get_html(url))
+        new_recipe = parser.url_to_recipe(new_url, self.knowledge_base)
+        self.callback(new_recipe, self.unavail_list, self.recipe_name)
 
 
 class StepWidget(ttk.Frame):
