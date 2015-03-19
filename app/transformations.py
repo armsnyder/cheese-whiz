@@ -1,5 +1,6 @@
 import recipe
 from enums import FoodGroup
+from parser import get_html
 
 
 def to_vegan(knowledge_base, from_recipe):
@@ -124,18 +125,23 @@ def lookup_healthy_ingredient(from_ingredient, knowledge_base):
     return from_ingredient
 
 
-def lookup_alternative_recipe(from_recipe, unavailable_ingredient_list):
+def lookup_alternative_recipe(original_recipe_name, unavailable_ingredient_list):
     """
     STUB DESCRIPTION:
     Write lookup_alternative_recipe function to take args: Recipe, list of unavailable Ingredients
     (returned from transform_availability #60)
     It should query allrecipes.com using the advanced search to specify the recipe title and missing ingredients.
     If helper functions are needed, write them as stubs and make new issues for them.
-    :param from_recipe: old recipe
+    :param original_recipe_name: Title string from recipe to be replaced
     :param unavailable_ingredient_list: unavailable ingredients list
     :return: new recipe URL
     """
-    return 'url'  # Stub
+    url = 'http://allrecipes.com/search/default.aspx?ms=0&origin=Home+Page&rt=r&qt=i&wt='
+    url += original_recipe_name.replace(' ', '%20')
+    url += '&pqt=i&fo=0'
+    for j in range(len(unavailable_ingredient_list)):
+        url += '&u' + str(j) + '=' + str(unavailable_ingredient_list[j].replace(' ', '%20'))
+    return url
 
 
 def transform_availability(old_recipe, old_ingredient, kb):

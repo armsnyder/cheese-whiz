@@ -119,6 +119,7 @@ class GUI(ttk.Frame):
 
         url_text_box.focus()
         self.parent.geometry('604x100')
+        self.center_on_screen()
         # self.center_on_screen()
         # self.parent.deiconify()
         self.update_idletasks()
@@ -137,7 +138,7 @@ class GUI(ttk.Frame):
         else:
             self.display_recipe_state()
 
-    def display_recipe_state(self, recipe=None):
+    def display_recipe_state(self, recipe=None, unavail_list=None, o_recipe_name=None):
         """
         Loads the main interface, which shows the recipe and options for transformation
         """
@@ -148,53 +149,71 @@ class GUI(ttk.Frame):
 
         self.current_window = 'recipe'
         self.init_main_window()
-        self.parent.geometry('800x800')
+        self.fullscreen()
+        self.main_window.pack_configure(padx=50, pady=10)
         if not recipe:
             recipe = parser.url_to_recipe(self.recipe_url, self.knowledge_base)
+        if not o_recipe_name:
+            o_recipe_name = recipe.title
+        if not unavail_list:
+            unavail_list = []
         title = ttk.Label(self.main_window, text=recipe.title)
-        title.pack()
+        title.grid(row=0, column=0, columnspan=2)
         recipe_frame = ttk.Frame(self.main_window)
         for ingredient in recipe.ingredients:
-            IngredientWidget(recipe_frame, ingredient).pack()
+            IngredientWidget(recipe_frame, ingredient, unavail_list, o_recipe_name, self.knowledge_base,
+                             self.display_recipe_state, self).pack()
 
         for step in reversed(recipe.steps):
             StepWidget(recipe_frame, step).pack(side=Tkinter.BOTTOM, pady=10)
 
-        recipe_frame.pack(side=Tkinter.LEFT)
+        recipe_frame.grid(column=0, row=1, rowspan=7)
 
-        button_frame = ttk.Frame(self.main_window)
-
-        more_healthy_button = ttk.Button(button_frame, text="More Healthy",
+        more_healthy_button = ttk.Button(self.main_window, text="More Healthy",
                                          command=lambda: self.display_recipe_state(
                                              transformations.make_healthy(
-                                                 recipe, self.knowledge_base))).pack()
-        less_healthy_button = ttk.Button(button_frame, text="Less Healthy",
+                                                 recipe, self.knowledge_base)))
+        more_healthy_button.config(width=15)
+        more_healthy_button.grid(column=2, row=1)
+        less_healthy_button = ttk.Button(self.main_window, text="Less Healthy",
                                          command=lambda: self.display_recipe_state(
                                              transformations.make_unhealthy(
-                                                 recipe, self.knowledge_base))).pack()
-        vegetarian_button = ttk.Button(button_frame, text="Vegetarian",
+                                                 recipe, self.knowledge_base)))
+        less_healthy_button.config(width=15)
+        less_healthy_button.grid(column=2, row=2)
+        vegetarian_button = ttk.Button(self.main_window, text="Vegetarian",
                                        command=lambda: self.display_recipe_state(
                                            transformations.to_vegetarian(
-                                               self.knowledge_base, recipe))).pack()
-        vegan_button = ttk.Button(button_frame, text="Vegan",
+                                               self.knowledge_base, recipe)))
+        vegetarian_button.config(width=15)
+        vegetarian_button.grid(column=2, row=3)
+        vegan_button = ttk.Button(self.main_window, text="Vegan",
                                   command=lambda: self.display_recipe_state(
                                       transformations.to_vegan(
-                                          self.knowledge_base, recipe))).pack()
-        more_mexican_button = ttk.Button(button_frame, text="More Mexican",
+                                          self.knowledge_base, recipe)))
+        vegan_button.config(width=15)
+        vegan_button.grid(column=2, row=4)
+        more_mexican_button = ttk.Button(self.main_window, text="More Mexican",
                                          command=lambda: self.display_recipe_state(
                                              style_fusions.recipe_fusion(
-                                                 recipe, 'mexican', self.knowledge_base))).pack()
-        more_asian_button = ttk.Button(button_frame, text="More Asian",
+                                                 recipe, 'mexican', self.knowledge_base)))
+        more_mexican_button.config(width=15)
+        more_mexican_button.grid(column=2, row=5)
+        more_asian_button = ttk.Button(self.main_window, text="More Asian",
                                        command=lambda: self.display_recipe_state(
                                            style_fusions.recipe_fusion(
-                                               recipe, 'asian', self.knowledge_base))).pack()
-        more_italian = ttk.Button(button_frame, text="More Italian",
+                                               recipe, 'asian', self.knowledge_base)))
+        more_asian_button.config(width=15)
+        more_asian_button.grid(column=2, row=6)
+        more_italian = ttk.Button(self.main_window, text="More Italian",
                                   command=lambda: self.display_recipe_state(
                                       style_fusions.recipe_fusion(
-                                          recipe, 'italian', self.knowledge_base))).pack()
-        next_recipe_button = ttk.Button(button_frame, text="Next Recipe", command=self.next_recipe).pack(pady=50)
-
-        button_frame.pack(side=Tkinter.RIGHT)
+                                          recipe, 'italian', self.knowledge_base)))
+        more_italian.config(width=15)
+        more_italian.grid(column=2, row=7)
+        next_recipe_button = ttk.Button(self.main_window, text="Next Recipe", command=self.next_recipe)
+        next_recipe_button.config(width=15)
+        next_recipe_button.grid(column=1, row=8, columnspan=2)
 
         self.center_on_screen()
 
@@ -225,6 +244,11 @@ class GUI(ttk.Frame):
         y = (h - rootsize[1]) / 3
         self.parent.geometry("%dx%d+%d+%d" % (rootsize + (x, y)))
 
+    def fullscreen(self):
+        w, h = self.parent.winfo_screenwidth(), self.parent.winfo_screenheight()
+        self.parent.overrideredirect(1)
+        self.parent.geometry("%dx%d+0+0" % (w, h))
+
 
 class StatusBar(ttk.Frame):
     """
@@ -246,35 +270,64 @@ class StatusBar(ttk.Frame):
 
 
 class IngredientWidget(ttk.Frame):
-    def __init__(self, parent, ingredient):
+    def __init__(self, parent, ingredient, unavail_list, recipe_name, knowledge_base, callback, real_parent):
         ttk.Frame.__init__(self, parent)
+        self.parent = real_parent
+        self.callback = callback
+        self.unavail_list = unavail_list
+        self.recipe_name = recipe_name
         self.ingredient = ingredient
         self.init_widgets()
+        self.knowledge_base = knowledge_base
 
     def init_widgets(self):
-        quantity = ttk.Label(self, text='%.2f' % self.ingredient.quantity.amount)
-        unit = ttk.Label(self, text=self.ingredient.quantity.unit)
-        name = ttk.Label(self, text=self.ingredient.name)
-        descriptor = ttk.Label(self, text=self.ingredient.descriptor)
-        preparation = ttk.Label(self, text=self.ingredient.preparation)
-        prep_description = ttk.Label(self, text=self.ingredient.prep_description)
-        if self.ingredient.food_type:
-            matching_food = ttk.Label(self, text='('+self.ingredient.food_type.name+')')
+        strip_none_list = []
+        ok = True
+        new_amount = int(self.ingredient.quantity.amount)
+        if new_amount == self.ingredient.quantity.amount:
+            new_amount = str(new_amount)
         else:
-            matching_food = ttk.Label(self, text='( )')
+            new_amount = '%.1f' % self.ingredient.quantity.amount
+        for t in [
+                    new_amount,
+                    self.ingredient.quantity.unit,
+                    self.ingredient.name,
+                    self.ingredient.descriptor,
+                    self.ingredient.preparation,
+                    self.ingredient.prep_description,
+                    ]:
+            if t == 'none':
+                strip_none_list.append('')
+            elif t == 'unknown':
+                ok = False
+                util.warning('Skipping unknown ingredient in GUI')
+                break
+            else:
+                strip_none_list.append(t+' ')
+        if not ok:
+            return
+        quantity = ttk.Label(self, text=strip_none_list[0])
+        unit = ttk.Label(self, text=strip_none_list[1])
+        name = ttk.Label(self, text=strip_none_list[2])
+        descriptor = ttk.Label(self, text=strip_none_list[3])
+        preparation = ttk.Label(self, text=strip_none_list[4])
+        prep_description = ttk.Label(self, text=strip_none_list[5])
         unavailable_button = ttk.Button(self, text="X", command=self.do_not_have)
 
-        quantity.pack(side=Tkinter.LEFT, padx=3)
-        unit.pack(side=Tkinter.LEFT, padx=3)
-        prep_description.pack(side=Tkinter.LEFT, padx=3)
-        preparation.pack(side=Tkinter.LEFT, padx=3)
-        descriptor.pack(side=Tkinter.LEFT, padx=3)
-        name.pack(side=Tkinter.LEFT, padx=3)
-        matching_food.pack(side=Tkinter.LEFT, padx=3)
-        unavailable_button.pack(side=Tkinter.LEFT, padx=3)
+        quantity.pack(side=Tkinter.LEFT)
+        unit.pack(side=Tkinter.LEFT)
+        prep_description.pack(side=Tkinter.LEFT)
+        preparation.pack(side=Tkinter.LEFT)
+        descriptor.pack(side=Tkinter.LEFT)
+        name.pack(side=Tkinter.LEFT)
+        unavailable_button.pack(side=Tkinter.LEFT)
 
     def do_not_have(self):
-        pass
+        self.unavail_list.append(self.ingredient.name)
+        url = transformations.lookup_alternative_recipe(self.recipe_name, self.unavail_list)
+        new_url = parser.get_first_recipe_from_search_results(parser.get_html(url))
+        new_recipe = parser.url_to_recipe(new_url, self.knowledge_base)
+        self.callback(new_recipe, self.unavail_list, self.recipe_name)
 
 
 class StepWidget(ttk.Frame):

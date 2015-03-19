@@ -35,6 +35,8 @@ def parse_ingredient(ingredient, knowledge_base):
     ingredient = ingredient.lower()
     ingredient = ingredient.replace(', or to taste', '')
     ingredient = ingredient.replace(' or to taste', '')
+    ingredient = ingredient.replace(', to taste', '')
+    ingredient = ingredient.replace(' to taste', '')
     ingredient = remove_unicode(ingredient)
     i_tokens = nltk.pos_tag(nltk.word_tokenize(ingredient))
     # for i in range(len(i_tokens)):
@@ -127,6 +129,15 @@ def parse_html(html):
         steps.append('No directions.')
 
     return title, ingredient_quantity_string_tuples, steps
+
+
+def get_first_recipe_from_search_results(html):
+    soup = BeautifulSoup(html)
+    if soup.find('a', href=True, id='ctl00_CenterColumnPlaceHolder_rptResults_ctl00_ucResultContainer_ucRecipeGrid_imgLink'):
+        first_recipe = soup.find('a', href=True, id='ctl00_CenterColumnPlaceHolder_rptResults_ctl00_ucResultContainer_ucRecipeGrid_imgLink')
+        result = 'http://allrecipes.com' + str(first_recipe['href'])
+        return result
+    return 'http://allrecipes.com/recipe/grilled-peanut-butter-and-jelly-sandwich/'
 
 
 def url_to_dictionary(url, knowledge_base):
@@ -298,9 +309,15 @@ def remove_unicode(text):
     except UnicodeDecodeError:
         util.warning('UnicodeDecodeError on decode: '+text)
         decoded_text = ''
+    except UnicodeEncodeError:
+        util.warning('UnicodeEncodeError on decode: '+text)
+        decoded_text = ''
     try:
         encoded_text = decoded_text.encode('utf-8')
     except UnicodeDecodeError:
         util.warning('UnicodeDecodeError on encode: '+text)
+        encoded_text = ''
+    except UnicodeEncodeError:
+        util.warning('UnicodeEncodeError on encode: '+text)
         encoded_text = ''
     return regex.uni.sub('', encoded_text)
