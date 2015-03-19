@@ -151,6 +151,8 @@ class GUI(ttk.Frame):
         self.init_main_window()
         self.fullscreen()
         self.main_window.pack_configure(padx=50, pady=10)
+        self.main_window.columnconfigure(0, weight=1)
+        self.main_window.columnconfigure(4, weight=1)
         if not recipe:
             recipe = parser.url_to_recipe(self.recipe_url, self.knowledge_base)
         if not o_recipe_name:
@@ -158,7 +160,7 @@ class GUI(ttk.Frame):
         if not unavail_list:
             unavail_list = []
         title = ttk.Label(self.main_window, text=recipe.title)
-        title.grid(row=0, column=0, columnspan=2)
+        title.grid(row=0, column=1, columnspan=2)
         recipe_frame = ttk.Frame(self.main_window)
         for ingredient in recipe.ingredients:
             IngredientWidget(recipe_frame, ingredient, unavail_list, o_recipe_name, self.knowledge_base,
@@ -167,53 +169,53 @@ class GUI(ttk.Frame):
         for step in reversed(recipe.steps):
             StepWidget(recipe_frame, step).pack(side=Tkinter.BOTTOM, pady=10)
 
-        recipe_frame.grid(column=0, row=1, rowspan=7)
+        recipe_frame.grid(column=1, row=1, rowspan=7)
 
         more_healthy_button = ttk.Button(self.main_window, text="More Healthy",
                                          command=lambda: self.display_recipe_state(
                                              transformations.make_healthy(
                                                  recipe, self.knowledge_base)))
         more_healthy_button.config(width=15)
-        more_healthy_button.grid(column=2, row=1)
+        more_healthy_button.grid(column=3, row=1)
         less_healthy_button = ttk.Button(self.main_window, text="Less Healthy",
                                          command=lambda: self.display_recipe_state(
                                              transformations.make_unhealthy(
                                                  recipe, self.knowledge_base)))
         less_healthy_button.config(width=15)
-        less_healthy_button.grid(column=2, row=2)
+        less_healthy_button.grid(column=3, row=2)
         vegetarian_button = ttk.Button(self.main_window, text="Vegetarian",
                                        command=lambda: self.display_recipe_state(
                                            transformations.to_vegetarian(
                                                self.knowledge_base, recipe)))
         vegetarian_button.config(width=15)
-        vegetarian_button.grid(column=2, row=3)
+        vegetarian_button.grid(column=3, row=3)
         vegan_button = ttk.Button(self.main_window, text="Vegan",
                                   command=lambda: self.display_recipe_state(
                                       transformations.to_vegan(
                                           self.knowledge_base, recipe)))
         vegan_button.config(width=15)
-        vegan_button.grid(column=2, row=4)
+        vegan_button.grid(column=3, row=4)
         more_mexican_button = ttk.Button(self.main_window, text="More Mexican",
                                          command=lambda: self.display_recipe_state(
                                              style_fusions.recipe_fusion(
                                                  recipe, 'mexican', self.knowledge_base)))
         more_mexican_button.config(width=15)
-        more_mexican_button.grid(column=2, row=5)
+        more_mexican_button.grid(column=3, row=5)
         more_asian_button = ttk.Button(self.main_window, text="More Asian",
                                        command=lambda: self.display_recipe_state(
                                            style_fusions.recipe_fusion(
                                                recipe, 'asian', self.knowledge_base)))
         more_asian_button.config(width=15)
-        more_asian_button.grid(column=2, row=6)
+        more_asian_button.grid(column=3, row=6)
         more_italian = ttk.Button(self.main_window, text="More Italian",
                                   command=lambda: self.display_recipe_state(
                                       style_fusions.recipe_fusion(
                                           recipe, 'italian', self.knowledge_base)))
         more_italian.config(width=15)
-        more_italian.grid(column=2, row=7)
+        more_italian.grid(column=3, row=7)
         next_recipe_button = ttk.Button(self.main_window, text="Next Recipe", command=self.next_recipe)
         next_recipe_button.config(width=15)
-        next_recipe_button.grid(column=1, row=8, columnspan=2)
+        next_recipe_button.grid(column=2, row=8, columnspan=2)
 
         self.center_on_screen()
 

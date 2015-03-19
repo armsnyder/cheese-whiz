@@ -91,14 +91,32 @@ def make_healthy(from_recipe, knowledge_base):
     :return: new recipe
     """
     new_recipe = recipe.Recipe('Healthy ' + from_recipe.title, steps=from_recipe.steps)
-    for i in range(len(from_recipe.ingredients)):
-        if # healthy version in kb:
-            new_recipe.ingredients[i] = from_recipe.ingredients[i]
-            new_recipe.ingredients[i].name += ' low'
-            match_to_food(knowledge_base)
+    new_recipe.methods = from_recipe.methods
+    new_recipe.primary_method = from_recipe.primary_method
+    new_recipe.tools = from_recipe.tools
+
+    for ingredient in from_recipe.ingredients:
+        new_ingredient = recipe.Ingredient()
+        new_ingredient.available = ingredient.available
+        new_ingredient.descriptor = ingredient.descriptor
+        new_ingredient.prep_description = ingredient.prep_description
+        new_ingredient.preparation = ingredient.preparation
+        new_ingredient.quantity = ingredient.quantity
+
+        new_ingredient.name = 'low ' + ingredient.name
+        new_ingredient.match_to_food(knowledge_base)
+        if not new_ingredient.food_type:
+            new_ingredient.name = 'soy ' + ingredient.name
+            new_ingredient.match_to_food(knowledge_base)
         else:
-            new_recipe.ingredients[i] = from_recipe.ingredients[i]
-    return from_recipe
+            new_ingredient.name = new_ingredient.food_type.name
+        if not new_ingredient.food_type:
+            new_recipe.add_ingredients([ingredient])
+        else:
+            new_ingredient.name = new_ingredient.food_type.name
+            new_recipe.add_ingredients([new_ingredient])
+
+    return new_recipe
 
 
 def make_unhealthy(from_recipe, knowledge_base):
@@ -120,19 +138,19 @@ def make_unhealthy(from_recipe, knowledge_base):
     return from_recipe
 
 
-def lookup_healthy_ingredient(from_ingredient, knowledge_base):
-    """
-    STUB DESCRIPTION:
-    Write a function that takes an Ingredient input and outputs a healthier Ingredient, using simple search terms
-    like "low fat," if it finds one in the USDA. If no result is found, return None.
-    :param from_ingredient:
-    :return: Ingredient, or None
-    """
-    n = from_ingredient.name
-    if knowledge_base.lookup_food('low fat '+n):
-
-    if knowledge_base
-    return from_ingredient
+# def lookup_healthy_ingredient(from_ingredient, knowledge_base):
+#     """
+#     STUB DESCRIPTION:
+#     Write a function that takes an Ingredient input and outputs a healthier Ingredient, using simple search terms
+#     like "low fat," if it finds one in the USDA. If no result is found, return None.
+#     :param from_ingredient:
+#     :return: Ingredient, or None
+#     """
+#     n = from_ingredient.name
+#     if knowledge_base.lookup_food('low fat '+n):
+#
+#     if knowledge_base
+#     return from_ingredient
 
 
 def lookup_alternative_recipe(original_recipe_name, unavailable_ingredient_list):
