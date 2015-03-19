@@ -6,7 +6,7 @@ Professor Lawrence Birnbaum
 
 ### Overview
 A recipe transformer, capable of converting recipes to/from vegetarian, changing the style of cuisine, converting
-to/from healthy versions of recipes, and much more! Just give it a web address for your favorite recipe, and Cheese
+to/from healthy versions of recipes, and more! Just give it a web address for your favorite recipe, and Cheese
 Wiz will handle the rest.
 
 #### Recipe Parsing
@@ -25,7 +25,7 @@ The user may wish to make the recipe more (or less) healthy. A healthier recipe 
 If the user requests a vegetarian or vegan version of the recipe, our program checks the food group of each ingredient, which it finds in the knowledge base, to ensure it is safe. If it is not, it refers primarily to a list of substitutions.
 
 ##### Availability
-The user has the option to specify that an ingredient is not available to him or her. The program then queries a list of common substitutions *and* searches the knowledge base for similar ingredients based on chemical makeup of the food. The user is provided a list of substitution options for the ingredient. If none of these ingredients are available still, the user can request that the program re-query allrecipes for a new recipe that does not contain these unavailable ingredients.
+The user has the option to specify that an ingredient is not available to him or her. The program then re-queries allrecipes for a new recipe that does not contain the unavailable ingredient. The process can be repeated for any number of ingredients.
 
 #### Knowledge Base
 Our ingredient knowledge base is based largely on the [USDA Nutrient Database](http://ndb.nal.usda.gov/ndb/search/list). Immediately after parsing an ingredient, we attempt to match it to a food from this database so that we have access to its nutritional information.
